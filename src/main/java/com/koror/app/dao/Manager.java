@@ -4,6 +4,7 @@ import com.koror.app.entity123.Group;
 import com.koror.app.entity123.Task;
 
 import java.util.ArrayList;
+import java.util.InputMismatchException;
 import java.util.Iterator;
 import java.util.Scanner;
 
@@ -23,22 +24,33 @@ public class Manager {
     }
 
     public void addTask() {
-        System.out.println("Input index group | task name | priority{LOW MEDIUM HIGH}");
-        final int indexGroup = scanner.nextInt();
-        Group group = groupList.get(indexGroup);
-        group.getTaskList().add(new Task(scanner.next(), scanner.nextLine()));
-        groupList.set(indexGroup, group);
+        try {
+            System.out.println("Input index group | task name | priority{LOW MEDIUM HIGH}");
+            final int indexGroup = scanner.nextInt();
+            Group group = groupList.get(indexGroup);
+            group.getTaskList().add(new Task(scanner.next(), scanner.nextLine()));
+            groupList.set(indexGroup, group);
+        } catch (InputMismatchException exception) {
+            scanner = new Scanner(System.in);
+            System.out.println("Wrong input");
+        } catch (IndexOutOfBoundsException exception) {
+            System.out.println("Wrong index of group");
+        }
     }
 
     public void completeTask() {
-        System.out.println("Input index group and task");
-        final int indexGroup = scanner.nextInt();
-        final int indexTask = scanner.nextInt();
-        scanner.nextLine();
-        Group group = groupList.get(indexGroup);
-        Task task = group.getTaskList().get(indexTask);
-        task.complete();
-        group.getTaskList().set(indexTask, task);
+        try {
+            System.out.println("Input index group and task");
+            final int indexGroup = scanner.nextInt();
+            final int indexTask = scanner.nextInt();
+            scanner.nextLine();
+            Group group = groupList.get(indexGroup);
+            Task task = group.getTaskList().get(indexTask);
+            task.complete();
+            group.getTaskList().set(indexTask, task);
+        } catch (InputMismatchException exception) {
+            System.out.println("Wrong input");
+        }
     }
 
     public void clear() {
