@@ -1,10 +1,10 @@
-package com.koror.app.entity123;
+package com.koror.app.entity;
 
 import java.util.ArrayList;
 
 public class Group {
 
-    private ArrayList<Task> taskList = new ArrayList<>();
+    private final ArrayList<Task> taskList = new ArrayList<>();
 
     private final String name;
 

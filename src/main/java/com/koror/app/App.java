@@ -1,8 +1,8 @@
 package com.koror.app;
 
-import com.koror.app.dao123.Manager;
-import com.koror.app.entity123.Group;
-import com.koror.app.entity123.Task;
+import com.koror.app.dao.Manager;
+import com.koror.app.entity.Group;
+import com.koror.app.entity.Task;
 
 import java.util.Scanner;
 

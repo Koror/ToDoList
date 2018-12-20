@@ -1,7 +1,7 @@
-package com.koror.app.dao123;
+package com.koror.app.dao;
 
-import com.koror.app.entity123.Group;
-import com.koror.app.entity123.Task;
+import com.koror.app.entity.Group;
+import com.koror.app.entity.Task;
 
 import java.util.ArrayList;
 import java.util.InputMismatchException;
@@ -27,13 +27,14 @@ public class Manager {
         try {
             System.out.println("Input index group | task name | priority{LOW MEDIUM HIGH}");
             final int indexGroup = scanner.nextInt();
-            Group group = groupList.get(indexGroup);
+            final Group group = groupList.get(indexGroup);
             group.getTaskList().add(new Task(scanner.next(), scanner.nextLine()));
             groupList.set(indexGroup, group);
         } catch (InputMismatchException exception) {
             scanner = new Scanner(System.in);
             System.out.println("Wrong input");
         } catch (IndexOutOfBoundsException exception) {
+            scanner = new Scanner(System.in);
             System.out.println("Wrong index of group");
         }
     }
@@ -44,12 +45,16 @@ public class Manager {
             final int indexGroup = scanner.nextInt();
             final int indexTask = scanner.nextInt();
             scanner.nextLine();
-            Group group = groupList.get(indexGroup);
-            Task task = group.getTaskList().get(indexTask);
+            final Group group = groupList.get(indexGroup);
+            final Task task = group.getTaskList().get(indexTask);
             task.complete();
             group.getTaskList().set(indexTask, task);
         } catch (InputMismatchException exception) {
             System.out.println("Wrong input");
+        } catch (IndexOutOfBoundsException exception)
+        {
+            scanner = new Scanner(System.in);
+            System.out.println("Wrong index");
         }
     }
 

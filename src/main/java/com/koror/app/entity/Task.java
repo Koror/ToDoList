@@ -1,4 +1,4 @@
-package com.koror.app.entity123;
+package com.koror.app.entity;
 
 public class Task {
 
