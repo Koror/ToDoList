@@ -1,6 +1,6 @@
 package com.koror.app;
 
-import com.koror.app.dao.Manager;
+import com.koror.app.dao.TaskManagerCommandLine;
 import com.koror.app.entity.Group;
 import com.koror.app.entity.Task;
 
@@ -8,7 +8,7 @@ import java.util.Scanner;
 
 public class App {
 
-    private final static Manager manager = new Manager();
+    private final static TaskManagerCommandLine taskManager = new TaskManagerCommandLine();
 
     public static void main(String[] args) {
         start();
@@ -22,19 +22,19 @@ public class App {
             System.out.println("Action: AddGroup ReadAll AddTask CompleteTask Clear Exit");
             switch (scanner.nextLine()) {
                 case "AddGroup":
-                    manager.addGroup();
+                    taskManager.addGroup();
                     break;
                 case "ReadAll":
-                    manager.readAll();
+                    taskManager.readAll();
                     break;
                 case "AddTask":
-                    manager.addTask();
+                    taskManager.addTask();
                     break;
                 case "CompleteTask":
-                    manager.completeTask();
+                    taskManager.completeTask();
                     break;
                 case "Clear":
-                    manager.clear();
+                    taskManager.clear();
                     break;
                 case "Test":
                     testWriting();
@@ -50,31 +50,31 @@ public class App {
 
     private static void testWriting() {
         Group group = new Group("Day");
-        manager.getGroupList().add(group);
+        taskManager.getGroupList().add(group);
         group = new Group("Week");
-        manager.getGroupList().add(group);
+        taskManager.getGroupList().add(group);
 
         Task task = new Task("Shop", "MEDIUM");
-        group = manager.getGroupList().get(0);
+        group = taskManager.getGroupList().get(0);
         group.getTaskList().add(task);
-        manager.getGroupList().set(0, group);
+        taskManager.getGroupList().set(0, group);
 
         task = new Task("Read", "MEDIUM");
-        group = manager.getGroupList().get(0);
+        group = taskManager.getGroupList().get(0);
         group.getTaskList().add(task);
-        manager.getGroupList().set(0, group);
+        taskManager.getGroupList().set(0, group);
 
         task = new Task("Work", "HIGH");
-        group = manager.getGroupList().get(1);
+        group = taskManager.getGroupList().get(1);
         group.getTaskList().add(task);
-        manager.getGroupList().set(1, group);
+        taskManager.getGroupList().set(1, group);
 
-        group = manager.getGroupList().get(0);
+        group = taskManager.getGroupList().get(0);
         task = group.getTaskList().get(1);
         task.complete();
         group.getTaskList().set(1, task);
 
-        group = manager.getGroupList().get(1);
+        group = taskManager.getGroupList().get(1);
         task = group.getTaskList().get(0);
         task.complete();
         group.getTaskList().set(0, task);

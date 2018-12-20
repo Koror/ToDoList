@@ -8,7 +8,7 @@ import java.util.InputMismatchException;
 import java.util.Iterator;
 import java.util.Scanner;
 
-public class Manager {
+public class TaskManagerCommandLine extends TaskManager {
 
     private ArrayList<Group> groupList = new ArrayList<>();
 
@@ -51,8 +51,7 @@ public class Manager {
             group.getTaskList().set(indexTask, task);
         } catch (InputMismatchException exception) {
             System.out.println("Wrong input");
-        } catch (IndexOutOfBoundsException exception)
-        {
+        } catch (IndexOutOfBoundsException exception) {
             scanner = new Scanner(System.in);
             System.out.println("Wrong index");
         }
