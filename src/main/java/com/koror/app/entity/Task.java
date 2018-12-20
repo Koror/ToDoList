@@ -1,7 +1,10 @@
 package com.koror.app.entity;
 
+import java.util.UUID;
+
 public class Task {
 
+    private String id;
     private final String priority;
 
     private final String text;
@@ -9,6 +12,7 @@ public class Task {
     private boolean complete = false;
 
     public Task(String text, String priority) {
+        id= UUID.randomUUID().toString();
         this.text = text;
         this.priority = priority;
     }
@@ -23,7 +27,7 @@ public class Task {
 
     @Override
     public String toString() {
-        return "Name:" + text + " Priority: " + priority + " Complete: " + complete;
+        return "Name:" + text + " Priority: " + priority + " Complete: " + complete + " Id: "+id;
     }
 
 }

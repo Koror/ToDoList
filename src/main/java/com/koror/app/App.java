@@ -1,6 +1,6 @@
 package com.koror.app;
 
-import com.koror.app.dao.TaskManagerCommandLine;
+import com.koror.app.dao.TaskManager;
 import com.koror.app.entity.Group;
 import com.koror.app.entity.Task;
 
@@ -8,7 +8,7 @@ import java.util.Scanner;
 
 public class App {
 
-    private final static TaskManagerCommandLine taskManager = new TaskManagerCommandLine();
+    private final static TaskManager taskManager = new TaskManager();
 
     public static void main(String[] args) {
         start();
@@ -19,7 +19,7 @@ public class App {
         final Scanner scanner = new Scanner(System.in);
 
         while (true) {
-            System.out.println("Action: AddGroup ReadAll AddTask CompleteTask Clear Exit");
+            System.out.println("Action: AddGroup ReadAll AddTask CompleteTask Clear DeleteTask DeleteGroup Exit");
             switch (scanner.nextLine()) {
                 case "AddGroup":
                     taskManager.addGroup();
@@ -35,6 +35,12 @@ public class App {
                     break;
                 case "Clear":
                     taskManager.clear();
+                    break;
+                case "DeleteTask":
+                    taskManager.deleteTask();
+                    break;
+                case "DeleteGroup":
+                    taskManager.deleteGroup();
                     break;
                 case "Test":
                     testWriting();
