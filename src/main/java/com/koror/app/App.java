@@ -1,67 +1,82 @@
 package com.koror.app;
 
-import com.koror.app.DAO.Manager;
+import com.koror.app.dao123.Manager;
+import com.koror.app.entity123.Group;
+import com.koror.app.entity123.Task;
 
 import java.util.Scanner;
 
-public class App
-{
-    public static void main( String[] args )
-    {
+public class App {
+
+    private final static Manager manager = new Manager();
+
+    public static void main(String[] args) {
         start();
     }
 
-    public static void start()
-    {
-        Scanner in = new Scanner(System.in);
-        Manager manager = new Manager();
-        while(true) {
-            System.out.println("Action: AddGroup ReadAll AddTask CompleteTask Clear Exit");
-            String action;
-            action = in.nextLine();
-            switch (action) {
+    private static void start() {
 
+        final Scanner scanner = new Scanner(System.in);
+
+        while (true) {
+            System.out.println("Action: AddGroup ReadAll AddTask CompleteTask Clear Exit");
+            switch (scanner.nextLine()) {
                 case "AddGroup":
-                    System.out.println("Input name group");
-                    manager.addGroup(in.nextLine());
+                    manager.addGroup();
                     break;
                 case "ReadAll":
-                   manager.readAll();
+                    manager.readAll();
                     break;
                 case "AddTask":
-                    System.out.println("Input index group | task name | priority{LOW MEDIUM HIGH}");
-                    int indexGroupT = in.nextInt();
-                    String name = in.next();
-                    String priority = in.nextLine();
-                    manager.addTask(indexGroupT, name, priority);
+                    manager.addTask();
                     break;
-
                 case "CompleteTask":
-                    System.out.println("Input index group and task");
-                    int indexGroupC = in.nextInt();
-                    int indexTaskC = in.nextInt();
-                    in.nextLine();
-                    manager.completeTask(indexGroupC, indexTaskC);
+                    manager.completeTask();
                     break;
                 case "Clear":
-                    manager.clearTask();
+                    manager.clear();
                     break;
                 case "Test":
-                    manager.addGroup("Day");
-                    manager.addGroup("Week");
-                    manager.addTask(0,"Shop","MEDIUM");
-                    manager.addTask(0,"Read","MEDIUM");
-                    manager.addTask(1,"Work","HIGH");
-                    manager.completeTask(0,1);
-                    manager.completeTask(1,0);
-
+                    testWriting();
                     break;
                 case "Exit":
-                    return ;
+                    return;
                 default:
                     System.out.println("Wrong command");
                     break;
             }
         }
+    }
+
+    private static void testWriting() {
+        Group group = new Group("Day");
+        manager.getGroupList().add(group);
+        group = new Group("Week");
+        manager.getGroupList().add(group);
+
+        Task task = new Task("Shop", "MEDIUM");
+        group = manager.getGroupList().get(0);
+        group.getTaskList().add(task);
+        manager.getGroupList().set(0, group);
+
+        task = new Task("Read", "MEDIUM");
+        group = manager.getGroupList().get(0);
+        group.getTaskList().add(task);
+        manager.getGroupList().set(0, group);
+
+        task = new Task("Work", "HIGH");
+        group = manager.getGroupList().get(1);
+        group.getTaskList().add(task);
+        manager.getGroupList().set(1, group);
+
+        group = manager.getGroupList().get(0);
+        task = group.getTaskList().get(1);
+        task.complete();
+        group.getTaskList().set(1, task);
+
+        group = manager.getGroupList().get(1);
+        task = group.getTaskList().get(0);
+        task.complete();
+        group.getTaskList().set(0, task);
     }
 }

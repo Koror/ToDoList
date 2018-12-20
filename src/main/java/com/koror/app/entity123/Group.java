@@ -1,18 +1,18 @@
-package com.koror.app.Entity;
+package com.koror.app.entity123;
 
 import java.util.ArrayList;
 
 public class Group {
-    private ArrayList<Task> taskList = new ArrayList<>();
-    private String name;
 
-    public Group(String name)
-    {
+    private ArrayList<Task> taskList = new ArrayList<>();
+
+    private final String name;
+
+    public Group(String name) {
         this.name = name;
     }
 
-    public ArrayList<Task> getTaskList()
-    {
+    public ArrayList<Task> getTaskList() {
         return taskList;
     }
 
