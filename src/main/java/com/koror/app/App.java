@@ -1,9 +1,6 @@
 package com.koror.app;
 
 import com.koror.app.DAO.Manager;
-import com.koror.app.Entity.Group;
-import com.koror.app.Entity.Task;
-import com.koror.app.Util.Priority;
 
 import java.util.Scanner;
 
@@ -19,7 +16,7 @@ public class App
         Scanner in = new Scanner(System.in);
         Manager manager = new Manager();
         while(true) {
-            System.out.println("Action: AddGroup ReadAll AddTask CompleteTask");
+            System.out.println("Action: AddGroup ReadAll AddTask CompleteTask Clear Exit");
             String action;
             action = in.nextLine();
             switch (action) {
@@ -29,18 +26,13 @@ public class App
                     manager.addGroup(in.nextLine());
                     break;
                 case "ReadAll":
-                    for (Group group : manager.getGroupList()) {
-                        System.out.println(group.toString());
-                        for (Task task : group.getTaskList()) {
-                            System.out.println(task.toString());
-                        }
-                    }
+                   manager.readAll();
                     break;
                 case "AddTask":
                     System.out.println("Input index group | task name | priority{LOW MEDIUM HIGH}");
                     int indexGroupT = in.nextInt();
                     String name = in.next();
-                    String priority = in.next();
+                    String priority = in.nextLine();
                     manager.addTask(indexGroupT, name, priority);
                     break;
 
@@ -48,10 +40,22 @@ public class App
                     System.out.println("Input index group and task");
                     int indexGroupC = in.nextInt();
                     int indexTaskC = in.nextInt();
+                    in.nextLine();
                     manager.completeTask(indexGroupC, indexTaskC);
                     break;
+                case "Clear":
+                    manager.clearTask();
+                    break;
                 case "Test":
-                    System.out.println(manager.getGroupList().get(0));
+                    manager.addGroup("Day");
+                    manager.addGroup("Week");
+                    manager.addTask(0,"Shop","MEDIUM");
+                    manager.addTask(0,"Read","MEDIUM");
+                    manager.addTask(1,"Work","HIGH");
+                    manager.completeTask(0,1);
+                    manager.completeTask(1,0);
+
+                    break;
                 case "Exit":
                     return ;
                 default:

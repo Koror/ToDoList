@@ -2,9 +2,9 @@ package com.koror.app.DAO;
 
 import com.koror.app.Entity.Group;
 import com.koror.app.Entity.Task;
-import com.koror.app.Util.Priority;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 
 public class Manager {
     private ArrayList<Group> groupList = new ArrayList<>();
@@ -34,6 +34,33 @@ public class Manager {
         Task task = group.getTaskList().get(indexTask);
         task.complete();
         group.getTaskList().set(indexTask,task);
+    }
+
+    public void clearTask()
+    {
+        Iterator<Group> groupIterator = getGroupList().iterator();
+        while(groupIterator.hasNext()) {
+            Iterator<Task> taskIterator = groupIterator.next().getTaskList().iterator();
+            while (taskIterator.hasNext()) {
+                if (taskIterator.next().isComplete())
+                   taskIterator.remove();
+            }
+        }
+    }
+
+    public void readAll()
+    {
+        int iGroup=0;
+        int iTask;
+        for (Group group :getGroupList()) {
+            iTask=0;
+            System.out.println(iGroup+" ["+group.toString()+"]");
+            for (Task task : group.getTaskList()) {
+                System.out.println("   "+iTask+" ["+task.toString()+"]");
+                iTask++;
+            }
+            iGroup++;
+        }
     }
 
 }
