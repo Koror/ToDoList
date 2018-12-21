@@ -1,15 +1,14 @@
 package com.koror.app.gui;
 
-import com.koror.app.dao.Manager;
 import com.koror.app.entity.Group;
 import com.koror.app.entity.Task;
 
 import java.util.List;
 import java.util.Scanner;
 
-public class CommandLineGUI implements Manager {
+public class CommandLineGUI {
 
-    private Scanner scanner = new Scanner(System.in);
+    private final Scanner scanner = new Scanner(System.in);
 
     private int indexGroup;
 
@@ -21,13 +20,11 @@ public class CommandLineGUI implements Manager {
 
     private String priority;
 
-    @Override
     public void addGroup() {
         System.out.println("Input name group");
         nameGroup = scanner.nextLine();
     }
 
-    @Override
     public void addTask() {
         System.out.println("Input index group | task name | priority{LOW MEDIUM HIGH}");
         indexGroup = Integer.parseInt(scanner.nextLine());
@@ -35,27 +32,29 @@ public class CommandLineGUI implements Manager {
         priority = scanner.nextLine();
     }
 
-    @Override
     public void completeTask() {
         System.out.println("Input index group and task");
         indexGroup = Integer.parseInt(scanner.nextLine());
         indexTask = Integer.parseInt(scanner.nextLine());
     }
 
-    @Override
     public void deleteTask() {
         System.out.println("Input index group and task");
         indexGroup = Integer.parseInt(scanner.nextLine());
         indexTask = Integer.parseInt(scanner.nextLine());
     }
 
-    @Override
     public void deleteGroup() {
         System.out.println("Input index group");
         indexGroup = Integer.parseInt(scanner.nextLine());
     }
 
-    @Override
+    public void updateGroup()
+    {
+        System.out.println("Input index group and name");
+        indexGroup = Integer.parseInt(scanner.nextLine());
+        nameGroup = scanner.nextLine();
+    }
     public void updateTask() {
         System.out.println("Input index group | index task | task name | priority{LOW MEDIUM HIGH}");
         indexGroup = Integer.parseInt(scanner.nextLine());
@@ -64,7 +63,6 @@ public class CommandLineGUI implements Manager {
         priority = scanner.nextLine();
     }
 
-    @Override
     public void readAll(List<Group> groupList) {
         int indexGroup = 0;
         for (Group group : groupList) {
