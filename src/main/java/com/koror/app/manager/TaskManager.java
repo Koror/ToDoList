@@ -1,4 +1,4 @@
-package com.koror.app.dao;
+package com.koror.app.manager;
 
 import com.koror.app.entity.Group;
 import com.koror.app.entity.Task;
@@ -48,7 +48,7 @@ public class TaskManager {
         }
     }
 
-    public void clear(List<Group> groupList) {
+    public void clearTask(List<Group> groupList) {
         for (Group group : groupList) {
             Iterator<Task> taskIterator = group.getTaskList().iterator();
             while (taskIterator.hasNext()) {
@@ -57,4 +57,5 @@ public class TaskManager {
             }
         }
     }
+
 }

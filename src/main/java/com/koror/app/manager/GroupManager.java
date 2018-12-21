@@ -1,4 +1,4 @@
-package com.koror.app.dao;
+package com.koror.app.manager;
 
 import com.koror.app.entity.Group;
 
@@ -17,6 +17,10 @@ public class GroupManager {
         groupList.add(new Group(name));
     }
 
+    public void updateGroup(int indexGroup, String name) {
+        groupList.get(indexGroup).changeName(name);
+    }
+
     public void deleteGroup(int indexGroup) {
         try {
             groupList.remove(indexGroup);
@@ -25,7 +29,4 @@ public class GroupManager {
         }
     }
 
-    public void updateGroup(int indexGroup, String name) {
-        groupList.get(indexGroup).changeName(name);
-    }
 }

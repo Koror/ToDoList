@@ -1,6 +1,6 @@
 package com.koror.app;
 
-import com.koror.app.dao.ToDoListService;
+import com.koror.app.service.ToDoListService;
 
 public class App {
 
