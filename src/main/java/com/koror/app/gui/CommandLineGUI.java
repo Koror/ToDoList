@@ -76,6 +76,25 @@ public class CommandLineGUI {
         }
     }
 
+    public void readAllGroup(List<Group> groupList) {
+        int indexGroup = 0;
+        for (Group group : groupList) {
+            System.out.println(indexGroup + " [" + group.toString() + "]");
+            indexGroup++;
+        }
+    }
+
+    public void readGroup(List<Group> groupList) {
+        System.out.println("Input group index");
+        int indexGroup = Integer.parseInt(scanner.nextLine());
+        int indexTask = 0;
+        System.out.println(indexGroup + " [" + groupList.get(indexGroup).toString() + "]");
+        for (Task task : groupList.get(indexGroup).getTaskList()) {
+            System.out.println("   " + indexTask + " [" + task.toString() + "]");
+            indexTask++;
+        }
+    }
+
     public int getIndexGroup() {
         return indexGroup;
     }

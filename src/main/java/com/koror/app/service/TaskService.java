@@ -13,8 +13,7 @@ public class TaskService {
 
     private final List<Group> groupList;
 
-    public TaskService(List<Group> groupList)
-    {
+    public TaskService(List<Group> groupList) {
         this.groupList = groupList;
     }
 

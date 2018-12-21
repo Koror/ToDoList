@@ -15,6 +15,14 @@ public class GroupService {
         groupManager.addGroup(gui.getNameGroup());
     }
 
+    public void readAllGroup() {
+        gui.readAllGroup(getGroupList());
+    }
+
+    public void readGroup() {
+        gui.readGroup(getGroupList());
+    }
+
     public void updateGroup() {
         gui.updateGroup();
         groupManager.updateGroup(gui.getIndexGroup(), gui.getNameGroup());
@@ -25,8 +33,7 @@ public class GroupService {
         groupManager.deleteGroup(gui.getIndexGroup());
     }
 
-    public List<Group> getGroupList()
-    {
+    public List<Group> getGroupList() {
         return groupManager.getGroupList();
     }
 }
