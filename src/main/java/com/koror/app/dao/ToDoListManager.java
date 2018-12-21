@@ -8,7 +8,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-public class TodoListManager implements Manager {
+public class ToDoListManager implements Manager {
 
     private List<Group> groupList = new ArrayList<>();
 

@@ -1,6 +1,6 @@
 package com.koror.app;
 
-import com.koror.app.dao.TodoListManager;
+import com.koror.app.dao.ToDoListManager;
 import com.koror.app.entity.Group;
 import com.koror.app.entity.Task;
 
@@ -8,7 +8,7 @@ import java.util.Scanner;
 
 public class App {
 
-    private final static TodoListManager manager = new TodoListManager();
+    private final static ToDoListManager manager = new ToDoListManager();
 
     public static void main(String[] args) {
         start();
