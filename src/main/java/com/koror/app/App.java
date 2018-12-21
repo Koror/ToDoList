@@ -1,6 +1,6 @@
 package com.koror.app;
 
-import com.koror.app.dao.TaskManager;
+import com.koror.app.dao.TodoListManager;
 import com.koror.app.entity.Group;
 import com.koror.app.entity.Task;
 
@@ -8,7 +8,7 @@ import java.util.Scanner;
 
 public class App {
 
-    private final static TaskManager taskManager = new TaskManager();
+    private final static TodoListManager manager = new TodoListManager();
 
     public static void main(String[] args) {
         start();
@@ -21,28 +21,28 @@ public class App {
             System.out.println("Action: AddGroup ReadAll AddTask CompleteTask Clear DeleteTask DeleteGroup UpdateTask Exit");
             switch (scanner.nextLine()) {
                 case "AddGroup":
-                    taskManager.addGroup();
+                    manager.addGroup();
                     break;
                 case "ReadAll":
-                    taskManager.readAll(taskManager.getGroupList());
+                    manager.readAll(manager.getGroupList());
                     break;
                 case "AddTask":
-                    taskManager.addTask();
+                    manager.addTask();
                     break;
                 case "CompleteTask":
-                    taskManager.completeTask();
+                    manager.completeTask();
                     break;
                 case "Clear":
-                    taskManager.clear();
+                    manager.clear();
                     break;
                 case "DeleteTask":
-                    taskManager.deleteTask();
+                    manager.deleteTask();
                     break;
                 case "DeleteGroup":
-                    taskManager.deleteGroup();
+                    manager.deleteGroup();
                     break;
                 case "UpdateTask":
-                    taskManager.updateTask();
+                    manager.updateTask();
                     break;
                 case "Test":
                     testWriting();
@@ -58,31 +58,31 @@ public class App {
 
     private static void testWriting() {
         Group group = new Group("Day");
-        taskManager.getGroupList().add(group);
+        manager.getGroupList().add(group);
         group = new Group("Week");
-        taskManager.getGroupList().add(group);
+        manager.getGroupList().add(group);
 
         Task task = new Task("Shop", "MEDIUM");
-        group = taskManager.getGroupList().get(0);
+        group = manager.getGroupList().get(0);
         group.getTaskList().add(task);
-        taskManager.getGroupList().set(0, group);
+        manager.getGroupList().set(0, group);
 
         task = new Task("Read", "MEDIUM");
-        group = taskManager.getGroupList().get(0);
+        group = manager.getGroupList().get(0);
         group.getTaskList().add(task);
-        taskManager.getGroupList().set(0, group);
+        manager.getGroupList().set(0, group);
 
         task = new Task("Work", "HIGH");
-        group = taskManager.getGroupList().get(1);
+        group = manager.getGroupList().get(1);
         group.getTaskList().add(task);
-        taskManager.getGroupList().set(1, group);
+        manager.getGroupList().set(1, group);
 
-        group = taskManager.getGroupList().get(0);
+        group = manager.getGroupList().get(0);
         task = group.getTaskList().get(1);
         task.complete();
         group.getTaskList().set(1, task);
 
-        group = taskManager.getGroupList().get(1);
+        group = manager.getGroupList().get(1);
         task = group.getTaskList().get(0);
         task.complete();
         group.getTaskList().set(0, task);
