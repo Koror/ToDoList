@@ -1,6 +1,6 @@
 package com.koror.app.dao;
 
-import com.koror.app.gui123.CommandLineGUI;
+import com.koror.app.gui.CommandLineGUI;
 import com.koror.app.entity.Group;
 import com.koror.app.entity.Task;
 

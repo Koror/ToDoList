@@ -1,4 +1,4 @@
-package com.koror.app.gui123;
+package com.koror.app.gui;
 
 import com.koror.app.dao.Manager;
 import com.koror.app.entity.Group;
@@ -97,4 +97,5 @@ public class CommandLineGUI implements Manager {
     public String getPriority() {
         return priority;
     }
+
 }
