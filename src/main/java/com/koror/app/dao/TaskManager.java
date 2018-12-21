@@ -7,7 +7,7 @@ import com.koror.app.entity.Task;
 import java.util.ArrayList;
 import java.util.Iterator;
 
-public class TaskManager extends Manager {
+public class TaskManager implements Manager {
 
     private ArrayList<Group> groupList = new ArrayList<>();
 
@@ -19,22 +19,22 @@ public class TaskManager extends Manager {
 
     public void addGroup() {
         gui.addGroup();
-        groupList.add(new Group(gui.nameGroup));
+        groupList.add(new Group(gui.getNameGroup()));
     }
 
     public void addTask() {
         gui.addTask();
-        final Group group = groupList.get(gui.indexGroup);
-        group.getTaskList().add(new Task(gui.nameTask, gui.priority));
-        groupList.set(gui.indexGroup, group);
+        final Group group = groupList.get(gui.getIndexGroup());
+        group.getTaskList().add(new Task(gui.getNameTask(), gui.getPriority()));
+        groupList.set(gui.getIndexGroup(), group);
     }
 
     public void completeTask() {
         gui.completeTask();
-        final Group group = groupList.get(gui.indexGroup);
-        final Task task = group.getTaskList().get(gui.indexTask);
+        final Group group = groupList.get(gui.getIndexGroup());
+        final Task task = group.getTaskList().get(gui.getIndexTask());
         task.complete();
-        group.getTaskList().set(gui.indexTask, task);
+        group.getTaskList().set(gui.getIndexTask(), task);
     }
 
     public void clear() {
@@ -49,17 +49,25 @@ public class TaskManager extends Manager {
 
     public void deleteTask() {
         gui.deleteTask();
-        final Group group = groupList.get(gui.indexGroup);
-        group.getTaskList().remove(gui.indexTask);
+        final Group group = groupList.get(gui.getIndexGroup());
+        group.getTaskList().remove(gui.getIndexTask());
     }
 
     public void deleteGroup() {
         gui.deleteGroup();
-        groupList.remove(gui.indexGroup);
+        groupList.remove(gui.getIndexGroup());
     }
 
-    public void readAll() {
-        gui.readAll(getGroupList());
+    public void updateTask() {
+        gui.updateTask();
+        final Group group = groupList.get(gui.getIndexGroup());
+        group.getTaskList().set(gui.getIndexTask(), new Task(gui.getNameTask(), gui.getPriority()));
+        groupList.set(gui.getIndexGroup(), group);
+    }
+
+    @Override
+    public void readAll(ArrayList<Group> list) {
+        gui.readAll(list);
     }
 
 }

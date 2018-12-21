@@ -12,7 +12,7 @@ public class Group {
     private final String name;
 
     public Group(String name) {
-        id= UUID.randomUUID().toString();
+        id = UUID.randomUUID().toString();
         this.name = name;
     }
 

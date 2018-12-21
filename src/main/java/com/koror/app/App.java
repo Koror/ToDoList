@@ -19,13 +19,13 @@ public class App {
         final Scanner scanner = new Scanner(System.in);
 
         while (true) {
-            System.out.println("Action: AddGroup ReadAll AddTask CompleteTask Clear DeleteTask DeleteGroup Exit");
+            System.out.println("Action: AddGroup ReadAll AddTask CompleteTask Clear DeleteTask DeleteGroup UpdateTask Exit");
             switch (scanner.nextLine()) {
                 case "AddGroup":
                     taskManager.addGroup();
                     break;
                 case "ReadAll":
-                    taskManager.readAll();
+                    taskManager.readAll(taskManager.getGroupList());
                     break;
                 case "AddTask":
                     taskManager.addTask();
@@ -41,6 +41,9 @@ public class App {
                     break;
                 case "DeleteGroup":
                     taskManager.deleteGroup();
+                    break;
+                case "UpdateTask":
+                    taskManager.updateTask();
                     break;
                 case "Test":
                     testWriting();

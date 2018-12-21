@@ -4,21 +4,19 @@ import com.koror.app.entity.Group;
 
 import java.util.ArrayList;
 
-public abstract class Manager {
+public interface Manager {
 
-    public abstract void addGroup();
+    void addGroup();
 
-    public abstract void addTask();
+    void addTask();
 
-    public abstract void completeTask();
+    void completeTask();
 
-    public abstract void clear();
+    void deleteTask();
 
-    public abstract void  deleteTask();
+    void deleteGroup();
 
-    public  abstract void deleteGroup();
+    void updateTask();
 
-    public abstract void readAll();
-
-    public abstract ArrayList<Group> getGroupList();
+    void readAll(ArrayList<Group> list);
 }
