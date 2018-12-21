@@ -20,11 +20,11 @@
 * App - Основной класс 
 
 *Сборка проекта*
-'''bash
+```bash
  mvn clean install
-'''
+```
  
 *Запуск*
-'''bash
+```bash
  java -jar ./target/my-app-1.0-SNAPSHOT.jar
-'''
+```
