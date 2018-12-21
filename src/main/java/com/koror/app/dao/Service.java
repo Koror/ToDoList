@@ -1,9 +1,5 @@
 package com.koror.app.dao;
 
-import com.koror.app.entity.Group;
-
-import java.util.List;
-
 public abstract class Service {
 
     public abstract void addGroup();

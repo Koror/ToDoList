@@ -25,8 +25,7 @@ public class GroupManager {
         }
     }
 
-    public void updateGroup(int indexGroup, String name)
-    {
+    public void updateGroup(int indexGroup, String name) {
         groupList.get(indexGroup).changeName(name);
     }
 }

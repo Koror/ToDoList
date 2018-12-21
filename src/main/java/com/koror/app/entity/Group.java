@@ -6,7 +6,7 @@ import java.util.UUID;
 
 public class Group {
 
-    private final String id = UUID.randomUUID().toString();;
+    private final String id = UUID.randomUUID().toString();
 
     private final List<Task> taskList = new ArrayList<>();
 
@@ -20,8 +20,7 @@ public class Group {
         return taskList;
     }
 
-    public void changeName(String newName)
-    {
+    public void changeName(String newName) {
         name = newName;
     }
 

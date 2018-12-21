@@ -49,12 +49,12 @@ public class CommandLineGUI {
         indexGroup = Integer.parseInt(scanner.nextLine());
     }
 
-    public void updateGroup()
-    {
+    public void updateGroup() {
         System.out.println("Input index group and name");
         indexGroup = Integer.parseInt(scanner.nextLine());
         nameGroup = scanner.nextLine();
     }
+
     public void updateTask() {
         System.out.println("Input index group | index task | task name | priority{LOW MEDIUM HIGH}");
         indexGroup = Integer.parseInt(scanner.nextLine());
