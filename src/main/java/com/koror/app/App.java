@@ -15,7 +15,6 @@ public class App {
     }
 
     private static void start() {
-
         final Scanner scanner = new Scanner(System.in);
 
         while (true) {

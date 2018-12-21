@@ -1,13 +1,14 @@
 package com.koror.app.entity;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 public class Group {
 
     private String id;
 
-    private final ArrayList<Task> taskList = new ArrayList<>();
+    private final List<Task> taskList = new ArrayList<>();
 
     private final String name;
 
@@ -16,7 +17,7 @@ public class Group {
         this.name = name;
     }
 
-    public ArrayList<Task> getTaskList() {
+    public List<Task> getTaskList() {
         return taskList;
     }
 

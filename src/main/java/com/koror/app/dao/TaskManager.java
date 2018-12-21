@@ -1,21 +1,22 @@
 package com.koror.app.dao;
 
-import com.koror.app.GUI.GUICommandLine;
+import com.koror.app.gui123.CommandLineGUI;
 import com.koror.app.entity.Group;
 import com.koror.app.entity.Task;
 
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.List;
 
 public class TaskManager implements Manager {
 
-    private ArrayList<Group> groupList = new ArrayList<>();
+    private List<Group> groupList = new ArrayList<>();
 
-    public ArrayList<Group> getGroupList() {
+    public List<Group> getGroupList() {
         return groupList;
     }
 
-    GUICommandLine gui = new GUICommandLine();
+    CommandLineGUI gui = new CommandLineGUI();
 
     public void addGroup() {
         gui.addGroup();
@@ -24,17 +25,25 @@ public class TaskManager implements Manager {
 
     public void addTask() {
         gui.addTask();
-        final Group group = groupList.get(gui.getIndexGroup());
-        group.getTaskList().add(new Task(gui.getNameTask(), gui.getPriority()));
-        groupList.set(gui.getIndexGroup(), group);
+        try {
+            final Group group = groupList.get(gui.getIndexGroup());
+            group.getTaskList().add(new Task(gui.getNameTask(), gui.getPriority()));
+            groupList.set(gui.getIndexGroup(), group);
+        } catch (IndexOutOfBoundsException exception) {
+            System.out.println("Wrong index");
+        }
     }
 
     public void completeTask() {
         gui.completeTask();
-        final Group group = groupList.get(gui.getIndexGroup());
-        final Task task = group.getTaskList().get(gui.getIndexTask());
-        task.complete();
-        group.getTaskList().set(gui.getIndexTask(), task);
+        try {
+            final Group group = groupList.get(gui.getIndexGroup());
+            final Task task = group.getTaskList().get(gui.getIndexTask());
+            task.complete();
+            group.getTaskList().set(gui.getIndexTask(), task);
+        } catch (IndexOutOfBoundsException exception) {
+            System.out.println("Wrong index");
+        }
     }
 
     public void clear() {
@@ -49,24 +58,36 @@ public class TaskManager implements Manager {
 
     public void deleteTask() {
         gui.deleteTask();
-        final Group group = groupList.get(gui.getIndexGroup());
-        group.getTaskList().remove(gui.getIndexTask());
+        try {
+            final Group group = groupList.get(gui.getIndexGroup());
+            group.getTaskList().remove(gui.getIndexTask());
+        } catch (IndexOutOfBoundsException exception) {
+            System.out.println("Wrong index");
+        }
     }
 
     public void deleteGroup() {
         gui.deleteGroup();
-        groupList.remove(gui.getIndexGroup());
+        try {
+            groupList.remove(gui.getIndexGroup());
+        } catch (IndexOutOfBoundsException exception) {
+            System.out.println("Wrong index");
+        }
     }
 
     public void updateTask() {
         gui.updateTask();
-        final Group group = groupList.get(gui.getIndexGroup());
-        group.getTaskList().set(gui.getIndexTask(), new Task(gui.getNameTask(), gui.getPriority()));
-        groupList.set(gui.getIndexGroup(), group);
+        try {
+            final Group group = groupList.get(gui.getIndexGroup());
+            group.getTaskList().set(gui.getIndexTask(), new Task(gui.getNameTask(), gui.getPriority()));
+            groupList.set(gui.getIndexGroup(), group);
+        } catch (IndexOutOfBoundsException exception) {
+            System.out.println("Wrong index");
+        }
     }
 
     @Override
-    public void readAll(ArrayList<Group> list) {
+    public void readAll(List<Group> list) {
         gui.readAll(list);
     }
 

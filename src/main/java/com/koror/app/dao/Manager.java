@@ -2,7 +2,7 @@ package com.koror.app.dao;
 
 import com.koror.app.entity.Group;
 
-import java.util.ArrayList;
+import java.util.List;
 
 public interface Manager {
 
@@ -18,5 +18,5 @@ public interface Manager {
 
     void updateTask();
 
-    void readAll(ArrayList<Group> list);
+    void readAll(List<Group> list);
 }

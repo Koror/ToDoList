@@ -4,7 +4,7 @@ import java.util.UUID;
 
 public class Task {
 
-    private String id;
+    private final String id = UUID.randomUUID().toString();
 
     private final String priority;
 
@@ -13,7 +13,6 @@ public class Task {
     private boolean complete = false;
 
     public Task(String text, String priority) {
-        id = UUID.randomUUID().toString();
         this.text = text;
         this.priority = priority;
     }
