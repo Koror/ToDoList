@@ -1,6 +1,7 @@
 package com.koror.app.service;
 
 import com.koror.app.gui.CommandLineGUI;
+import com.koror.app.gui.InterfaceGUI;
 
 import java.util.Scanner;
 
@@ -10,7 +11,7 @@ public class ToDoListService {
 
     private final TaskService taskService = new TaskService(groupService.getGroupList());
 
-    public static final CommandLineGUI gui = new CommandLineGUI();
+    public static final InterfaceGUI gui = new CommandLineGUI();
 
     public void start() {
         final Scanner scanner = new Scanner(System.in);

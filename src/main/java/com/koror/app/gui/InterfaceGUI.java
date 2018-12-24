@@ -35,4 +35,5 @@ public interface InterfaceGUI {
     String getNameGroup();
 
     String getPriority();
+
 }
