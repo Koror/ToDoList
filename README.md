@@ -15,9 +15,9 @@
   * InterfaceGUI - графический интерфейс
   * CommandLineGUI - реализация графического интерфейса в командной строке
 * [service]
-  *GroupService - сервис групп
-  *TaskService - сервис задач
-  *ToDoListService - объединяющий сервис приложения
+  * GroupService - сервис групп
+  * TaskService - сервис задач
+  * ToDoListService - объединяющий сервис приложения
 * App - основной класс 
 
 *Сборка проекта*
