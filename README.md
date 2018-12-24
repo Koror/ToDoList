@@ -5,19 +5,19 @@
 * Maven (3.6.0)
 
 *Структура прокета*
-* [manager]
-  * GroupManager - класс для созднания и управления группами
-  * TaskManager - класс для создания и управления задачами
+* [repository]
+  * GroupRepository - класс для созднания и управления группами
+  * TaskRepository - класс для создания и управления задачами
 * [entity]
   * Group - группа
   * Task - задача
-* [gui]
+* [controller]
+  * Bootstrap
   * InterfaceGUI - графический интерфейс
   * CommandLineGUI - реализация графического интерфейса в командной строке
 * [service]
   * GroupService - сервис групп
   * TaskService - сервис задач
-  * ToDoListService - объединяющий сервис приложения
 * App - основной класс 
 
 *Сборка проекта*

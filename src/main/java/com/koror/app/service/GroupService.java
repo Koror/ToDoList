@@ -1,40 +1,16 @@
 package com.koror.app.service;
 
-import com.koror.app.entity.Group;
-import com.koror.app.manager.GroupManager;
-
-import java.util.List;
-
-import static com.koror.app.service.ToDoListService.gui;
+import com.koror.app.repository.GroupRepository;
+import com.koror.app.repository.TaskRepository;
 
 public class GroupService {
 
-    private final GroupManager groupManager = new GroupManager();
+    private final TaskRepository taskRepository = new TaskRepository();
 
-    public void addGroup() {
-        gui.addGroup();
-        groupManager.addGroup(gui.getNameGroup());
+    private final GroupRepository groupRepository = new GroupRepository(taskRepository);
+
+    public GroupRepository getGroupRepository() {
+        return groupRepository;
     }
 
-    public void readAllGroup() {
-        gui.readAllGroup(getGroupList());
-    }
-
-    public void readGroup() {
-        gui.readGroup(getGroupList());
-    }
-
-    public void updateGroup() {
-        gui.updateGroup();
-        groupManager.updateGroup(gui.getIndexGroup(), gui.getNameGroup());
-    }
-
-    public void deleteGroup() {
-        gui.deleteGroup();
-        groupManager.deleteGroup(gui.getIndexGroup());
-    }
-
-    public List<Group> getGroupList() {
-        return groupManager.getGroupList();
-    }
 }
