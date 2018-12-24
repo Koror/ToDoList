@@ -26,7 +26,7 @@ public class Group {
 
     @Override
     public String toString() {
-        return name;
+        return name + " id: " + id;
     }
 
 }

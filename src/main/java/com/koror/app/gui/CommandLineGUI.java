@@ -6,7 +6,7 @@ import com.koror.app.entity.Task;
 import java.util.List;
 import java.util.Scanner;
 
-public class CommandLineGUI {
+public class CommandLineGUI implements InterfaceGUI {
 
     private final Scanner scanner = new Scanner(System.in);
 
@@ -20,11 +20,13 @@ public class CommandLineGUI {
 
     private String priority;
 
+    @Override
     public void addGroup() {
         System.out.println("Input name group");
         nameGroup = scanner.nextLine();
     }
 
+    @Override
     public void addTask() {
         System.out.println("Input index group | task name | priority{LOW MEDIUM HIGH}");
         indexGroup = Integer.parseInt(scanner.nextLine());
@@ -32,23 +34,27 @@ public class CommandLineGUI {
         priority = scanner.nextLine();
     }
 
+    @Override
     public void completeTask() {
         System.out.println("Input index group and task");
         indexGroup = Integer.parseInt(scanner.nextLine());
         indexTask = Integer.parseInt(scanner.nextLine());
     }
 
+    @Override
     public void deleteTask() {
         System.out.println("Input index group and task");
         indexGroup = Integer.parseInt(scanner.nextLine());
         indexTask = Integer.parseInt(scanner.nextLine());
     }
 
+    @Override
     public void deleteGroup() {
         System.out.println("Input index group");
         indexGroup = Integer.parseInt(scanner.nextLine());
     }
 
+    @Override
     public void updateGroup() {
         System.out.println("Input index group and name");
         indexGroup = Integer.parseInt(scanner.nextLine());
@@ -63,6 +69,7 @@ public class CommandLineGUI {
         priority = scanner.nextLine();
     }
 
+    @Override
     public void readAll(List<Group> groupList) {
         int indexGroup = 0;
         for (Group group : groupList) {
@@ -76,6 +83,7 @@ public class CommandLineGUI {
         }
     }
 
+    @Override
     public void readAllGroup(List<Group> groupList) {
         int indexGroup = 0;
         for (Group group : groupList) {
@@ -84,6 +92,7 @@ public class CommandLineGUI {
         }
     }
 
+    @Override
     public void readGroup(List<Group> groupList) {
         System.out.println("Input group index");
         int indexGroup = Integer.parseInt(scanner.nextLine());
@@ -95,22 +104,27 @@ public class CommandLineGUI {
         }
     }
 
+    @Override
     public int getIndexGroup() {
         return indexGroup;
     }
 
+    @Override
     public int getIndexTask() {
         return indexTask;
     }
 
+    @Override
     public String getNameTask() {
         return nameTask;
     }
 
+    @Override
     public String getNameGroup() {
         return nameGroup;
     }
 
+    @Override
     public String getPriority() {
         return priority;
     }

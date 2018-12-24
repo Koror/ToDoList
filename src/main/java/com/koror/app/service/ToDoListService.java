@@ -16,7 +16,7 @@ public class ToDoListService {
         final Scanner scanner = new Scanner(System.in);
 
         while (true) {
-            System.out.println("Action: AddGroup ReadAllTask ReadAllGroup ReadGroup AddTask CompleteTask ClearTask DeleteTask DeleteGroup UpdateGroup UpdateTask Exit");
+            System.out.println("Action: AddGroup ReadGroup ReadAllGroup AddTask CompleteTask ClearTask DeleteTask DeleteGroup UpdateGroup UpdateTask Exit");
             switch (scanner.nextLine()) {
                 case "AddGroup":
                     groupService.addGroup();

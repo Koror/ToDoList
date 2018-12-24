@@ -8,6 +8,7 @@ import java.util.List;
 import static com.koror.app.service.ToDoListService.gui;
 
 public class GroupService {
+
     private final GroupManager groupManager = new GroupManager();
 
     public void addGroup() {

@@ -6,18 +6,19 @@
 
 *Структура прокета*
 * [manager]
-  * GroupManager - интерфейс CRUD функций
-  * TaskManager - класс для создание и управления группами и задачами
+  * GroupManager - класс для созднания и управления группами
+  * TaskManager - класс для создания и управления задачами
 * [entity]
-  * Group - Группа
-  * Task - Задача
+  * Group - группа
+  * Task - задача
 * [gui]
+  * InterfaceGUI - графический интерфейс
   * CommandLineGUI - реализация графического интерфейса в командной строке
 * [service]
-  *GroupService
-  *TaskService
-  *ToDoListService
-* App - Основной класс 
+  *GroupService - сервис групп
+  *TaskService - сервис задач
+  *ToDoListService - объединяющий сервис приложения
+* App - основной класс 
 
 *Сборка проекта*
 ```bash
