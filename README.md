@@ -27,5 +27,5 @@
  
 *Запуск*
 ```bash
- java -jar ./target/my-app-1.0-SNAPSHOT.jar
+ java -jar ./target/ToDoList-1.0-SNAPSHOT.jar
 ```
