@@ -1,17 +1,41 @@
 package com.koror.app.controller;
 
+import com.koror.app.commander.*;
+import com.koror.app.repository.GroupRepository;
+import com.koror.app.repository.TaskRepository;
 import com.koror.app.service.GroupService;
 import com.koror.app.service.TaskService;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Scanner;
 
 public class Bootstrap {
 
-    private final GroupService groupService = new GroupService();
+    private final GroupRepository groupRepository = new GroupRepository();
 
-    private final TaskService taskService = new TaskService();
+    private final TaskRepository taskRepository = new TaskRepository();
 
-    public final InterfaceGUI gui = new CommandLineGUI();
+    public final GroupService groupService = new GroupService(groupRepository, taskRepository);
+
+    public final TaskService taskService = new TaskService(taskRepository, groupRepository);
+
+    public final InterfaceGUI gui = new CommandLineGUI(taskService, groupService);
+
+    private final Map<String, AbstractCommand> commandMap = new HashMap<>();
+
+    private void register()
+    {
+        AbstractCommand command = new CommandAddGroup(this);
+        commandMap.put(command.command(),command);
+        command = new CommandAddTask(this);
+        commandMap.put(command.command(),command);
+        command = new CommandClearTask(this);
+        commandMap.put(command.command(),command);
+        command = new CommandCompleteTask(this);
+        commandMap.put(command.command(), command);
+        // дома продолжу
+    }
 
     public void start() {
         final Scanner scanner = new Scanner(System.in);
@@ -47,10 +71,10 @@ public class Bootstrap {
                     taskService.getTaskRepository().setGroupId(gui.AddGroupToTask(taskService.getTaskRepository().getTaskList(), groupService.getGroupRepository().getGroupList()));
                     break;
                 case "ReadTask":
-                    taskService.getTaskRepository().readAll();
+                    gui.readAllTask();
                     break;
                 case "ReadGroup":
-                    groupService.getGroupRepository().readAllGroup();
+                    gui.readAllGroup();
                     break;
                 case "Exit":
                     return;

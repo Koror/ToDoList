@@ -6,14 +6,23 @@ import java.util.UUID;
 
 public class Task {
 
-    private final String id = UUID.randomUUID().toString();
+    private String id = UUID.randomUUID().toString();
 
     private String groupId = null;
+
     private Priority priority;
 
     private String text;
 
     private boolean complete = false;
+
+    public Task() {
+        text = "Task Name";
+    }
+
+    public Task(String text) {
+        this.text = text;
+    }
 
     public Task(String text, Priority priority) {
         this.text = text;
@@ -26,11 +35,16 @@ public class Task {
         this.groupId = groupId;
     }
 
-    public boolean isComplete() {
+    public void update(String text, Priority priority) {
+        this.text = text;
+        this.priority = priority;
+    }
+
+    public boolean getComplete() {
         return complete;
     }
 
-    public void complete() {
+    public void setComplete() {
         complete = true;
     }
 
@@ -38,14 +52,8 @@ public class Task {
         return id;
     }
 
-    @Override
-    public String toString() {
-        return "Name:" + text + " Priority: " + priority + " Complete: " + complete + " Group: "+groupId + " Id: " + id;
-    }
-
-    public void update(String text, Priority priority) {
-        this.text = text;
-        this.priority = priority;
+    public void setId(String id) {
+        this.id = id;
     }
 
     public String getGroupId() {
@@ -55,4 +63,30 @@ public class Task {
     public void setGroupId(String groupId) {
         this.groupId = groupId;
     }
+
+    public void setComplete(boolean complete) {
+        this.complete = complete;
+    }
+
+    public Priority getPriority() {
+        return priority;
+    }
+
+    public void setPriority(Priority priority) {
+        this.priority = priority;
+    }
+
+    public String getText() {
+        return text;
+    }
+
+    public void setText(String text) {
+        this.text = text;
+    }
+
+    @Override
+    public String toString() {
+        return "Name:" + text + " Priority: " + priority + " Complete: " + complete + " Group: " + groupId + " Id: " + id;
+    }
+
 }

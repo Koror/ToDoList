@@ -23,4 +23,8 @@ public interface InterfaceGUI {
 
     Task updateTask(List<Task> taskList);
 
+    void readAllTask();
+
+    void readAllGroup();
+
 }

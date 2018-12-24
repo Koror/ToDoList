@@ -13,8 +13,7 @@ public class TaskRepository {
     }
 
     public void completeTask(Task task) {
-        taskMap.get(task.getId()).complete();
-
+        taskMap.get(task.getId()).setComplete();
     }
 
     public void deleteTask(String id) {
@@ -28,21 +27,13 @@ public class TaskRepository {
     public void clearTask() {
         Iterator<Task> taskIterator = taskMap.values().iterator();
         while (taskIterator.hasNext()) {
-            if (taskIterator.next().isComplete())
+            if (taskIterator.next().getComplete())
                 taskIterator.remove();
         }
     }
 
     public void setGroupId(Task task) {
         taskMap.put(task.getId(), task);
-    }
-
-    public void readAll() {
-        int index = 0;
-        for (Task task : taskMap.values()) {
-            System.out.println("   " + index + " [" + task.toString() + "]");
-            index++;
-        }
     }
 
     public List<Task> getTaskList() {

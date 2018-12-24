@@ -5,9 +5,14 @@ import com.koror.app.repository.TaskRepository;
 
 public class TaskService {
 
-    private final TaskRepository taskRepository = new TaskRepository();
+    private final TaskRepository taskRepository;
 
-    private final GroupRepository groupRepository = new GroupRepository(taskRepository);
+    private final GroupRepository groupRepository;
+
+    public TaskService(TaskRepository taskRepository, GroupRepository groupRepository) {
+        this.taskRepository = taskRepository;
+        this.groupRepository = groupRepository;
+    }
 
     public TaskRepository getTaskRepository() {
         return taskRepository;

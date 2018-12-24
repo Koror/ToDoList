@@ -1,7 +1,6 @@
 package com.koror.app.repository;
 
 import com.koror.app.entity.Group;
-import com.koror.app.entity.Task;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -11,16 +10,6 @@ import java.util.Map;
 public class GroupRepository {
 
     private final Map<String, Group> groupMap = new HashMap<>();
-
-    TaskRepository taskRepository;
-
-    public GroupRepository(TaskRepository taskRepository) {
-        this.taskRepository = taskRepository;
-    }
-
-    public Map<String, Group> getGroupMap() {
-        return groupMap;
-    }
 
     public void addGroup(Group group) {
         groupMap.put(group.getId(), group);
@@ -38,18 +27,8 @@ public class GroupRepository {
         }
     }
 
-    public void readAllGroup() {
-        int indexGroup = 0;
-        List<Task> taskList = taskRepository.getTaskList();
-        for (Group group : groupMap.values()) {
-            System.out.println(indexGroup + " [" + group.toString() + "]");
-            for (Task task : taskList) {
-                if (task.getGroupId().equals(group.getId())) {
-                    System.out.println("  " + task.toString());
-                }
-            }
-            indexGroup++;
-        }
+    public Map<String, Group> getGroupMap() {
+        return groupMap;
     }
 
     public List<Group> getGroupList() {

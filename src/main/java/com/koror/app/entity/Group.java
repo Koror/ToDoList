@@ -4,20 +4,32 @@ import java.util.UUID;
 
 public class Group {
 
-    private final String id = UUID.randomUUID().toString();
+    private String id = UUID.randomUUID().toString();
 
     private String name;
+
+    public Group() {
+        this.name = "Group Name";
+    }
 
     public Group(String name) {
         this.name = name;
     }
 
-    public void changeName(String newName) {
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String newName) {
         name = newName;
     }
 
     public String getId() {
         return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
     }
 
     @Override

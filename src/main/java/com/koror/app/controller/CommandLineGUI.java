@@ -3,6 +3,8 @@ package com.koror.app.controller;
 import com.koror.app.entity.Group;
 import com.koror.app.entity.Task;
 import com.koror.app.enumeration.Priority;
+import com.koror.app.service.GroupService;
+import com.koror.app.service.TaskService;
 
 import java.util.List;
 import java.util.Scanner;
@@ -10,6 +12,16 @@ import java.util.Scanner;
 public class CommandLineGUI implements InterfaceGUI {
 
     private final Scanner scanner = new Scanner(System.in);
+
+    private final GroupService groupService;
+
+    private final TaskService taskService;
+
+    public CommandLineGUI(TaskService taskService, GroupService groupService)
+    {
+        this.taskService = taskService;
+        this.groupService = groupService;
+    }
 
     @Override
     public Group addGroup() {
@@ -28,7 +40,7 @@ public class CommandLineGUI implements InterfaceGUI {
         System.out.println(taskList);
         System.out.println("Input index task");
         Task task = taskList.get(Integer.parseInt(scanner.nextLine()));
-        task.complete();
+        task.setComplete();
         return task;
     }
 
@@ -36,7 +48,6 @@ public class CommandLineGUI implements InterfaceGUI {
         System.out.println(taskList);
         System.out.println("Input index task");
         Task task = taskList.get(Integer.parseInt(scanner.nextLine()));
-
         System.out.println(groupList);
         System.out.println("Input index group");
         Group group = groupList.get(Integer.parseInt(scanner.nextLine()));
@@ -62,7 +73,7 @@ public class CommandLineGUI implements InterfaceGUI {
     public Group updateGroup(List<Group> groupList) {
         System.out.println("Input index group and name");
         Group group = groupList.get(Integer.parseInt(scanner.nextLine()));
-        group.changeName(scanner.nextLine());
+        group.setName(scanner.nextLine());
         return group;
     }
 
@@ -72,6 +83,28 @@ public class CommandLineGUI implements InterfaceGUI {
         Task task = taskList.get(Integer.parseInt(scanner.nextLine()));
         task.update(scanner.nextLine(), Priority.valueOf(scanner.nextLine()));
         return task;
+    }
+
+    public void readAllGroup() {
+        int indexGroup = 0;
+        List<Task> taskList = taskService.getTaskRepository().getTaskList();
+        for (Group group : taskService.getGroupRepository().getGroupMap().values()) {
+            System.out.println(indexGroup + " [" + group.toString() + "]");
+            for (Task task : taskList) {
+                if (task.getGroupId().equals(group.getId())) {
+                    System.out.println("  " + task.toString());
+                }
+            }
+            indexGroup++;
+        }
+    }
+
+    public void readAllTask() {
+        int index = 0;
+        for (Task task : taskService.getTaskRepository().getTaskMap().values()) {
+            System.out.println("   " + index + " [" + task.toString() + "]");
+            index++;
+        }
     }
 
 }
