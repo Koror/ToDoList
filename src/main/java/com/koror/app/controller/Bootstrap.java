@@ -1,6 +1,6 @@
 package com.koror.app.controller;
 
-import com.koror.app.commander.*;
+import com.koror.app.command.*;
 import com.koror.app.repository.GroupRepository;
 import com.koror.app.repository.TaskRepository;
 import com.koror.app.service.GroupService;

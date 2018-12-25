@@ -1,4 +1,4 @@
-package com.koror.app.commander;
+package com.koror.app.command;
 
 import com.koror.app.controller.Bootstrap;
 
