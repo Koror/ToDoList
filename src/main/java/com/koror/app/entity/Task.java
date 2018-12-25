@@ -1,6 +1,6 @@
 package com.koror.app.entity;
 
-import com.koror.app.enumeration.Priority;
+import com.koror.app.enumerated.Priority;
 
 import java.util.UUID;
 

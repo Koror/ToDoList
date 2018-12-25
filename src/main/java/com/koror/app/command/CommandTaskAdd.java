@@ -2,7 +2,7 @@ package com.koror.app.command;
 
 import com.koror.app.controller.Bootstrap;
 import com.koror.app.entity.Task;
-import com.koror.app.enumeration.Priority;
+import com.koror.app.enumerated.Priority;
 
 import java.util.Scanner;
 

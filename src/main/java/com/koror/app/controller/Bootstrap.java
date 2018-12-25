@@ -10,7 +10,7 @@ import java.util.Map;
 import java.util.Scanner;
 
 public class Bootstrap {
-    
+
     private final GroupRepository groupRepository = new GroupRepository();
 
     private final TaskRepository taskRepository = new TaskRepository();
