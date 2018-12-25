@@ -45,7 +45,7 @@ public class CommandLineGUI implements InterfaceGUI {
     public Task completeTask(List<Task> taskList) {
         System.out.println(taskList);
         System.out.println("Input index task");
-        Task task = taskList.get(Integer.parseInt(scanner.nextLine()));
+        final Task task = taskList.get(Integer.parseInt(scanner.nextLine()));
         task.setComplete();
         return task;
     }
@@ -53,10 +53,10 @@ public class CommandLineGUI implements InterfaceGUI {
     public Task AddGroupToTask(List<Task> taskList, List<Group> groupList) {
         System.out.println(taskList);
         System.out.println("Input index task");
-        Task task = taskList.get(Integer.parseInt(scanner.nextLine()));
+        final Task task = taskList.get(Integer.parseInt(scanner.nextLine()));
         System.out.println(groupList);
         System.out.println("Input index group");
-        Group group = groupList.get(Integer.parseInt(scanner.nextLine()));
+        final Group group = groupList.get(Integer.parseInt(scanner.nextLine()));
         task.setGroupId(group.getId());
         return task;
     }
@@ -78,7 +78,7 @@ public class CommandLineGUI implements InterfaceGUI {
     @Override
     public Group updateGroup(List<Group> groupList) {
         System.out.println("Input index group and name");
-        Group group = groupList.get(Integer.parseInt(scanner.nextLine()));
+        final Group group = groupList.get(Integer.parseInt(scanner.nextLine()));
         group.setName(scanner.nextLine());
         return group;
     }
@@ -86,14 +86,14 @@ public class CommandLineGUI implements InterfaceGUI {
     @Override
     public Task updateTask(List<Task> taskList) {
         System.out.println("index task, task name and priority{LOW MEDIUM HIGH}");
-        Task task = taskList.get(Integer.parseInt(scanner.nextLine()));
+        final Task task = taskList.get(Integer.parseInt(scanner.nextLine()));
         task.update(scanner.nextLine(), Priority.valueOf(scanner.nextLine()));
         return task;
     }
 
     public void readAllGroup() {
         int indexGroup = 0;
-        List<Task> taskList = taskService.getTaskRepository().getTaskList();
+        final List<Task> taskList = taskService.getTaskRepository().getTaskList();
         for (Group group : taskService.getGroupRepository().getGroupMap().values()) {
             System.out.println(indexGroup + " [" + group.toString() + "]");
             for (Task task : taskList) {
