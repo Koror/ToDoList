@@ -22,4 +22,5 @@ public class CommandUpdateGroup extends AbstractCommand {
     public void description() {
         System.out.println("Update group");
     }
+
 }

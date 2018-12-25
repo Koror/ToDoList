@@ -22,4 +22,5 @@ public class CommandDeleteTask extends AbstractCommand {
     public void description() {
         System.out.println("Delete task");
     }
+
 }

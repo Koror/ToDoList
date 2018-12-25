@@ -22,4 +22,5 @@ public class CommandAddGroupToTask extends AbstractCommand {
     public void description() {
         System.out.println("Add group to existing task");
     }
+
 }

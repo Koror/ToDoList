@@ -22,4 +22,5 @@ public class CommandUpdateTask extends AbstractCommand {
     public void description() {
         System.out.println("Update task");
     }
+
 }

@@ -17,8 +17,7 @@ public class CommandLineGUI implements InterfaceGUI {
 
     private final TaskService taskService;
 
-    public CommandLineGUI(TaskService taskService, GroupService groupService)
-    {
+    public CommandLineGUI(TaskService taskService, GroupService groupService) {
         this.taskService = taskService;
         this.groupService = groupService;
     }
@@ -91,7 +90,7 @@ public class CommandLineGUI implements InterfaceGUI {
         for (Group group : taskService.getGroupRepository().getGroupMap().values()) {
             System.out.println(indexGroup + " [" + group.toString() + "]");
             for (Task task : taskList) {
-                if (task.getGroupId()!=null&&task.getGroupId().equals(group.getId())) {
+                if (task.getGroupId() != null && task.getGroupId().equals(group.getId())) {
                     System.out.println("  " + task.toString());
                 }
             }

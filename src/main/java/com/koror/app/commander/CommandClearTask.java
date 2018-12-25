@@ -22,4 +22,5 @@ public class CommandClearTask extends AbstractCommand {
     public void description() {
         System.out.println("Clear task");
     }
+
 }

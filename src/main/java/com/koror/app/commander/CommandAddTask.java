@@ -22,4 +22,5 @@ public class CommandAddTask extends AbstractCommand {
     public void description() {
         System.out.println("Add new task");
     }
+
 }

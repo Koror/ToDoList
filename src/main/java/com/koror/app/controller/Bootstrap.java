@@ -51,7 +51,6 @@ public class Bootstrap {
 
     public void start() {
         final Scanner scanner = new Scanner(System.in);
-
         register();
         String action;
         do {

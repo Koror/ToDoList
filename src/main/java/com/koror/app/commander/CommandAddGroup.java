@@ -22,4 +22,5 @@ public class CommandAddGroup extends AbstractCommand {
     public void description() {
         System.out.println("Add new group");
     }
+
 }

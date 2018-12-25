@@ -15,4 +15,5 @@ public abstract class AbstractCommand {
     public abstract String command();
 
     public abstract void description();
+
 }

@@ -22,4 +22,5 @@ public class CommandReadTask extends AbstractCommand {
     public void description() {
         System.out.println("Read task");
     }
+
 }
