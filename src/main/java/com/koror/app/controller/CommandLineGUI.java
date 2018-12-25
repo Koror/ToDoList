@@ -31,7 +31,14 @@ public class CommandLineGUI implements InterfaceGUI {
     @Override
     public Task addTask() {
         System.out.println("Input task name and priority{LOW MEDIUM HIGH}");
-        return new Task(scanner.nextLine(), Priority.valueOf(scanner.nextLine()));
+        String name = scanner.nextLine();
+        String priority = scanner.nextLine();
+        try {
+            return new Task(name, Priority.valueOf(priority));
+        } catch (Exception e) {
+            return new Task(name);
+        }
+
     }
 
     @Override
