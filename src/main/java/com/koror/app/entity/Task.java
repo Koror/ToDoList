@@ -35,11 +35,6 @@ public class Task {
         this.groupId = groupId;
     }
 
-    public void update(String text, Priority priority) {
-        this.text = text;
-        this.priority = priority;
-    }
-
     public boolean getComplete() {
         return complete;
     }
@@ -64,10 +59,6 @@ public class Task {
         this.groupId = groupId;
     }
 
-    public void setComplete(boolean complete) {
-        this.complete = complete;
-    }
-
     public Priority getPriority() {
         return priority;
     }
@@ -86,7 +77,7 @@ public class Task {
 
     @Override
     public String toString() {
-        return "Name:" + text + " Priority: " + priority + " Complete: " + complete + " Group: " + groupId + " Id: " + id;
+        return "Name:" + text  + " Complete: " + complete;
     }
 
 }
