@@ -4,7 +4,7 @@ public final class TaskClearCommand extends AbstractCommand {
 
     @Override
     public void execute() {
-        bootstrap.getTaskRepository().clearTask();
+        bootstrap.getTaskService().clearTask();
     }
 
     @Override

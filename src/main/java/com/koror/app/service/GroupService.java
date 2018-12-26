@@ -1,7 +1,11 @@
 package com.koror.app.service;
 
+import com.koror.app.entity.Group;
 import com.koror.app.repository.GroupRepository;
 import com.koror.app.repository.TaskRepository;
+
+import java.util.List;
+import java.util.Map;
 
 public class GroupService {
 
@@ -20,6 +24,26 @@ public class GroupService {
 
     public GroupRepository getGroupRepository() {
         return groupRepository;
+    }
+
+    public void addGroup(Group group) {
+        groupRepository.addGroup(group);
+    }
+
+    public void updateGroup(Group group) {
+        groupRepository.updateGroup(group);
+    }
+
+    public void deleteGroup(String id) {
+        groupRepository.deleteGroup(id);
+    }
+
+    public Map<String, Group> getGroupMap() {
+        return groupRepository.getGroupMap();
+    }
+
+    public List<Group> getGroupList() {
+        return groupRepository.getGroupList();
     }
 
 }

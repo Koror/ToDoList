@@ -7,8 +7,10 @@ public final class TaskReadCommand extends AbstractCommand {
     @Override
     public void execute() {
         int index = 0;
-        for (Task task : bootstrap.getTaskRepository().getTaskMap().values()) {
-            System.out.println(index + " [" + "Name:" + task.getText() + " Priority: " + task.getPriority() + " Complete: " + task.getComplete() + " Id: " + task.getId() + " Group: " + task.getGroupId() + "]");
+        for (Task task : bootstrap.getTaskService().getTaskMap().values()) {
+            System.out.println(index + " [" + "Name:" + task.getText() + " Priority: "
+                    + task.getPriority() + " Complete: " + task.getComplete() + " Id: "
+                    + task.getId() + " Group: " + task.getGroupId() + "]");
             index++;
         }
     }

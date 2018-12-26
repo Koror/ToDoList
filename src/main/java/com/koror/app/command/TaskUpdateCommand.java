@@ -4,24 +4,17 @@ import com.koror.app.entity.Task;
 import com.koror.app.enumerated.Priority;
 
 import java.util.List;
-import java.util.Scanner;
 
 public final class TaskUpdateCommand extends AbstractCommand {
 
     @Override
     public void execute() {
-        try {
-            final List<Task> taskList = bootstrap.getTaskRepository().getTaskList();
-            System.out.println("index task, task name and priority{LOW MEDIUM HIGH}");
-            final Task task = taskList.get(Integer.parseInt(new Scanner(System.in).nextLine()));
-            task.setText(new Scanner(System.in).nextLine());
-            task.setPriority(Priority.valueOf(new Scanner(System.in).nextLine()));
-            bootstrap.getTaskRepository().updateTask(task);
-        } catch (NumberFormatException e) {
-            System.out.println("Wrong input");
-        } catch (IndexOutOfBoundsException e) {
-            System.out.println("Wrong index");
-        }
+        final List<Task> taskList = bootstrap.getTaskService().getTaskList();
+        System.out.println("index task, task name and priority{LOW MEDIUM HIGH}");
+        final Task task = taskList.get(bootstrap.nextInt());
+        task.setText(bootstrap.nextLine());
+        task.setPriority(Priority.valueOf(bootstrap.nextLine()));
+        bootstrap.getTaskService().updateTask(task);
     }
 
     @Override

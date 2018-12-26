@@ -18,7 +18,7 @@
   </properties>
 
   <build>
-        <finalName>${project.name}-testing</finalName>
+        <finalName>to-do-list</finalName>
   </build>
   <dependencies>
     <dependency>

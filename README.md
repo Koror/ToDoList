@@ -40,5 +40,5 @@
  
 *Запуск*
 ```bash
- java -jar ./target/ToDoList-1.0-SNAPSHOT.jar
+ java -jar ./to-do-list.jar
 ```
