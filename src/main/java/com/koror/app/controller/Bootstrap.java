@@ -4,12 +4,11 @@ import com.koror.app.command.*;
 import com.koror.app.repository.GroupRepository;
 import com.koror.app.repository.TaskRepository;
 
-import java.lang.reflect.Constructor;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Scanner;
 
-public class Bootstrap {
+public final class Bootstrap {
 
     private final GroupRepository groupRepository = new GroupRepository();
 
@@ -17,37 +16,33 @@ public class Bootstrap {
 
     private final Map<String, AbstractCommand> commandMap = new HashMap<>();
 
+    private final Class[] classes = {GroupAddCommand.class, GroupDeleteCommand.class, GroupReadCommand.class, GroupUpdateCommand.class,
+            TaskAddCommand.class, TaskClearCommand.class, TaskCompleteCommand.class, TaskDeleteCommand.class,
+            TaskReadCommand.class, TaskToGroupCommand.class, TaskUpdateCommand.class};
+
     private void registrar(final AbstractCommand command) {
         commandMap.put(command.command(), command);
     }
 
-    private void init() {
-//        try {
-//            for (int i = 0; i < className.length; i++) {
-//                Class<?> c = Class.forName(className[i]);
-//                Constructor<?> cons = c.getConstructor(Bootstrap.class);
-//                Object o = cons.newInstance(this);
-//                registrar((AbstractCommand) o);
-//            }
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//        }
-        registrar(new CommandGroupAdd(this));
-        registrar(new CommandTaskAdd(this));
-        registrar(new CommandTaskClear(this));
-        registrar(new CommandTaskComplete(this));
-        registrar(new CommandTaskToGroup(this));
-        registrar(new CommandGroupDelete(this));
-        registrar(new CommandTaskDelete(this));
-        registrar(new CommandGroupRead(this));
-        registrar(new CommandTaskRead(this));
-        registrar(new CommandGroupUpdate(this));
-        registrar(new CommandTaskUpdate(this));
+    private void init(Class... classes) {
+        try {
+            for (Class<?> c : classes) {
+                if (!AbstractCommand.class.isAssignableFrom(c)) {
+                    System.out.println("Class is not command: " + c.getName());
+                    return;
+                }
+                AbstractCommand command = (AbstractCommand) c.newInstance();
+                command.setBootstrap(this);
+                registrar(command);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     public void start() {
         final Scanner scanner = new Scanner(System.in);
-        init();
+        init(classes);
         String action;
         do {
             System.out.println("Action: AddGroup ReadGroup  AddTask ReadTask AddGroupToTask CompleteTask ClearTask DeleteTask DeleteGroup UpdateGroup UpdateTask Exit");

@@ -1,13 +1,8 @@
 package com.koror.app.command;
 
-import com.koror.app.controller.Bootstrap;
 import com.koror.app.entity.Task;
 
-public class CommandTaskRead extends AbstractCommand {
-
-    public CommandTaskRead(Bootstrap bootstrap) {
-        super(bootstrap);
-    }
+public final class TaskReadCommand extends AbstractCommand {
 
     @Override
     public void execute() {

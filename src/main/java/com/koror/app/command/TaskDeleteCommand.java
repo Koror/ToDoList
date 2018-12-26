@@ -1,16 +1,11 @@
 package com.koror.app.command;
 
-import com.koror.app.controller.Bootstrap;
 import com.koror.app.entity.Task;
 
 import java.util.List;
 import java.util.Scanner;
 
-public class CommandTaskComplete extends AbstractCommand {
-
-    public CommandTaskComplete(Bootstrap bootstrap) {
-        super(bootstrap);
-    }
+public final class TaskDeleteCommand extends AbstractCommand {
 
     @Override
     public void execute() {
@@ -18,9 +13,7 @@ public class CommandTaskComplete extends AbstractCommand {
             final List<Task> taskList = bootstrap.getTaskRepository().getTaskList();
             System.out.println(taskList);
             System.out.println("Input index task");
-            final Task task = taskList.get(Integer.parseInt(new Scanner(System.in).nextLine()));
-            task.setComplete();
-            bootstrap.getTaskRepository().completeTask(task);
+            bootstrap.getTaskRepository().deleteTask(taskList.get(Integer.parseInt(new Scanner(System.in).nextLine())).getId());
         } catch (NumberFormatException e) {
             System.out.println("Wrong input");
         } catch (IndexOutOfBoundsException e) {
@@ -30,12 +23,12 @@ public class CommandTaskComplete extends AbstractCommand {
 
     @Override
     public String command() {
-        return "CompleteTask";
+        return "DeleteTask";
     }
 
     @Override
     public String description() {
-        return "Complete task";
+        return "Delete task";
     }
 
 }

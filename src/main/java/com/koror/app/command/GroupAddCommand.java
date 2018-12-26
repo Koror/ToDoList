@@ -1,15 +1,10 @@
 package com.koror.app.command;
 
-import com.koror.app.controller.Bootstrap;
 import com.koror.app.entity.Group;
 
 import java.util.Scanner;
 
-public class CommandGroupAdd extends AbstractCommand {
-
-    public CommandGroupAdd(Bootstrap bootstrap) {
-        super(bootstrap);
-    }
+public final class GroupAddCommand extends AbstractCommand {
 
     @Override
     public void execute() {

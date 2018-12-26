@@ -1,16 +1,11 @@
 package com.koror.app.command;
 
-import com.koror.app.controller.Bootstrap;
 import com.koror.app.entity.Group;
 import com.koror.app.entity.Task;
 
 import java.util.List;
 
-public class CommandGroupRead extends AbstractCommand {
-
-    public CommandGroupRead(Bootstrap bootstrap) {
-        super(bootstrap);
-    }
+public final class GroupReadCommand extends AbstractCommand {
 
     @Override
     public void execute() {
@@ -20,7 +15,7 @@ public class CommandGroupRead extends AbstractCommand {
             System.out.println(indexGroup + " [" + group.toString() + "]");
             for (Task task : taskList) {
                 if (task.getGroupId() != null && task.getGroupId().equals(group.getId())) {
-                    System.out.println("  " + " [" + "Name:" + task.getText() + " Priority: " + task.getPriority() + " Complete: " + task.getComplete() + " Id: " + task.getId() + " Group: " + task.getGroupId() + "]");
+                    System.out.println("  " + " [" + "Name:" + task.getText() + " Priority: " + task.getPriority() + " Complete: " + task.getComplete() + "]");
                 }
             }
             indexGroup++;

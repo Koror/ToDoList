@@ -1,12 +1,6 @@
 package com.koror.app.command;
 
-import com.koror.app.controller.Bootstrap;
-
-public class CommandTaskClear extends AbstractCommand {
-
-    public CommandTaskClear(Bootstrap bootstrap) {
-        super(bootstrap);
-    }
+public final class TaskClearCommand extends AbstractCommand {
 
     @Override
     public void execute() {

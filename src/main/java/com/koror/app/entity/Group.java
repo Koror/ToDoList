@@ -34,7 +34,7 @@ public class Group {
 
     @Override
     public String toString() {
-        return name + " id: " + id;
+        return name;
     }
 
 }

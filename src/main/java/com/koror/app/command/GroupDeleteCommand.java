@@ -1,16 +1,11 @@
 package com.koror.app.command;
 
-import com.koror.app.controller.Bootstrap;
 import com.koror.app.entity.Group;
 
 import java.util.List;
 import java.util.Scanner;
 
-public class CommandGroupDelete extends AbstractCommand {
-
-    public CommandGroupDelete(Bootstrap bootstrap) {
-        super(bootstrap);
-    }
+public final class GroupDeleteCommand extends AbstractCommand {
 
     @Override
     public void execute() {

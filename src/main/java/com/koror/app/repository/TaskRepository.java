@@ -25,7 +25,7 @@ public class TaskRepository {
     }
 
     public void clearTask() {
-        Iterator<Task> taskIterator = taskMap.values().iterator();
+        final Iterator<Task> taskIterator = taskMap.values().iterator();
         while (taskIterator.hasNext()) {
             if (taskIterator.next().getComplete())
                 taskIterator.remove();
