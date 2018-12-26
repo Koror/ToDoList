@@ -45,7 +45,7 @@ public final class Bootstrap {
         init(classes);
         String action;
         do {
-            System.out.println("Action: AddGroup ReadGroup  AddTask ReadTask AddGroupToTask CompleteTask ClearTask DeleteTask DeleteGroup UpdateGroup UpdateTask Exit");
+            System.out.println("Action: " + commandMap.keySet() + " Exit");
             action = scanner.nextLine();
             for (String str : commandMap.keySet()) {
                 if (str.equals(action)) {
