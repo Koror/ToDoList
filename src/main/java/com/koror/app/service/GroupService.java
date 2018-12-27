@@ -16,14 +16,12 @@ public class GroupService {
     }
 
     public void addGroup(final Group group) throws WrongInputException {
-        if (group == null)
-            throw new WrongInputException();
+        if (group == null) throw new WrongInputException("Wrong input");
         groupRepository.addGroup(group);
     }
 
     public void updateGroup(final Group group) throws WrongInputException {
-        if (group == null)
-            throw new WrongInputException();
+        if (group == null) throw new WrongInputException("Wrong input");
         groupRepository.updateGroup(group);
     }
 
@@ -31,7 +29,7 @@ public class GroupService {
         try {
             groupRepository.deleteGroup(id);
         } catch (IndexOutOfBoundsException | NullPointerException e) {
-            throw new WrongInputException();
+            throw new WrongInputException("Wrong input");
         }
     }
 
@@ -44,8 +42,7 @@ public class GroupService {
     }
 
     public Group getGroup(final Integer index) throws WrongInputException {
-        if (index == null)
-            throw new WrongInputException();
+        if (index == null) throw new WrongInputException("Wrong input");
         return groupRepository.getGroup(index);
     }
 }

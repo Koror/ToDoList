@@ -16,14 +16,12 @@ public class TaskService {
     }
 
     public void addTask(final Task task) throws WrongInputException {
-        if (task == null)
-            throw new WrongInputException();
+        if (task == null) throw new WrongInputException("Wrong input");
         taskRepository.addTask(task);
     }
 
     public void completeTask(final Task task) throws WrongInputException {
-        if (task == null)
-            throw new WrongInputException();
+        if (task == null) throw new WrongInputException("Wrong input");
         taskRepository.completeTask(task);
     }
 
@@ -31,13 +29,12 @@ public class TaskService {
         try {
             taskRepository.deleteTask(id);
         } catch (IndexOutOfBoundsException | NullPointerException e) {
-            throw new WrongInputException();
+            throw new WrongInputException("Wrong input", e);
         }
     }
 
     public void updateTask(final Task task) throws WrongInputException {
-        if (task == null)
-            throw new WrongInputException();
+        if (task == null) throw new WrongInputException("Wrong input");
         taskRepository.updateTask(task);
     }
 
@@ -46,8 +43,7 @@ public class TaskService {
     }
 
     public void setGroupId(final Task task) throws WrongInputException {
-        if (task == null)
-            throw new WrongInputException();
+        if (task == null) throw new WrongInputException("Wrong input");
         taskRepository.setGroupId(task);
     }
 

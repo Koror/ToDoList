@@ -84,15 +84,13 @@ public final class Bootstrap {
     public Integer nextInt() {
         try {
             return Integer.parseInt(scanner.nextLine());
-        } catch (Exception e) {
-            throw new WrongInputException();
+        } catch (Exception e) { throw new WrongInputException("Wrong input", e);
         }
     }
 
     public String nextLine() {
         final String input = scanner.nextLine();
-        if (input.equals(""))
-            throw new WrongInputException();
+        if (input.equals("")) throw new WrongInputException("Wrong input");
         return input;
     }
 
