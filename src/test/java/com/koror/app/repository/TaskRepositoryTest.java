@@ -29,6 +29,7 @@ public class TaskRepositoryTest {
     @Test (expected = NullPointerException.class)
     public void deleteTask() {
         TaskRepository taskRepository = new TaskRepository();
+        taskRepository.getTaskMap().get(0);
         Task task = new Task("testTask");
         taskRepository.addTask(task);
         taskRepository.getTaskMap().remove(task.getId());
