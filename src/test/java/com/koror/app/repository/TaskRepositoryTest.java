@@ -1,6 +1,7 @@
 package com.koror.app.repository;
 
 import com.koror.app.entity.Task;
+import com.koror.app.error.WrongInputException;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -16,7 +17,7 @@ public class TaskRepositoryTest {
     }
 
     @Test
-    public void addTask() {
+    public void addTask() throws WrongInputException {
         Task task = new Task("testTask");
         taskRepository.addTask(task);
         assertNotNull(taskRepository.getTaskList().get(0));

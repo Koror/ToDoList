@@ -7,7 +7,7 @@ public final class GroupUpdateCommand extends AbstractCommand {
     @Override
     public void execute() {
         System.out.println("Input index group and name");
-        final Group group = bootstrap.getGroupService().getGroupList().get(bootstrap.nextInt());
+        final Group group = bootstrap.getGroupService().getGroup(bootstrap.nextInt());
         group.setName(bootstrap.nextLine());
         bootstrap.getGroupService().updateGroup(group);
     }

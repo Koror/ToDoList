@@ -23,6 +23,8 @@
   * TaskRepository - класс для создания и управления задачами
 * [enumerated]
   * Priority - перечесление приоритетов
+* [error]
+  * WrongInputException
 * [entity]
   * Group - группа
   * Task - задача

@@ -20,11 +20,7 @@ public class GroupRepository {
     }
 
     public void deleteGroup(String id) {
-        try {
-            groupMap.remove(id);
-        } catch (IndexOutOfBoundsException exception) {
-            System.out.println("Wrong index");
-        }
+        groupMap.remove(id);
     }
 
     public Map<String, Group> getGroupMap() {
@@ -33,6 +29,10 @@ public class GroupRepository {
 
     public List<Group> getGroupList() {
         return new ArrayList<>(groupMap.values());
+    }
+
+    public Group getGroup(Integer index) {
+        return getGroupList().get(index);
     }
 
 }

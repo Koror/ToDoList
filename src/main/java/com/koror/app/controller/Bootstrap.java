@@ -1,6 +1,7 @@
 package com.koror.app.controller;
 
 import com.koror.app.command.*;
+import com.koror.app.error.WrongInputException;
 import com.koror.app.repository.GroupRepository;
 import com.koror.app.repository.TaskRepository;
 import com.koror.app.service.GroupService;
@@ -34,7 +35,7 @@ public final class Bootstrap {
         commandMap.put(command.command(), command);
     }
 
-    private void init(final Class... classes) throws Exception {
+    private void init(final Class... classes) throws ReflectiveOperationException {
         for (final Class c : classes) {
             if (commandNotAssignable(c)) continue;
             final AbstractCommand command = (AbstractCommand) c.newInstance();
@@ -51,7 +52,7 @@ public final class Bootstrap {
         return false;
     }
 
-    public void start() throws Exception {
+    public void start() throws ReflectiveOperationException {
         final Scanner scanner = new Scanner(System.in);
         init(classes);
         String action;
@@ -60,7 +61,11 @@ public final class Bootstrap {
             action = scanner.nextLine();
             for (String str : commandMap.keySet()) {
                 if (str.equals(action)) {
-                    commandMap.get(str).execute();
+                    try {
+                        commandMap.get(str).execute();
+                    } catch (WrongInputException e) {
+                        System.out.println("Wrong input");
+                    }
                 }
             }
         } while (!action.equals("Exit"));
@@ -74,17 +79,19 @@ public final class Bootstrap {
         return taskService;
     }
 
-    public Integer nextInt() {
+    public Integer nextInt() throws WrongInputException{
         try {
             return Integer.parseInt(scanner.nextLine());
         } catch (Exception e) {
-            System.out.println("Wrong input");
+            throw new WrongInputException();
         }
-        return null;
     }
 
     public String nextLine() {
-        return scanner.nextLine();
+        final String input = scanner.nextLine();
+        if (input.equals(""))
+            return null;
+        return input;
     }
 
 }

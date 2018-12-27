@@ -7,7 +7,7 @@ import java.util.Set;
 
 public class App {
 
-    public static void main(String[] args) throws Exception{
+    public static void main(String[] args) throws ReflectiveOperationException{
         final Bootstrap bootstrap = new Bootstrap();
         bootstrap.start();
         Set<Object> set = new HashSet<>();

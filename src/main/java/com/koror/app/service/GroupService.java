@@ -1,6 +1,7 @@
 package com.koror.app.service;
 
 import com.koror.app.entity.Group;
+import com.koror.app.error.WrongInputException;
 import com.koror.app.repository.GroupRepository;
 import com.koror.app.repository.TaskRepository;
 
@@ -26,15 +27,21 @@ public class GroupService {
         return groupRepository;
     }
 
-    public void addGroup(Group group) {
+    public void addGroup(Group group) throws WrongInputException {
+        if (group == null)
+            throw new WrongInputException();
         groupRepository.addGroup(group);
     }
 
-    public void updateGroup(Group group) {
+    public void updateGroup(Group group) throws WrongInputException {
+        if (group == null)
+            throw new WrongInputException();
         groupRepository.updateGroup(group);
     }
 
-    public void deleteGroup(String id) {
+    public void deleteGroup(String id) throws WrongInputException {
+        if (id == null)
+            throw new WrongInputException();
         groupRepository.deleteGroup(id);
     }
 
@@ -42,8 +49,13 @@ public class GroupService {
         return groupRepository.getGroupMap();
     }
 
-    public List<Group> getGroupList() {
+    public List<Group> getGroupList(){
         return groupRepository.getGroupList();
     }
 
+    public Group getGroup(Integer index) throws WrongInputException {
+        if (index == null)
+            throw new WrongInputException();
+        return groupRepository.getGroup(index);
+    }
 }
