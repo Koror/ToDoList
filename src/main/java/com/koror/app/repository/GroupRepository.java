@@ -11,15 +11,15 @@ public class GroupRepository {
 
     private final Map<String, Group> groupMap = new HashMap<>();
 
-    public void addGroup(Group group) {
+    public void addGroup(final Group group) {
         groupMap.put(group.getId(), group);
     }
 
-    public void updateGroup(Group group) {
+    public void updateGroup(final Group group) {
         groupMap.put(group.getId(), group);
     }
 
-    public void deleteGroup(String id) {
+    public void deleteGroup(final String id) {
         groupMap.remove(id);
     }
 
@@ -31,7 +31,7 @@ public class GroupRepository {
         return new ArrayList<>(groupMap.values());
     }
 
-    public Group getGroup(Integer index) {
+    public Group getGroup(final Integer index) {
         return getGroupList().get(index);
     }
 

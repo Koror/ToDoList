@@ -2,7 +2,6 @@ package com.koror.app.service;
 
 import com.koror.app.entity.Task;
 import com.koror.app.error.WrongInputException;
-import com.koror.app.repository.GroupRepository;
 import com.koror.app.repository.TaskRepository;
 
 import java.util.List;
@@ -12,40 +11,31 @@ public class TaskService {
 
     private final TaskRepository taskRepository;
 
-    private final GroupRepository groupRepository;
-
-    public TaskService(TaskRepository taskRepository, GroupRepository groupRepository) {
+    public TaskService(TaskRepository taskRepository) {
         this.taskRepository = taskRepository;
-        this.groupRepository = groupRepository;
     }
 
-    public TaskRepository getTaskRepository() {
-        return taskRepository;
-    }
-
-    public GroupRepository getGroupRepository() {
-        return groupRepository;
-    }
-
-    public void addTask(Task task) throws WrongInputException {
+    public void addTask(final Task task) throws WrongInputException {
         if (task == null)
             throw new WrongInputException();
         taskRepository.addTask(task);
     }
 
-    public void completeTask(Task task) throws WrongInputException {
+    public void completeTask(final Task task) throws WrongInputException {
         if (task == null)
             throw new WrongInputException();
         taskRepository.completeTask(task);
     }
 
-    public void deleteTask(String id) throws WrongInputException {
-        if (id == null)
+    public void deleteTask(final String id) throws WrongInputException {
+        try {
+            taskRepository.deleteTask(id);
+        } catch (IndexOutOfBoundsException | NullPointerException e) {
             throw new WrongInputException();
-        taskRepository.deleteTask(id);
+        }
     }
 
-    public void updateTask(Task task) throws WrongInputException {
+    public void updateTask(final Task task) throws WrongInputException {
         if (task == null)
             throw new WrongInputException();
         taskRepository.updateTask(task);
@@ -55,7 +45,7 @@ public class TaskService {
         taskRepository.clearTask();
     }
 
-    public void setGroupId(Task task) throws WrongInputException {
+    public void setGroupId(final Task task) throws WrongInputException {
         if (task == null)
             throw new WrongInputException();
         taskRepository.setGroupId(task);

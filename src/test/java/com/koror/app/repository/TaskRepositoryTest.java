@@ -9,26 +9,30 @@ import static org.junit.Assert.*;
 
 public class TaskRepositoryTest {
 
-    private TaskRepository taskRepository;
-
-    @Before
-    public void before() {
-        taskRepository = new TaskRepository();
-    }
-
     @Test
     public void addTask() throws WrongInputException {
+        TaskRepository taskRepository = new TaskRepository();
         Task task = new Task("testTask");
         taskRepository.addTask(task);
-        assertNotNull(taskRepository.getTaskList().get(0));
+        assertNotNull(taskRepository.getTaskList().get(0).getId());
     }
 
     @Test
     public void completeTask() {
+        TaskRepository taskRepository = new TaskRepository();
+        Task task = new Task("testTask");
+        taskRepository.addTask(task);
+        taskRepository.getTaskMap().get(task.getId()).setComplete();
+        assertTrue( taskRepository.getTaskMap().get(task.getId()).getComplete());
     }
 
-    @Test
+    @Test (expected = NullPointerException.class)
     public void deleteTask() {
+        TaskRepository taskRepository = new TaskRepository();
+        Task task = new Task("testTask");
+        taskRepository.addTask(task);
+        taskRepository.getTaskMap().remove(task.getId());
+        taskRepository.getTaskMap().get(0);
     }
 
     @Test

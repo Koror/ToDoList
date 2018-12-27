@@ -1,6 +1,7 @@
 package com.koror.app.enumerated;
 
 public enum Priority {
+
     LOW, MEDIUM, HIGH;
 
     public static Priority getPriority(final String input) {
@@ -10,4 +11,5 @@ public enum Priority {
         }
         return null;
     }
+
 }

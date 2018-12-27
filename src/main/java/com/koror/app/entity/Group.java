@@ -6,13 +6,13 @@ public class Group {
 
     private String id = UUID.randomUUID().toString();
 
-    private String name;
+    private String name = "Group name";
 
     public Group() {
 
     }
 
-    public Group(String name) {
+    public Group(final String name) {
         this.name = name;
     }
 
@@ -20,7 +20,7 @@ public class Group {
         return name;
     }
 
-    public void setName(String newName) {
+    public void setName(final String newName) {
         name = newName;
     }
 
@@ -28,7 +28,7 @@ public class Group {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(final String id) {
         this.id = id;
     }
 

@@ -1,6 +1,7 @@
 package com.koror.app.controller;
 
 import com.koror.app.command.*;
+import com.koror.app.error.MissingCommandException;
 import com.koror.app.error.WrongInputException;
 import com.koror.app.repository.GroupRepository;
 import com.koror.app.repository.TaskRepository;
@@ -17,9 +18,9 @@ public final class Bootstrap {
 
     private final TaskRepository taskRepository = new TaskRepository();
 
-    private final GroupService groupService = new GroupService(groupRepository, taskRepository);
+    private final GroupService groupService = new GroupService(groupRepository);
 
-    private final TaskService taskService = new TaskService(taskRepository, groupRepository);
+    private final TaskService taskService = new TaskService(taskRepository);
 
     private final Map<String, AbstractCommand> commandMap = new HashMap<>();
 
@@ -35,7 +36,8 @@ public final class Bootstrap {
         commandMap.put(command.command(), command);
     }
 
-    private void init(final Class... classes) throws ReflectiveOperationException {
+    private void init(final Class... classes) throws ReflectiveOperationException, MissingCommandException {
+        if (classes.length == 0) throw new MissingCommandException();
         for (final Class c : classes) {
             if (commandNotAssignable(c)) continue;
             final AbstractCommand command = (AbstractCommand) c.newInstance();
@@ -44,7 +46,7 @@ public final class Bootstrap {
         }
     }
 
-    private boolean commandNotAssignable(Class c) {
+    private boolean commandNotAssignable(final Class c) {
         if (!AbstractCommand.class.isAssignableFrom(c)) {
             System.out.println("Class is not command: " + c.getName());
             return true;
@@ -64,7 +66,7 @@ public final class Bootstrap {
                     try {
                         commandMap.get(str).execute();
                     } catch (WrongInputException e) {
-                        System.out.println("Wrong input");
+                        System.out.println(e.getMessage());
                     }
                 }
             }
@@ -79,7 +81,7 @@ public final class Bootstrap {
         return taskService;
     }
 
-    public Integer nextInt() throws WrongInputException{
+    public Integer nextInt() {
         try {
             return Integer.parseInt(scanner.nextLine());
         } catch (Exception e) {
@@ -90,7 +92,7 @@ public final class Bootstrap {
     public String nextLine() {
         final String input = scanner.nextLine();
         if (input.equals(""))
-            return null;
+            throw new WrongInputException();
         return input;
     }
 

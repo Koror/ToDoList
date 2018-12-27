@@ -24,7 +24,8 @@
 * [enumerated]
   * Priority - перечесление приоритетов
 * [error]
-  * WrongInputException
+  * WrongInputException - класс ошибки пользовательского ввода
+  * MissingCommandException - класс ошибки отсутствия комманд
 * [entity]
   * Group - группа
   * Task - задача

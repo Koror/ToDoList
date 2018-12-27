@@ -10,26 +10,26 @@ public class Task {
 
     private String groupId = null;
 
-    private Priority priority;
+    private Priority priority = Priority.MEDIUM;
 
-    private String text;
+    private String text = "Task  name";
 
     private boolean complete = false;
 
     public Task() {
-        text = "Task Name";
+
     }
 
-    public Task(String text) {
+    public Task(final String text) {
         this.text = text;
     }
 
-    public Task(String text, Priority priority) {
+    public Task(final String text, final Priority priority) {
         this.text = text;
         this.priority = priority;
     }
 
-    public Task(String text, Priority priority, String groupId) {
+    public Task(final String text, final Priority priority, final String groupId) {
         this.text = text;
         this.priority = priority;
         this.groupId = groupId;
@@ -47,7 +47,7 @@ public class Task {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(final String id) {
         this.id = id;
     }
 
@@ -55,7 +55,7 @@ public class Task {
         return groupId;
     }
 
-    public void setGroupId(String groupId) {
+    public void setGroupId(final String groupId) {
         this.groupId = groupId;
     }
 
@@ -63,7 +63,7 @@ public class Task {
         return priority;
     }
 
-    public void setPriority(Priority priority) {
+    public void setPriority(final Priority priority) {
         this.priority = priority;
     }
 
@@ -71,13 +71,13 @@ public class Task {
         return text;
     }
 
-    public void setText(String text) {
+    public void setText(final String text) {
         this.text = text;
     }
 
     @Override
     public String toString() {
-        return "Name:" + text  + " Complete: " + complete;
+        return "Name:" + text + " Complete: " + complete;
     }
 
 }

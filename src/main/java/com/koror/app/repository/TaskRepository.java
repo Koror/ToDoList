@@ -8,19 +8,19 @@ public class TaskRepository {
 
     private final Map<String, Task> taskMap = new HashMap<>();
 
-    public void addTask(Task task) {
+    public void addTask(final Task task) {
         taskMap.put(task.getId(), task);
     }
 
-    public void completeTask(Task task) {
+    public void completeTask(final Task task) {
         taskMap.get(task.getId()).setComplete();
     }
 
-    public void deleteTask(String id) {
+    public void deleteTask(final String id) {
         taskMap.remove(id);
     }
 
-    public void updateTask(Task task) {
+    public void updateTask(final Task task) {
         taskMap.put(task.getId(), task);
     }
 
@@ -32,7 +32,7 @@ public class TaskRepository {
         }
     }
 
-    public void setGroupId(Task task) {
+    public void setGroupId(final Task task) {
         taskMap.put(task.getId(), task);
     }
 
