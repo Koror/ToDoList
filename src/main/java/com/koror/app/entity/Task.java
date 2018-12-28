@@ -2,9 +2,10 @@ package com.koror.app.entity;
 
 import com.koror.app.enumerated.Priority;
 
+import java.io.Serializable;
 import java.util.UUID;
 
-public class Task {
+public class Task implements Serializable {
 
     private String id = UUID.randomUUID().toString();
 

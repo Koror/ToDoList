@@ -16,43 +16,56 @@ public class TaskService implements ITaskRepository {
         this.taskRepository = taskRepository;
     }
 
+    @Override
     public void addTask(final Task task) throws WrongInputException {
         if (task == null) throw new WrongInputException("Wrong input");
         taskRepository.addTask(task);
     }
 
+    @Override
     public void completeTask(final Task task) throws WrongInputException {
         if (task == null) throw new WrongInputException("Wrong input");
         taskRepository.completeTask(task);
     }
 
+    @Override
     public Task deleteTask(final String id) throws WrongInputException {
-        if (id == null) throw new WrongInputException("Wrong input");
+        if (id == null || "".equals(id)) throw new WrongInputException("Wrong input");
         Task task = taskRepository.deleteTask(id);
         if (task == null) throw new WrongInputException("Wrong input");
         return task;
     }
 
+    @Override
     public void updateTask(final Task task) throws WrongInputException {
         if (task == null) throw new WrongInputException("Wrong input");
         taskRepository.updateTask(task);
     }
 
+    @Override
     public void clearTask() {
         taskRepository.clearTask();
     }
 
+    @Override
     public void setGroupId(final Task task) throws WrongInputException {
         if (task == null) throw new WrongInputException("Wrong input");
         taskRepository.setGroupId(task);
     }
 
+    @Override
     public List<Task> getTaskList() {
         return taskRepository.getTaskList();
     }
 
-    public Map<String, Task> getTaskMap() {
-        return taskRepository.getTaskMap();
+    @Override
+    public Task getTaskById(String id) {
+        return taskRepository.getTaskById(id);
+    }
+
+    @Override
+    public Task getTaskByIndex(Integer index) {
+        return taskRepository.getTaskByIndex(index);
     }
 
 }

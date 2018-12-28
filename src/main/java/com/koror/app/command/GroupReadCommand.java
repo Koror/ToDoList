@@ -9,18 +9,17 @@ public final class GroupReadCommand extends AbstractCommand {
 
     @Override
     public void execute() {
-        int indexGroup = 0;
-        final List<Task> taskList = bootstrap.getTaskService().getTaskList();
-        for (final Group group : bootstrap.getGroupService().getGroupMap().values()) {
-            System.out.println(indexGroup + " [" + group.toString() + "]");
-            for (final Task task : taskList) {
-                if (task.getGroupId() != null && task.getGroupId().equals(group.getId())) {
-                    System.out.println("  " + " [" + "Name:" + task.getText() + " Priority: "
-                            + task.getPriority() + " Complete: " + task.getComplete() + "]");
-                }
+        final List<Group> groupList = bootstrap.getGroupService().getGroupList();
+        System.out.println(groupList);
+        final int groupIndex = bootstrap.nextInt();
+        System.out.println(groupList.get(groupIndex).getName());
+        for (final Task task : bootstrap.getTaskService().getTaskList()) {
+            if (task.getGroupId() != null && task.getGroupId().equals(groupList.get(groupIndex).getId())) {
+                System.out.println("  " + " [" + "Name:" + task.getText() + " Priority: "
+                        + task.getPriority() + " Complete: " + task.getComplete() + "]");
             }
-            indexGroup++;
         }
+
     }
 
     @Override

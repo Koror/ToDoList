@@ -9,22 +9,27 @@ public class TaskRepository implements ITaskRepository {
 
     private final Map<String, Task> taskMap = new HashMap<>();
 
+    @Override
     public void addTask(final Task task) {
         taskMap.put(task.getId(), task);
     }
 
+    @Override
     public void completeTask(final Task task) {
         taskMap.get(task.getId()).setComplete();
     }
 
+    @Override
     public Task deleteTask(final String id) {
         return taskMap.remove(id);
     }
 
+    @Override
     public void updateTask(final Task task) {
         taskMap.put(task.getId(), task);
     }
 
+    @Override
     public void clearTask() {
         final Iterator<Task> taskIterator = taskMap.values().iterator();
         while (taskIterator.hasNext()) {
@@ -33,16 +38,32 @@ public class TaskRepository implements ITaskRepository {
         }
     }
 
+    public void saveData(){
+
+    }
+
+    public void loadData(){
+
+    }
+    
+    @Override
     public void setGroupId(final Task task) {
         taskMap.put(task.getId(), task);
     }
 
-    public List<Task> getTaskList() {
-        return new ArrayList<>(taskMap.values());
+    @Override
+    public Task getTaskById(final String id){
+         return taskMap.get(id);
     }
 
-    public Map<String, Task> getTaskMap() {
-        return taskMap;
+    @Override
+    public Task getTaskByIndex(Integer index){
+        return getTaskList().get(index);
+    }
+
+    @Override
+    public List<Task> getTaskList() {
+        return new ArrayList<>(taskMap.values());
     }
 
 }

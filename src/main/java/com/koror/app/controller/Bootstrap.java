@@ -28,8 +28,8 @@ public final class Bootstrap implements IBootstrap {
     private final Class[] classes = {
             GroupAddCommand.class, GroupDeleteCommand.class, GroupReadCommand.class,
             GroupUpdateCommand.class, TaskAddCommand.class, TaskClearCommand.class,
-            TaskCompleteCommand.class, TaskDeleteCommand.class, TaskReadCommand.class,
-            TaskToGroupCommand.class, TaskUpdateCommand.class};
+            TaskCompleteCommand.class, TaskDeleteCommand.class, TaskReadAllCommand.class,
+            TaskToGroupCommand.class, TaskUpdateCommand.class, GroupReadAllCommand.class};
 
     private final Scanner scanner = new Scanner(System.in);
 
@@ -55,6 +55,7 @@ public final class Bootstrap implements IBootstrap {
         return false;
     }
 
+    @Override
     public void start() throws ReflectiveOperationException {
         final Scanner scanner = new Scanner(System.in);
         init(classes);
@@ -74,14 +75,17 @@ public final class Bootstrap implements IBootstrap {
         } while (!action.equals("Exit"));
     }
 
+    @Override
     public GroupService getGroupService() {
         return groupService;
     }
 
+    @Override
     public TaskService getTaskService() {
         return taskService;
     }
 
+    @Override
     public Integer nextInt() {
         try {
             return Integer.parseInt(scanner.nextLine());
@@ -89,6 +93,7 @@ public final class Bootstrap implements IBootstrap {
         }
     }
 
+    @Override
     public String nextLine() {
         final String input = scanner.nextLine();
         if (input.equals("")) throw new WrongInputException("Wrong input");

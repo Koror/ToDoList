@@ -20,6 +20,8 @@ public interface ITaskRepository {
 
     List<Task> getTaskList();
 
-    Map<String, Task> getTaskMap();
+    Task getTaskById(final String id);
+
+    Task getTaskByIndex(Integer index);
 
 }

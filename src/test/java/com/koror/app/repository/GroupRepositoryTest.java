@@ -12,13 +12,13 @@ public class GroupRepositoryTest {
         final GroupRepository groupRepository = new GroupRepository();
         final Group group = new Group("Test group");
         groupRepository.addGroup(group);
-        assertNotNull(groupRepository.getGroupList().get(0).getId());
+        assertNotNull(groupRepository.getGroup(0).getId());
     }
 
     @Test(expected = IndexOutOfBoundsException.class)
     public void testNegativeAddGroup() {
         final GroupRepository groupRepository = new GroupRepository();
-        groupRepository.getGroupList().get(0);
+        groupRepository.getGroup(0);
     }
 
     @Test
@@ -29,7 +29,7 @@ public class GroupRepositoryTest {
         groupRepository.addGroup(group);
         group = new Group("New test group");
         groupRepository.updateGroup(group);
-        assertNotEquals(groupId, groupRepository.getGroupList().get(0));
+        assertNotEquals(groupId, groupRepository.getGroup(0));
     }
 
     @Test
@@ -38,7 +38,7 @@ public class GroupRepositoryTest {
         final Group group = new Group("Test group");
         final String groupId = group.getId();
         groupRepository.addGroup(group);
-        assertEquals(groupId, groupRepository.getGroupList().get(0).getId());
+        assertEquals(groupId, groupRepository.getGroup(0).getId());
     }
 
     @Test
@@ -46,30 +46,19 @@ public class GroupRepositoryTest {
         final GroupRepository groupRepository = new GroupRepository();
         final Group group = new Group("Test group");
         groupRepository.addGroup(group);
-        groupRepository.getGroupMap().remove(group.getId());
-        assertNull(groupRepository.getGroupMap().get(0));
+        groupRepository.deleteGroup(group.getId());
+        assertNull(groupRepository.getGroup(0));
     }
 
-    @Test(expected = NullPointerException.class)
+    @Test(expected = IndexOutOfBoundsException.class)
     public void testNegativeDeleteGroup() {
         final GroupRepository groupRepository = new GroupRepository();
         Group group = new Group("Test group");
         groupRepository.addGroup(group);
-        groupRepository.getGroupMap().remove(group.getId());
-        group = groupRepository.getGroupMap().get(0);
-        group.getId();
-    }
-
-    @Test
-    public void testPositiveGetGroupMap() {
-        final GroupRepository groupRepository = new GroupRepository();
-        assertNotNull(groupRepository.getGroupMap());
-    }
-
-    @Test(expected = NullPointerException.class)
-    public void testNegativeGetGroupMap() {
-        final GroupRepository groupRepository = null;
-        groupRepository.getGroupMap();
+        groupRepository.deleteGroup(group.getId());
+        group = groupRepository.getGroup(0);
+        assertNull(group.getId());
+        groupRepository.deleteGroup("");
     }
 
     @Test
@@ -83,7 +72,7 @@ public class GroupRepositoryTest {
     @Test(expected = IndexOutOfBoundsException.class)
     public void testNegativeGetGroupList() {
         final GroupRepository groupRepository = new GroupRepository();
-        groupRepository.getGroupList().get(0);
+        groupRepository.getGroup(0);
     }
 
     @Test
@@ -91,13 +80,13 @@ public class GroupRepositoryTest {
         final GroupRepository groupRepository = new GroupRepository();
         final Group group = new Group("Test group");
         groupRepository.addGroup(group);
-        assertNotNull(groupRepository.getGroupList().get(0));
+        assertNotNull(groupRepository.getGroup(0));
     }
 
     @Test(expected = IndexOutOfBoundsException.class)
     public void testNegativeGetGroup() {
         final GroupRepository groupRepository = new GroupRepository();
-        groupRepository.getGroupList().get(0);
+        groupRepository.getGroup(0);
     }
 
 }

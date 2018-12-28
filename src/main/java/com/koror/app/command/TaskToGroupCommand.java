@@ -23,12 +23,12 @@ public final class TaskToGroupCommand extends AbstractCommand {
 
     @Override
     public String command() {
-        return "AddGroupToTask";
+        return "AddTaskToGroup";
     }
 
     @Override
     public String description() {
-        return "Add group to existing task";
+        return "Add task to existing group";
     }
 
 }

@@ -12,28 +12,32 @@ public class GroupRepository implements IGroupRepository {
 
     private final Map<String, Group> groupMap = new HashMap<>();
 
+    @Override
     public void addGroup(final Group group) {
         groupMap.put(group.getId(), group);
     }
 
+    @Override
     public Group updateGroup(final Group group) {
         return groupMap.put(group.getId(), group);
     }
 
+    @Override
     public Group deleteGroup(final String id) {
         return groupMap.remove(id);
     }
 
-    public Map<String, Group> getGroupMap() {
-        return groupMap;
-    }
-
+    @Override
     public List<Group> getGroupList() {
         return new ArrayList<>(groupMap.values());
     }
 
+    @Override
     public Group getGroup(final Integer index) {
         return getGroupList().get(index);
     }
 
+    public Group getGroupById(final String id){
+        return groupMap.get(id);
+    }
 }

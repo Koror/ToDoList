@@ -17,6 +17,14 @@
     <maven.compiler.target>1.8</maven.compiler.target>
   </properties>
 
+  <developers>
+    <developer>
+      <id>Skorikov</id>
+      <name>Nikita Skorikov</name>
+      <email>kilger@mail.ru</email>
+    </developer>
+  </developers>
+
   <build>
         <finalName>to-do-list</finalName>
   </build>
