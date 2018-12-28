@@ -1,5 +1,6 @@
 package com.koror.app.controller;
 
+import com.koror.app.api.controller.IBootstrap;
 import com.koror.app.command.*;
 import com.koror.app.error.MissingCommandException;
 import com.koror.app.error.WrongInputException;
@@ -12,7 +13,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Scanner;
 
-public final class Bootstrap {
+public final class Bootstrap implements IBootstrap {
 
     private final GroupRepository groupRepository = new GroupRepository();
 

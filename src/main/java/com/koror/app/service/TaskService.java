@@ -1,5 +1,6 @@
 package com.koror.app.service;
 
+import com.koror.app.api.repository.ITaskRepository;
 import com.koror.app.entity.Task;
 import com.koror.app.error.WrongInputException;
 import com.koror.app.repository.TaskRepository;
@@ -7,7 +8,7 @@ import com.koror.app.repository.TaskRepository;
 import java.util.List;
 import java.util.Map;
 
-public class TaskService {
+public class TaskService implements ITaskRepository {
 
     private final TaskRepository taskRepository;
 
@@ -26,11 +27,10 @@ public class TaskService {
     }
 
     public Task deleteTask(final String id) throws WrongInputException {
-        try {
-            return taskRepository.deleteTask(id);
-        } catch (IndexOutOfBoundsException | NullPointerException e) {
-            throw new WrongInputException("Wrong input", e);
-        }
+        if (id == null) throw new WrongInputException("Wrong input");
+        Task task = taskRepository.deleteTask(id);
+        if (task == null) throw new WrongInputException("Wrong input");
+        return task;
     }
 
     public void updateTask(final Task task) throws WrongInputException {

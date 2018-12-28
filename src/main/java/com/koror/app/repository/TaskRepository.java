@@ -1,10 +1,11 @@
 package com.koror.app.repository;
 
+import com.koror.app.api.repository.ITaskRepository;
 import com.koror.app.entity.Task;
 
 import java.util.*;
 
-public class TaskRepository {
+public class TaskRepository implements ITaskRepository {
 
     private final Map<String, Task> taskMap = new HashMap<>();
 
@@ -43,5 +44,6 @@ public class TaskRepository {
     public Map<String, Task> getTaskMap() {
         return taskMap;
     }
+
 }
 

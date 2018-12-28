@@ -1,5 +1,6 @@
 package com.koror.app.service;
 
+import com.koror.app.api.repository.IGroupRepository;
 import com.koror.app.entity.Group;
 import com.koror.app.error.WrongInputException;
 import com.koror.app.repository.GroupRepository;
@@ -7,7 +8,7 @@ import com.koror.app.repository.GroupRepository;
 import java.util.List;
 import java.util.Map;
 
-public class GroupService {
+public class GroupService implements IGroupRepository {
 
     private final GroupRepository groupRepository;
 
@@ -20,18 +21,18 @@ public class GroupService {
         groupRepository.addGroup(group);
     }
 
-    public void updateGroup(final Group group) throws WrongInputException {
+    public Group updateGroup(final Group group) throws WrongInputException {
         if (group == null) throw new WrongInputException("Wrong input");
-        groupRepository.updateGroup(group);
+        final Group oldGroup = groupRepository.updateGroup(group);
+        if (oldGroup == null) throw new WrongInputException("Wrong input");
+        return oldGroup;
     }
 
     public Group deleteGroup(final String id) throws WrongInputException {
         if (id == null) throw new WrongInputException("Wrong input");
-        try {
-            return groupRepository.deleteGroup(id);
-        } catch (IndexOutOfBoundsException | NullPointerException e) {
-            throw new WrongInputException("Wrong input", e);
-        }
+        Group group = groupRepository.deleteGroup(id);
+        if (group == null) throw new WrongInputException("Wrong input");
+        return group;
     }
 
     public Map<String, Group> getGroupMap() {
@@ -46,4 +47,5 @@ public class GroupService {
         if (index == null) throw new WrongInputException("Wrong input");
         return groupRepository.getGroup(index);
     }
+
 }
