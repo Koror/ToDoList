@@ -19,8 +19,8 @@ public class GroupRepository {
         groupMap.put(group.getId(), group);
     }
 
-    public void deleteGroup(final String id) {
-        groupMap.remove(id);
+    public Group deleteGroup(final String id) {
+        return groupMap.remove(id);
     }
 
     public Map<String, Group> getGroupMap() {

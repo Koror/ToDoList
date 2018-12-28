@@ -25,11 +25,12 @@ public class GroupService {
         groupRepository.updateGroup(group);
     }
 
-    public void deleteGroup(final String id) throws WrongInputException {
+    public Group deleteGroup(final String id) throws WrongInputException {
+        if (id == null) throw new WrongInputException("Wrong input");
         try {
-            groupRepository.deleteGroup(id);
+            return groupRepository.deleteGroup(id);
         } catch (IndexOutOfBoundsException | NullPointerException e) {
-            throw new WrongInputException("Wrong input");
+            throw new WrongInputException("Wrong input", e);
         }
     }
 

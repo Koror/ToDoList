@@ -16,8 +16,8 @@ public class TaskRepository {
         taskMap.get(task.getId()).setComplete();
     }
 
-    public void deleteTask(final String id) {
-        taskMap.remove(id);
+    public Task deleteTask(final String id) {
+        return taskMap.remove(id);
     }
 
     public void updateTask(final Task task) {

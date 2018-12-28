@@ -25,9 +25,9 @@ public class TaskService {
         taskRepository.completeTask(task);
     }
 
-    public void deleteTask(final String id) throws WrongInputException {
+    public Task deleteTask(final String id) throws WrongInputException {
         try {
-            taskRepository.deleteTask(id);
+            return taskRepository.deleteTask(id);
         } catch (IndexOutOfBoundsException | NullPointerException e) {
             throw new WrongInputException("Wrong input", e);
         }
