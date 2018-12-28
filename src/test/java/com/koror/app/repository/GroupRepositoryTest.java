@@ -29,7 +29,7 @@ public class GroupRepositoryTest {
         groupRepository.addGroup(group);
         group = new Group("New test group");
         groupRepository.updateGroup(group);
-        assertNotEquals(groupId,groupRepository.getGroupList().get(0));
+        assertNotEquals(groupId, groupRepository.getGroupList().get(0));
     }
 
     @Test
