@@ -4,16 +4,18 @@ public class SaveDataCommand extends AbstractCommand {
 
     @Override
     public void execute() {
-
+        bootstrap.getTaskService().saveData();
+        bootstrap.getGroupService().saveData();
+        System.out.println("Save complete");
     }
 
     @Override
     public String command() {
-        return null;
+        return "Save";
     }
 
     @Override
     public String description() {
-        return null;
+        return "Save data to file";
     }
 }

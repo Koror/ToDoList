@@ -68,4 +68,14 @@ public class TaskService implements ITaskRepository {
         return taskRepository.getTaskByIndex(index);
     }
 
+    @Override
+    public void saveData() {
+        taskRepository.saveData();
+    }
+
+    @Override
+    public void loadData() {
+        taskRepository.loadData();
+    }
+
 }

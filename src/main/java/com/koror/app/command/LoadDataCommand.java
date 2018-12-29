@@ -4,16 +4,18 @@ public class LoadDataCommand extends AbstractCommand {
 
     @Override
     public void execute() {
-
+        bootstrap.getTaskService().loadData();
+        bootstrap.getGroupService().loadData();
+        System.out.println("Load complete");
     }
 
     @Override
     public String command() {
-        return null;
+        return "Load";
     }
 
     @Override
     public String description() {
-        return null;
+        return "Load data from file";
     }
 }

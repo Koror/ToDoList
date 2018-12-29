@@ -3,6 +3,7 @@ package com.koror.app.repository;
 import com.koror.app.api.repository.IGroupRepository;
 import com.koror.app.entity.Group;
 
+import java.io.*;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -37,7 +38,30 @@ public class GroupRepository implements IGroupRepository {
         return getGroupList().get(index);
     }
 
-    public Group getGroupById(final String id){
+    public Group getGroupById(final String id) {
         return groupMap.get(id);
+    }
+
+    @Override
+    public void saveData() {
+        try (final ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream("data_group.tmp"))) {
+            File f = new File("data_group.tmp");
+            if (f.isFile())
+                f.delete();
+            oos.writeObject(getGroupList());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    public void loadData() {
+        try (final ObjectInputStream ois = new ObjectInputStream(new FileInputStream("data_group.tmp"))) {
+            List<Group> tasks = (List<Group>) ois.readObject();
+            for (Group group : tasks)
+                groupMap.put(group.getId(), group);
+        } catch (IOException | ClassNotFoundException e) {
+            e.printStackTrace();
+        }
     }
 }

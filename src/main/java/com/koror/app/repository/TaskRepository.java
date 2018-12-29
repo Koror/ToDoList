@@ -3,6 +3,9 @@ package com.koror.app.repository;
 import com.koror.app.api.repository.ITaskRepository;
 import com.koror.app.entity.Task;
 
+import java.io.*;
+import java.net.URL;
+import java.nio.file.Files;
 import java.util.*;
 
 public class TaskRepository implements ITaskRepository {
@@ -38,26 +41,42 @@ public class TaskRepository implements ITaskRepository {
         }
     }
 
-    public void saveData(){
-
+    @Override
+    public void saveData() {
+        try (final ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream("data_task.tmp"))) {
+            File f = new File("data_task.tmp");
+            if (f.isFile())
+                f.delete();
+            oos.writeObject(getTaskList());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
-    public void loadData(){
-
+    @Override
+    public void loadData() {
+        try (final ObjectInputStream ois = new ObjectInputStream(new FileInputStream("data_task.tmp"))) {
+            List tasks = (List) ois.readObject();
+            for (Object task : tasks)
+                if (task instanceof Task)
+                    addTask((Task) task);
+        } catch (IOException | ClassNotFoundException e) {
+            e.printStackTrace();
+        }
     }
-    
+
     @Override
     public void setGroupId(final Task task) {
         taskMap.put(task.getId(), task);
     }
 
     @Override
-    public Task getTaskById(final String id){
-         return taskMap.get(id);
+    public Task getTaskById(final String id) {
+        return taskMap.get(id);
     }
 
     @Override
-    public Task getTaskByIndex(Integer index){
+    public Task getTaskByIndex(Integer index) {
         return getTaskList().get(index);
     }
 

@@ -24,4 +24,8 @@ public interface ITaskRepository {
 
     Task getTaskByIndex(Integer index);
 
+    void saveData();
+
+    void loadData();
+
 }

@@ -18,4 +18,8 @@ public interface IGroupRepository {
 
     Group getGroupById(final String id);
 
+    void saveData();
+
+    void loadData();
+
 }

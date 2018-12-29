@@ -54,4 +54,14 @@ public class GroupService implements IGroupRepository {
         return groupRepository.getGroupById(id);
     }
 
+    @Override
+    public void saveData() {
+        groupRepository.saveData();
+    }
+
+    @Override
+    public void loadData() {
+        groupRepository.loadData();
+    }
+
 }
