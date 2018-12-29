@@ -37,8 +37,8 @@ public final class Bootstrap implements IBootstrap {
     }
 
     private Set<Class<? extends AbstractCommand>> registerClass() {
-        Reflections reflections = new Reflections("com.koror.app.command");
-        Set<Class<? extends AbstractCommand>> allClasses = reflections.getSubTypesOf(AbstractCommand.class);
+        final Reflections reflections = new Reflections("com.koror.app.command");
+        final Set<Class<? extends AbstractCommand>> allClasses = reflections.getSubTypesOf(AbstractCommand.class);
         return allClasses;
     }
 
