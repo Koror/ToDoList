@@ -44,7 +44,7 @@ public class TaskRepository implements ITaskRepository {
     @Override
     public void saveData() {
         try (final ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream("data_task.tmp"))) {
-            File f = new File("data_task.tmp");
+            final File f = new File("data_task.tmp");
             if (f.isFile())
                 f.delete();
             oos.writeObject(getTaskList());
@@ -56,7 +56,7 @@ public class TaskRepository implements ITaskRepository {
     @Override
     public void loadData() {
         try (final ObjectInputStream ois = new ObjectInputStream(new FileInputStream("data_task.tmp"))) {
-            List tasks = (List) ois.readObject();
+            final List tasks = (List) ois.readObject();
             for (Object task : tasks)
                 if (task instanceof Task)
                     addTask((Task) task);

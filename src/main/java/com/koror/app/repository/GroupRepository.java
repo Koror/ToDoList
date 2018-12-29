@@ -45,7 +45,7 @@ public class GroupRepository implements IGroupRepository {
     @Override
     public void saveData() {
         try (final ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream("data_group.tmp"))) {
-            File f = new File("data_group.tmp");
+            final File f = new File("data_group.tmp");
             if (f.isFile())
                 f.delete();
             oos.writeObject(getGroupList());
@@ -57,7 +57,7 @@ public class GroupRepository implements IGroupRepository {
     @Override
     public void loadData() {
         try (final ObjectInputStream ois = new ObjectInputStream(new FileInputStream("data_group.tmp"))) {
-            List<Group> tasks = (List<Group>) ois.readObject();
+            final List<Group> tasks = (List<Group>) ois.readObject();
             for (Group group : tasks)
                 groupMap.put(group.getId(), group);
         } catch (IOException | ClassNotFoundException e) {
