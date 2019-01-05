@@ -5,8 +5,8 @@ import com.koror.app.entity.Group;
 import com.koror.app.error.WrongInputException;
 import com.koror.app.repository.GroupRepository;
 
+import java.io.IOException;
 import java.util.List;
-import java.util.Map;
 
 public class GroupService implements IGroupRepository {
 
@@ -55,13 +55,33 @@ public class GroupService implements IGroupRepository {
     }
 
     @Override
-    public void saveData() {
-        groupRepository.saveData();
+    public void saveDataSerialization() throws IOException{
+        groupRepository.saveDataSerialization();
     }
 
     @Override
-    public void loadData() {
-        groupRepository.loadData();
+    public void loadDataSerialization() throws IOException, ClassNotFoundException{
+        groupRepository.loadDataSerialization();
+    }
+
+    @Override
+    public void saveDataXml() throws IOException {
+        groupRepository.saveDataXml();
+    }
+
+    @Override
+    public void loadDataXml() throws IOException {
+        groupRepository.loadDataXml();
+    }
+
+    @Override
+    public void saveDataJson() throws IOException {
+        groupRepository.saveDataJson();
+    }
+
+    @Override
+    public void loadDataJson() throws IOException {
+        groupRepository.loadDataJson();
     }
 
 }

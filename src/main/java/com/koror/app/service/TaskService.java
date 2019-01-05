@@ -5,8 +5,8 @@ import com.koror.app.entity.Task;
 import com.koror.app.error.WrongInputException;
 import com.koror.app.repository.TaskRepository;
 
+import java.io.IOException;
 import java.util.List;
-import java.util.Map;
 
 public class TaskService implements ITaskRepository {
 
@@ -69,13 +69,33 @@ public class TaskService implements ITaskRepository {
     }
 
     @Override
-    public void saveData() {
-        taskRepository.saveData();
+    public void saveDataSerialization() throws IOException{
+        taskRepository.saveDataSerialization();
     }
 
     @Override
-    public void loadData() {
-        taskRepository.loadData();
+    public void loadDataSerialization() throws IOException, ClassNotFoundException{
+        taskRepository.loadDataSerialization();
+    }
+
+    @Override
+    public void saveDataXml() throws IOException {
+        taskRepository.saveDataXml();
+    }
+
+    @Override
+    public void loadDataXml() throws IOException{
+        taskRepository.loadDataXml();
+    }
+
+    @Override
+    public void saveDataJson() throws IOException{
+        taskRepository.saveDataJson();
+    }
+
+    @Override
+    public void loadDataJson() throws IOException{
+        taskRepository.loadDataJson();
     }
 
 }

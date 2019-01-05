@@ -2,6 +2,7 @@ package com.koror.app.api.repository;
 
 import com.koror.app.entity.Task;
 
+import java.io.IOException;
 import java.util.*;
 
 public interface ITaskRepository {
@@ -24,8 +25,16 @@ public interface ITaskRepository {
 
     Task getTaskByIndex(Integer index);
 
-    void saveData();
+    void saveDataSerialization() throws IOException;
 
-    void loadData();
+    void loadDataSerialization() throws IOException, ClassNotFoundException;
+
+    void saveDataXml() throws IOException;
+
+    void loadDataXml() throws IOException;
+
+    void saveDataJson() throws IOException;
+
+    void loadDataJson() throws IOException;
 
 }

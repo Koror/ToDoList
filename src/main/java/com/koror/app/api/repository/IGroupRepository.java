@@ -2,6 +2,7 @@ package com.koror.app.api.repository;
 
 import com.koror.app.entity.Group;
 
+import java.io.IOException;
 import java.util.List;
 
 public interface IGroupRepository {
@@ -18,8 +19,16 @@ public interface IGroupRepository {
 
     Group getGroupById(final String id);
 
-    void saveData();
+    void saveDataSerialization() throws IOException;
 
-    void loadData();
+    void loadDataSerialization()throws IOException, ClassNotFoundException;
+
+    void saveDataXml() throws IOException;
+
+    void loadDataXml() throws IOException;
+
+    void saveDataJson() throws IOException;
+
+    void loadDataJson() throws IOException;
 
 }

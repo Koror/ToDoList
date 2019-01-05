@@ -1,5 +1,7 @@
 package com.koror.app.repository;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.dataformat.xml.XmlMapper;
 import com.koror.app.api.repository.ITaskRepository;
 import com.koror.app.entity.Task;
 
@@ -11,6 +13,12 @@ import java.util.*;
 public class TaskRepository implements ITaskRepository {
 
     private final Map<String, Task> taskMap = new HashMap<>();
+
+    private final String pathXml = "data/task/data_task.xml";
+
+    private final String pathJson = "data/task/data_task.json";
+
+    private final String pathBin = "data/task/data_task.tmp";
 
     @Override
     public void addTask(final Task task) {
@@ -42,27 +50,56 @@ public class TaskRepository implements ITaskRepository {
     }
 
     @Override
-    public void saveData() {
-        try (final ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream("data_task.tmp"))) {
-            final File f = new File("data_task.tmp");
-            if (f.isFile())
-                f.delete();
-            oos.writeObject(getTaskList());
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+    public void saveDataSerialization() throws IOException {
+        final FileOutputStream fos = new FileOutputStream(pathBin);
+        final ObjectOutputStream oos = new ObjectOutputStream(fos);
+        final File f = new File(pathBin);
+        new File("data/task/").mkdirs();
+        if (f.isFile()) f.delete();
+        oos.writeObject(getTaskList());
     }
 
     @Override
-    public void loadData() {
-        try (final ObjectInputStream ois = new ObjectInputStream(new FileInputStream("data_task.tmp"))) {
-            final List tasks = (List) ois.readObject();
-            for (Object task : tasks)
-                if (task instanceof Task)
-                    addTask((Task) task);
-        } catch (IOException | ClassNotFoundException e) {
-            e.printStackTrace();
-        }
+    public void loadDataSerialization() throws IOException, ClassNotFoundException {
+        final FileInputStream fis = new FileInputStream(pathBin);
+        final ObjectInputStream ois = new ObjectInputStream(fis);
+        final List tasks = (List) ois.readObject();
+        for (Object task : tasks)
+            if (task instanceof Task) addTask((Task) task);
+    }
+
+    @Override
+    public void saveDataXml() throws IOException {
+        final File f = new File(pathXml);
+        new File("data/task/").mkdirs();
+        if (f.isFile()) f.delete();
+        final ObjectMapper objectMapper = new XmlMapper();
+        final Task[] listTask = getTaskList().toArray(new Task[getTaskList().size()]);
+        objectMapper.writeValue(new File(pathXml), listTask);
+    }
+
+    @Override
+    public void loadDataXml() throws IOException {
+        final ObjectMapper objectMapper = new XmlMapper();
+        final Task[] listTask = objectMapper.readValue(new File(pathXml), Task[].class);
+        for (Task task : listTask) addTask(task);
+    }
+
+    @Override
+    public void saveDataJson() throws IOException {
+        final File f = new File(pathJson);
+        new File("data/task/").mkdirs();
+        if (f.isFile()) f.delete();
+        final ObjectMapper objectMapper = new ObjectMapper();
+        final Task[] listTask = getTaskList().toArray(new Task[getTaskList().size()]);
+        objectMapper.writeValue(new File(pathJson), listTask);
+    }
+
+    @Override
+    public void loadDataJson() throws IOException{
+        final ObjectMapper objectMapper = new ObjectMapper();
+        final Task[] listTask = objectMapper.readValue(new File(pathJson), Task[].class);
+        for (Task task : listTask) addTask(task);
     }
 
     @Override

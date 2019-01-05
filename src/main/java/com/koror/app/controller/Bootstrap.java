@@ -24,12 +24,6 @@ public final class Bootstrap implements IBootstrap {
 
     private final Map<String, AbstractCommand> commandMap = new HashMap<>();
 
-    private final Class[] classes = {
-            GroupAddCommand.class, GroupDeleteCommand.class, GroupReadCommand.class,
-            GroupUpdateCommand.class, TaskAddCommand.class, TaskClearCommand.class,
-            TaskCompleteCommand.class, TaskDeleteCommand.class, TaskReadAllCommand.class,
-            TaskToGroupCommand.class, TaskUpdateCommand.class, GroupReadAllCommand.class, LoadDataCommand.class, SaveDataCommand.class};
-
     private final Scanner scanner = new Scanner(System.in);
 
     private void registrar(final AbstractCommand command) {
@@ -42,8 +36,8 @@ public final class Bootstrap implements IBootstrap {
         return allClasses;
     }
 
-    private void init(final Set<Class<? extends AbstractCommand>> clasess) throws ReflectiveOperationException, MissingCommandException {
-        if (classes.length == 0) throw new MissingCommandException();
+    private void init(final Set<Class<? extends AbstractCommand>> classes) throws ReflectiveOperationException, MissingCommandException {
+        if (classes.size() == 0) throw new MissingCommandException();
         for (final Class c : classes) {
             if (commandNotAssignable(c)) continue;
             final AbstractCommand command = (AbstractCommand) c.newInstance();
@@ -72,7 +66,7 @@ public final class Bootstrap implements IBootstrap {
                 if (str.equals(action)) {
                     try {
                         commandMap.get(str).execute();
-                    } catch (WrongInputException e) {
+                    } catch (Exception e) {
                         System.out.println(e.getMessage());
                     }
                 }

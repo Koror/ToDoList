@@ -13,7 +13,7 @@ public class Task implements Serializable {
 
     private Priority priority = Priority.MEDIUM;
 
-    private String text = "Task  name";
+    private String text = "Task name";
 
     private boolean complete = false;
 

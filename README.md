@@ -6,21 +6,7 @@
 
 *Структура прокета*
 * [command]
-	* AbstractCommand - абстрактный класс команды
-	* GroupAddCommand - класс команды добавить группу
-    * TaskAddCommand - класс команды добавить задачу
-    * TaskClearCommand - класс команды очистить команды
-    * TaskCompleteCommand - класс команды выполнить задачу
-    * TaskToGroupCommand - класс команды присвоить задаче группу
-    * GroupDeleteCommand - класс команды удалить группу
-    * TaskDeleteCommand - класс команды удалить задачу
-    * GroupReadCommand - класс команды вывести все группы
-	* GroupReadCommand - класс команды вывести одну группу
-    * TaskReadCommand - класс команды вывести все задачи
-    * GroupUpdateCommand - класс команды обновить группу
-    * TaskUpdateCommand - класс команды обновить задачу
-	* LoadDataCommand - класс команды загрузки данных
-	* SaveDataCommand - класс команды сохранения данных
+	* классы команд
 * [repository]
   * GroupRepository - класс для созднания и управления группами
   * TaskRepository - класс для создания и управления задачами
