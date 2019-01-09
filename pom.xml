@@ -28,7 +28,6 @@
     <build>
         <finalName>to-do-list</finalName>
         <plugins>
-
             <plugin>
                 <artifactId>maven-assembly-plugin</artifactId>
                 <executions>
