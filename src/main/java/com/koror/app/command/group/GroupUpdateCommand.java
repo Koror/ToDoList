@@ -1,4 +1,4 @@
-package com.koror.app.command.groupcommand;
+package com.koror.app.command.group;
 
 import com.koror.app.command.AbstractCommand;
 import com.koror.app.entity.Group;

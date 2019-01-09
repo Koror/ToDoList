@@ -6,9 +6,13 @@ public class AssigneeTask {
 
     private final String id = UUID.randomUUID().toString();
 
-    private final String userId;
+    private String userId;
 
-    private final String taskId;
+    private String taskId;
+
+    public AssigneeTask(){
+
+    }
 
     public AssigneeTask(String userId, String taskId) {
         this.userId = userId;

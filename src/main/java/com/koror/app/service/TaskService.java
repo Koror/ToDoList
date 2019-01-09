@@ -1,16 +1,25 @@
 package com.koror.app.service;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.dataformat.xml.XmlMapper;
+import com.koror.app.api.IDataIO;
 import com.koror.app.api.repository.ITaskRepository;
 import com.koror.app.entity.Task;
 import com.koror.app.error.WrongInputException;
 import com.koror.app.repository.TaskRepository;
 
-import java.io.IOException;
+import java.io.*;
 import java.util.List;
 
-public class TaskService implements ITaskRepository {
+public class TaskService implements ITaskRepository, IDataIO {
 
     private final TaskRepository taskRepository;
+
+    private final String pathXml = "data/task/data_task.xml";
+
+    private final String pathJson = "data/task/data_task.json";
+
+    private final String pathBin = "data/task/data_task.tmp";
 
     public TaskService(TaskRepository taskRepository) {
         this.taskRepository = taskRepository;
@@ -69,33 +78,56 @@ public class TaskService implements ITaskRepository {
     }
 
     @Override
-    public void saveDataSerialization() throws IOException{
-        taskRepository.saveDataSerialization();
+    public void saveDataSerialization() throws IOException {
+        final FileOutputStream fos = new FileOutputStream(pathBin);
+        final ObjectOutputStream oos = new ObjectOutputStream(fos);
+        final File f = new File(pathBin);
+        new File("data/task/").mkdirs();
+        if (f.isFile()) f.delete();
+        oos.writeObject(getTaskList());
     }
 
     @Override
-    public void loadDataSerialization() throws IOException, ClassNotFoundException{
-        taskRepository.loadDataSerialization();
+    public void loadDataSerialization() throws IOException, ClassNotFoundException {
+        final FileInputStream fis = new FileInputStream(pathBin);
+        final ObjectInputStream ois = new ObjectInputStream(fis);
+        final List tasks = (List) ois.readObject();
+        for (Object task : tasks)
+            if (task instanceof Task) addTask((Task) task);
     }
 
     @Override
     public void saveDataXml() throws IOException {
-        taskRepository.saveDataXml();
+        final File f = new File(pathXml);
+        new File("data/task/").mkdirs();
+        if (f.isFile()) f.delete();
+        final ObjectMapper objectMapper = new XmlMapper();
+        final Task[] listTask = getTaskList().toArray(new Task[getTaskList().size()]);
+        objectMapper.writeValue(new File(pathXml), listTask);
     }
 
     @Override
-    public void loadDataXml() throws IOException{
-        taskRepository.loadDataXml();
+    public void loadDataXml() throws IOException {
+        final ObjectMapper objectMapper = new XmlMapper();
+        final Task[] listTask = objectMapper.readValue(new File(pathXml), Task[].class);
+        for (Task task : listTask) addTask(task);
     }
 
     @Override
-    public void saveDataJson() throws IOException{
-        taskRepository.saveDataJson();
+    public void saveDataJson() throws IOException {
+        final File f = new File(pathJson);
+        new File("data/task/").mkdirs();
+        if (f.isFile()) f.delete();
+        final ObjectMapper objectMapper = new ObjectMapper();
+        final Task[] listTask = getTaskList().toArray(new Task[getTaskList().size()]);
+        objectMapper.writeValue(new File(pathJson), listTask);
     }
 
     @Override
     public void loadDataJson() throws IOException{
-        taskRepository.loadDataJson();
+        final ObjectMapper objectMapper = new ObjectMapper();
+        final Task[] listTask = objectMapper.readValue(new File(pathJson), Task[].class);
+        for (Task task : listTask) addTask(task);
     }
 
 }

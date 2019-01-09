@@ -1,6 +1,7 @@
-package com.koror.app.command.taskcommand;
+package com.koror.app.command.task;
 
 import com.koror.app.command.AbstractCommand;
+import com.koror.app.entity.AssigneeTask;
 import com.koror.app.entity.Task;
 import com.koror.app.enumerated.Priority;
 
@@ -13,6 +14,10 @@ public final class TaskAddCommand extends AbstractCommand {
         final String priority = bootstrap.nextLine();
         final Task task = new Task(name, Priority.getPriority(priority));
         bootstrap.getTaskService().addTask(task);
+        final String userId = bootstrap.getAuthorization().getUserId();
+        final String taskId = task.getId();
+        final AssigneeTask assigneeTask = new AssigneeTask(userId, taskId);
+        bootstrap.getAssigneeTaskService().addAssignee(assigneeTask);
     }
 
     @Override

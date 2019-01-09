@@ -3,7 +3,9 @@ package com.koror.app.repository;
 import com.koror.app.api.repository.IAssigneeTaskRepository;
 import com.koror.app.entity.AssigneeTask;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class AssigneeTaskRepository implements IAssigneeTaskRepository {
@@ -13,6 +15,11 @@ public class AssigneeTaskRepository implements IAssigneeTaskRepository {
     @Override
     public void addAssignee(AssigneeTask assigneeTask) {
         assigneeTaskMap.put(assigneeTask.getId(), assigneeTask);
+    }
+
+    @Override
+    public void deleteAssignee(String id) {
+        assigneeTaskMap.remove(id);
     }
 
     @Override
@@ -27,6 +34,11 @@ public class AssigneeTaskRepository implements IAssigneeTaskRepository {
                 return assigneeTask;
         }
         return null;
+    }
+
+    @Override
+    public List<AssigneeTask> getAssigneeTaskList() {
+        return new ArrayList<>(assigneeTaskMap.values());
     }
 
 }

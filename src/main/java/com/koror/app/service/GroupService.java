@@ -1,16 +1,25 @@
 package com.koror.app.service;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.dataformat.xml.XmlMapper;
+import com.koror.app.api.IDataIO;
 import com.koror.app.api.repository.IGroupRepository;
 import com.koror.app.entity.Group;
 import com.koror.app.error.WrongInputException;
 import com.koror.app.repository.GroupRepository;
 
-import java.io.IOException;
+import java.io.*;
 import java.util.List;
 
-public class GroupService implements IGroupRepository {
+public class GroupService implements IGroupRepository, IDataIO {
 
     private final GroupRepository groupRepository;
+
+    private final String pathXml = "data/group/data_group.xml";
+
+    private final String pathJson = "data/group/data_group.json";
+
+    private final String pathBin = "data/group/data_group.tmp";
 
     public GroupService(GroupRepository groupRepository) {
         this.groupRepository = groupRepository;
@@ -55,33 +64,55 @@ public class GroupService implements IGroupRepository {
     }
 
     @Override
-    public void saveDataSerialization() throws IOException{
-        groupRepository.saveDataSerialization();
+    public void saveDataSerialization() throws IOException {
+        final FileOutputStream fos = new FileOutputStream(pathBin);
+        final ObjectOutputStream oos = new ObjectOutputStream(fos);
+        final File f = new File(pathBin);
+        new File("data/group/").mkdirs();
+        if (f.isFile()) f.delete();
+        oos.writeObject(getGroupList());
     }
 
     @Override
     public void loadDataSerialization() throws IOException, ClassNotFoundException{
-        groupRepository.loadDataSerialization();
+        final FileInputStream fis = new FileInputStream(pathBin);
+        final ObjectInputStream ois = new ObjectInputStream(fis);
+        final List<Group> tasks = (List<Group>) ois.readObject();
+        for (Group group : tasks) addGroup(group);
     }
 
     @Override
     public void saveDataXml() throws IOException {
-        groupRepository.saveDataXml();
+        final File f = new File(pathXml);
+        new File("data/group/").mkdirs();
+        if (f.isFile()) f.delete();
+        final ObjectMapper objectMapper = new XmlMapper();
+        final Group[] listGroup = getGroupList().toArray(new Group[getGroupList().size()]);
+        objectMapper.writeValue(new File(pathXml), listGroup);
     }
 
     @Override
     public void loadDataXml() throws IOException {
-        groupRepository.loadDataXml();
+        final ObjectMapper objectMapper = new XmlMapper();
+        final Group[] listGroup = objectMapper.readValue(new File(pathXml), Group[].class);
+        for (Group group : listGroup) addGroup(group);
     }
 
     @Override
     public void saveDataJson() throws IOException {
-        groupRepository.saveDataJson();
+        final File f = new File(pathJson);
+        new File("data/group/").mkdirs();
+        if (f.isFile()) f.delete();
+        final ObjectMapper objectMapper = new ObjectMapper();
+        final Group[] listGroup = getGroupList().toArray(new Group[getGroupList().size()]);
+        objectMapper.writeValue(new File(pathJson), listGroup);
     }
 
     @Override
-    public void loadDataJson() throws IOException {
-        groupRepository.loadDataJson();
+    public void loadDataJson() throws IOException{
+        final ObjectMapper objectMapper = new ObjectMapper();
+        final Group[] listGroup = objectMapper.readValue(new File(pathJson), Group[].class);
+        for (Group task : listGroup) addGroup(task);
     }
 
 }

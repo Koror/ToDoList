@@ -1,4 +1,4 @@
-package com.koror.app.command.taskcommand;
+package com.koror.app.command.task;
 
 import com.koror.app.command.AbstractCommand;
 import com.koror.app.entity.Task;

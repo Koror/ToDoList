@@ -1,4 +1,4 @@
-package com.koror.app.command.usercommand;
+package com.koror.app.command.user;
 
 import com.koror.app.command.AbstractCommand;
 import com.koror.app.entity.User;

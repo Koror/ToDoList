@@ -44,13 +44,13 @@ public final class Bootstrap implements IBootstrap {
     }
 
     private Set<Class<? extends AbstractCommand>> registerClass() {
-        Reflections reflections = new Reflections("com.koror.app.command.taskcommand");
+        Reflections reflections = new Reflections("com.koror.app.command.task");
         final Set<Class<? extends AbstractCommand>> allClasses = reflections.getSubTypesOf(AbstractCommand.class);
-        reflections = new Reflections("com.koror.app.command.groupcommand");
+        reflections = new Reflections("com.koror.app.command.group");
         allClasses.addAll(reflections.getSubTypesOf(AbstractCommand.class));
-        reflections = new Reflections("com.koror.app.command.datacommand");
+        reflections = new Reflections("com.koror.app.command.data");
         allClasses.addAll(reflections.getSubTypesOf(AbstractCommand.class));
-        reflections = new Reflections("com.koror.app.command.usercommand");
+        reflections = new Reflections("com.koror.app.command.user");
         allClasses.addAll(reflections.getSubTypesOf(AbstractCommand.class));
         return allClasses;
     }

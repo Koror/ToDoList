@@ -1,4 +1,4 @@
-package com.koror.app.command.usercommand;
+package com.koror.app.command.user;
 
 import com.koror.app.command.AbstractCommand;
 import com.koror.app.entity.User;
@@ -12,7 +12,7 @@ public class UserAddCommand extends AbstractCommand {
         final String password = bootstrap.nextLine();
         final User user = new User(login, password);
         bootstrap.getUserService().addUser(user);
-        bootstrap.getAuthorization().auth(login, password);
+        bootstrap.getAuthorization().auth(login, password, user.getId());
         System.out.println("User created and login");
     }
 

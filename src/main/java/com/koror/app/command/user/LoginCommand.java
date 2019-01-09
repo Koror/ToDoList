@@ -1,8 +1,9 @@
-package com.koror.app.command.usercommand;
+package com.koror.app.command.user;
 
 import com.koror.app.command.AbstractCommand;
+import com.koror.app.entity.User;
 
-import java.io.IOException;
+import java.util.List;
 
 public class LoginCommand extends AbstractCommand {
 
@@ -11,7 +12,13 @@ public class LoginCommand extends AbstractCommand {
         System.out.println("Input login and password");
         final String login = bootstrap.nextLine();
         final String password = bootstrap.nextLine();
-        bootstrap.getAuthorization().auth(login, password);
+        final List<User> userList = bootstrap.getUserService().getUserList();
+        String userId = null;
+        for (User user : userList){
+            if((login.equals(user.getLogin())) && (password.equals(user.getPassword())))
+                userId = user.getId();
+        }
+        bootstrap.getAuthorization().auth(login, password, userId);
     }
 
     @Override

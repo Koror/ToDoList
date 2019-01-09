@@ -6,9 +6,13 @@ public class AssigneeGroup {
 
     private String id = UUID.randomUUID().toString();
 
-    private final String userId;
+    private String userId;
 
-    private final String groupId;
+    private String groupId;
+
+    public AssigneeGroup(){
+
+    }
 
     public AssigneeGroup(String userId, String groupId) {
         this.userId = userId;
