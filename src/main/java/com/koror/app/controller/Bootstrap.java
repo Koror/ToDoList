@@ -4,10 +4,9 @@ import com.koror.app.api.controller.IBootstrap;
 import com.koror.app.command.*;
 import com.koror.app.error.MissingCommandException;
 import com.koror.app.error.WrongInputException;
-import com.koror.app.repository.GroupRepository;
-import com.koror.app.repository.TaskRepository;
-import com.koror.app.service.GroupService;
-import com.koror.app.service.TaskService;
+import com.koror.app.repository.*;
+import com.koror.app.security.Authorization;
+import com.koror.app.service.*;
 import org.reflections.Reflections;
 
 import java.util.*;
@@ -22,6 +21,20 @@ public final class Bootstrap implements IBootstrap {
 
     private final TaskService taskService = new TaskService(taskRepository);
 
+    private final UserRepository userRepository = new UserRepository();
+
+    private final UserService userService = new UserService(userRepository);
+
+    private final AssigneeTaskRepository assigneeTaskRepository = new AssigneeTaskRepository();
+
+    private final AssigneeTaskService assigneeTaskService = new AssigneeTaskService(assigneeTaskRepository);
+
+    private final AssigneeGroupRepository assigneeGroupRepository = new AssigneeGroupRepository();
+
+    private final AssigneeGroupService assigneeGroupService = new AssigneeGroupService(assigneeGroupRepository);
+
+    private final Authorization authorization = new Authorization();
+
     private final Map<String, AbstractCommand> commandMap = new HashMap<>();
 
     private final Scanner scanner = new Scanner(System.in);
@@ -31,8 +44,14 @@ public final class Bootstrap implements IBootstrap {
     }
 
     private Set<Class<? extends AbstractCommand>> registerClass() {
-        final Reflections reflections = new Reflections("com.koror.app.command");
+        Reflections reflections = new Reflections("com.koror.app.command.taskcommand");
         final Set<Class<? extends AbstractCommand>> allClasses = reflections.getSubTypesOf(AbstractCommand.class);
+        reflections = new Reflections("com.koror.app.command.groupcommand");
+        allClasses.addAll(reflections.getSubTypesOf(AbstractCommand.class));
+        reflections = new Reflections("com.koror.app.command.datacommand");
+        allClasses.addAll(reflections.getSubTypesOf(AbstractCommand.class));
+        reflections = new Reflections("com.koror.app.command.usercommand");
+        allClasses.addAll(reflections.getSubTypesOf(AbstractCommand.class));
         return allClasses;
     }
 
@@ -82,6 +101,26 @@ public final class Bootstrap implements IBootstrap {
     @Override
     public TaskService getTaskService() {
         return taskService;
+    }
+
+    @Override
+    public UserService getUserService() {
+        return userService;
+    }
+
+    @Override
+    public AssigneeGroupService getAssigneeGroupService() {
+        return assigneeGroupService;
+    }
+
+    @Override
+    public AssigneeTaskService getAssigneeTaskService() {
+        return assigneeTaskService;
+    }
+
+    @Override
+    public Authorization getAuthorization() {
+        return authorization;
     }
 
     @Override

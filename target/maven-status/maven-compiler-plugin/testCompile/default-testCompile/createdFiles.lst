@@ -1,0 +1,5 @@
+com\koror\app\service\GroupServiceTest.class
+com\koror\app\AppTest.class
+com\koror\app\repository\GroupRepositoryTest.class
+com\koror\app\repository\TaskRepositoryTest.class
+com\koror\app\service\TaskServiceTest.class

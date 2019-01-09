@@ -41,7 +41,7 @@ public class GroupRepositoryTest {
         assertEquals(groupId, groupRepository.getGroup(0).getId());
     }
 
-    @Test
+    @Test(expected = IndexOutOfBoundsException.class)
     public void testPositiveDeleteGroup() {
         final GroupRepository groupRepository = new GroupRepository();
         final Group group = new Group("Test group");

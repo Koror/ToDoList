@@ -1,7 +1,7 @@
 package com.koror.app.api.controller;
 
-import com.koror.app.service.GroupService;
-import com.koror.app.service.TaskService;
+import com.koror.app.security.Authorization;
+import com.koror.app.service.*;
 
 public interface IBootstrap {
 
@@ -10,6 +10,14 @@ public interface IBootstrap {
     GroupService getGroupService();
 
     TaskService getTaskService();
+
+    UserService getUserService();
+
+    AssigneeGroupService getAssigneeGroupService();
+
+    AssigneeTaskService getAssigneeTaskService();
+
+    Authorization getAuthorization();
 
     Integer nextInt();
 
