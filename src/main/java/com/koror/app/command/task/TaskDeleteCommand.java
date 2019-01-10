@@ -10,16 +10,14 @@ public final class TaskDeleteCommand extends AbstractCommand {
 
     @Override
     public void execute() {
-        final List<Task> taskList = bootstrap.getTaskService().getTaskList();
+        final String userId = bootstrap.getAuthorization().getUserId();
+        final List<Task> taskList = bootstrap.getTaskService().getListTaskByUserId(userId);
         System.out.println(taskList);
         System.out.println("Input index task");
-        final List<AssigneeTask> listAssignee = bootstrap.getAssigneeTaskService().getAssigneeTaskList();
-        final String userId = bootstrap.getAuthorization().getUserId();
         final int inputIndex = bootstrap.nextInt();
-        for(AssigneeTask assigneeTask : listAssignee)
-            if((assigneeTask.getUserId().equals(userId)) && (assigneeTask.getTaskId().equals(taskList.get(inputIndex))))
-                bootstrap.getAssigneeTaskService().deleteAssignee(assigneeTask.getId());
+        bootstrap.getAssigneeTaskService().deleteAssigneeByParam(userId, taskList.get(inputIndex).getId());
         bootstrap.getTaskService().deleteTask(taskList.get(inputIndex).getId());
+        System.out.println("Task delete");
     }
 
     @Override

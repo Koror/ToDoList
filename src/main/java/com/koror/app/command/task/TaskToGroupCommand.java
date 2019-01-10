@@ -10,16 +10,18 @@ public final class TaskToGroupCommand extends AbstractCommand {
 
     @Override
     public void execute() {
-        final List<Task> taskList = bootstrap.getTaskService().getTaskList();
+        final String userId = bootstrap.getAuthorization().getUserId();
+        final List<Task> taskList = bootstrap.getTaskService().getListTaskByUserId(userId);
         System.out.println(taskList);
         System.out.println("Input index task");
         final Task task = taskList.get(bootstrap.nextInt());
-        final List<Group> groupList = bootstrap.getGroupService().getGroupList();
+        final List<Group> groupList = bootstrap.getGroupService().getListGroupByUserId(userId);
         System.out.println(groupList);
         System.out.println("Input index group");
         final Group group = groupList.get(bootstrap.nextInt());
         task.setGroupId(group.getId());
         bootstrap.getTaskService().setGroupId(task);
+        System.out.println("Link task to group");
     }
 
     @Override

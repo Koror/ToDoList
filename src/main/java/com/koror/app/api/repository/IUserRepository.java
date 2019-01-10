@@ -6,10 +6,14 @@ import java.util.List;
 
 public interface IUserRepository {
 
-    void addUser(User user);
+    void registerUser(User user);
 
-    void deleteUser(String id);
+    void deleteUserById(String id);
 
     List<User> getUserList();
+
+    User findById(String id);
+
+    User findByLogin(String login);
 
 }

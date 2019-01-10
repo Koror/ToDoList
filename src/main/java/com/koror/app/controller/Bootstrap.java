@@ -2,6 +2,13 @@ package com.koror.app.controller;
 
 import com.koror.app.api.controller.IBootstrap;
 import com.koror.app.command.*;
+import com.koror.app.command.data.LoadDataJsonCommand;
+import com.koror.app.command.data.LoadDataSerializationCommand;
+import com.koror.app.command.data.LoadDataXmlCommand;
+import com.koror.app.command.help.HelpLoginCommand;
+import com.koror.app.command.user.LoginCommand;
+import com.koror.app.command.user.UserRegisterCommand;
+import com.koror.app.entity.User;
 import com.koror.app.error.MissingCommandException;
 import com.koror.app.error.WrongInputException;
 import com.koror.app.repository.*;
@@ -13,18 +20,6 @@ import java.util.*;
 
 public final class Bootstrap implements IBootstrap {
 
-    private final GroupRepository groupRepository = new GroupRepository();
-
-    private final TaskRepository taskRepository = new TaskRepository();
-
-    private final GroupService groupService = new GroupService(groupRepository);
-
-    private final TaskService taskService = new TaskService(taskRepository);
-
-    private final UserRepository userRepository = new UserRepository();
-
-    private final UserService userService = new UserService(userRepository);
-
     private final AssigneeTaskRepository assigneeTaskRepository = new AssigneeTaskRepository();
 
     private final AssigneeTaskService assigneeTaskService = new AssigneeTaskService(assigneeTaskRepository);
@@ -33,13 +28,27 @@ public final class Bootstrap implements IBootstrap {
 
     private final AssigneeGroupService assigneeGroupService = new AssigneeGroupService(assigneeGroupRepository);
 
-    private final Authorization authorization = new Authorization();
+    private final GroupRepository groupRepository = new GroupRepository();
 
-    private final Map<String, AbstractCommand> commandMap = new HashMap<>();
+    private final TaskRepository taskRepository = new TaskRepository();
+
+    private final GroupService groupService = new GroupService(groupRepository, assigneeGroupService);
+
+    private final TaskService taskService = new TaskService(taskRepository, assigneeTaskService);
+
+    private final UserRepository userRepository = new UserRepository();
+
+    private final UserService userService = new UserService(userRepository);
+
+    private Authorization authorization = new Authorization();
+
+    private final Map<String, AbstractCommand> commandUserMap = new HashMap<>();
+
+    private final Map<String, AbstractCommand> commandLoginMap = new HashMap<>();
 
     private final Scanner scanner = new Scanner(System.in);
 
-    private void registrar(final AbstractCommand command) {
+    private void registrar(Map<String, AbstractCommand> commandMap, final AbstractCommand command) {
         commandMap.put(command.command(), command);
     }
 
@@ -52,18 +61,40 @@ public final class Bootstrap implements IBootstrap {
         allClasses.addAll(reflections.getSubTypesOf(AbstractCommand.class));
         reflections = new Reflections("com.koror.app.command.user");
         allClasses.addAll(reflections.getSubTypesOf(AbstractCommand.class));
+        reflections = new Reflections("com.koror.app.command.help");
+        allClasses.addAll(reflections.getSubTypesOf(AbstractCommand.class));
         return allClasses;
     }
 
-    private void init(final Set<Class<? extends AbstractCommand>> classes) throws ReflectiveOperationException, MissingCommandException {
+    private void initUserCommand(final Set<Class<? extends AbstractCommand>> classes) throws ReflectiveOperationException, MissingCommandException {
         if (classes.size() == 0) throw new MissingCommandException();
         for (final Class c : classes) {
             if (commandNotAssignable(c)) continue;
             final AbstractCommand command = (AbstractCommand) c.newInstance();
             command.setBootstrap(this);
-            registrar(command);
+            if (command instanceof LoginCommand) continue;
+            if (command instanceof UserRegisterCommand) continue;
+            if (command instanceof HelpLoginCommand) continue;
+            registrar(commandUserMap, command);
         }
     }
+
+    private void initLoginCommand(final Set<Class<? extends AbstractCommand>> classes) throws ReflectiveOperationException, MissingCommandException {
+        if (classes.size() == 0) throw new MissingCommandException();
+        for (final Class c : classes) {
+            if (commandNotAssignable(c)) continue;
+            final AbstractCommand command = (AbstractCommand) c.newInstance();
+            command.setBootstrap(this);
+            if (command instanceof LoginCommand ||
+                    command instanceof UserRegisterCommand ||
+                    command instanceof LoadDataJsonCommand ||
+                    command instanceof LoadDataSerializationCommand ||
+                    command instanceof LoadDataXmlCommand ||
+                    command instanceof HelpLoginCommand)
+                registrar(commandLoginMap, command);
+        }
+    }
+
 
     private boolean commandNotAssignable(final Class c) {
         if (!AbstractCommand.class.isAssignableFrom(c)) {
@@ -73,23 +104,39 @@ public final class Bootstrap implements IBootstrap {
         return false;
     }
 
-    @Override
-    public void start() throws ReflectiveOperationException {
-        final Scanner scanner = new Scanner(System.in);
-        init(registerClass());
-        String action;
-        do {
-            System.out.println("Action: " + commandMap.keySet() + " Exit");
-            action = scanner.nextLine();
-            for (String str : commandMap.keySet()) {
-                if (str.equals(action)) {
-                    try {
-                        commandMap.get(str).execute();
-                    } catch (Exception e) {
-                        System.out.println(e.getMessage());
-                    }
+    private String startCommand(Map<String, AbstractCommand> commandMap) {
+        String action = nextLine();
+        for (String str : commandMap.keySet()) {
+            if (str.equals(action)) {
+                try {
+                    commandMap.get(str).execute();
+                } catch (Exception e) {
+                    System.out.println(e.getMessage());
                 }
             }
+        }
+        return action;
+    }
+
+    private void defaultUserInit() {
+        User user = new User("admin", "admin");
+        getUserService().registerUser(user);
+        user = new User("test", "test");
+        getUserService().registerUser(user);
+    }
+
+    @Override
+    public void start() throws ReflectiveOperationException {
+        initUserCommand(registerClass());
+        initLoginCommand(registerClass());
+        defaultUserInit();
+        String action;
+        System.out.println("Action: Help, Exit");
+        do {
+            if (authorization.getLogin() == null)
+                action = startCommand(commandLoginMap);
+            else
+                action = startCommand(commandUserMap);
         } while (!action.equals("Exit"));
     }
 
@@ -121,6 +168,14 @@ public final class Bootstrap implements IBootstrap {
     @Override
     public Authorization getAuthorization() {
         return authorization;
+    }
+
+    public Map<String, AbstractCommand> getCommandUserMap() {
+        return commandUserMap;
+    }
+
+    public Map<String, AbstractCommand> getCommandLoginMap() {
+        return commandLoginMap;
     }
 
     @Override

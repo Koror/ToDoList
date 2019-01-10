@@ -11,6 +11,8 @@ public interface IAssigneeTaskRepository {
 
     void deleteAssignee(String id);
 
+    void deleteAssigneeByParam(String userId, String taskId);
+
     AssigneeTask getAssigneeById(String id);
 
     AssigneeTask getAssigneeByUserId(String userId);

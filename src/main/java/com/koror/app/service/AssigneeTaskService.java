@@ -6,6 +6,7 @@ import com.koror.app.api.IDataIO;
 import com.koror.app.api.repository.IAssigneeTaskRepository;
 import com.koror.app.entity.AssigneeGroup;
 import com.koror.app.entity.AssigneeTask;
+import com.koror.app.error.WrongInputException;
 import com.koror.app.repository.AssigneeTaskRepository;
 
 import java.io.*;
@@ -28,21 +29,32 @@ public class AssigneeTaskService implements IAssigneeTaskRepository, IDataIO {
 
     @Override
     public void addAssignee(AssigneeTask assigneeTask) {
+        if(assigneeTask==null) throw new WrongInputException("Wrong Input");
         assigneeTaskRepository.addAssignee(assigneeTask);
     }
 
     @Override
     public void deleteAssignee(String id) {
+        if(id==null || id.isEmpty()) throw new WrongInputException("Wrong Input");
         assigneeTaskRepository.deleteAssignee(id);
     }
 
     @Override
+    public void deleteAssigneeByParam(String userId, String taskId) {
+        if(userId==null || userId.isEmpty()) throw new WrongInputException("Wrong Input");
+        if(taskId==null || taskId.isEmpty()) throw new WrongInputException("Wrong Input");
+        assigneeTaskRepository.deleteAssigneeByParam(userId, taskId);
+    }
+
+    @Override
     public AssigneeTask getAssigneeById(String id) {
+        if(id==null || id.isEmpty()) throw new WrongInputException("Wrong Input");
         return assigneeTaskRepository.getAssigneeById(id);
     }
 
     @Override
     public AssigneeTask getAssigneeByUserId(String userId) {
+        if(userId==null || userId.isEmpty()) throw new WrongInputException("Wrong Input");
         return assigneeTaskRepository.getAssigneeByUserId(userId);
     }
 

@@ -23,6 +23,14 @@ public class AssigneeGroupRepository implements IAssigneeGroupRepository {
     }
 
     @Override
+    public void deleteAssigneeByParam(String userId, String groupId) {
+        for(AssigneeGroup assigneeGroup : assigneeGroupMap.values()){
+            if(userId.equals(assigneeGroup.getUserId()) && groupId.equals(assigneeGroup.getGroupId()))
+                assigneeGroupMap.remove(assigneeGroup.getId());
+        }
+    }
+
+    @Override
     public AssigneeGroup getAssigneeById(String id) {
         return assigneeGroupMap.get(id);
     }

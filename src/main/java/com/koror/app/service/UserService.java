@@ -24,18 +24,28 @@ public class UserService implements IUserRepository, IDataIO {
         userRepository = repository;
     }
     @Override
-    public void addUser(User user) {
-        userRepository.addUser(user);
+    public void registerUser(User user) {
+        userRepository.registerUser(user);
     }
 
     @Override
-    public void deleteUser(String id) {
-        userRepository.deleteUser(id);
+    public void deleteUserById(String id) {
+        userRepository.deleteUserById(id);
     }
 
     @Override
     public List<User> getUserList() {
         return userRepository.getUserList();
+    }
+
+    @Override
+    public User findById(String id) {
+        return userRepository.findById(id);
+    }
+
+    @Override
+    public User findByLogin(String login) {
+        return userRepository.findByLogin(login);
     }
 
     @Override
@@ -54,7 +64,7 @@ public class UserService implements IUserRepository, IDataIO {
         final ObjectInputStream ois = new ObjectInputStream(fis);
         final List users = (List) ois.readObject();
         for (Object user : users)
-            if (user instanceof User) addUser((User) user);
+            if (user instanceof User) registerUser((User) user);
     }
 
     @Override
@@ -71,7 +81,7 @@ public class UserService implements IUserRepository, IDataIO {
     public void loadDataXml() throws IOException {
         final ObjectMapper objectMapper = new XmlMapper();
         final User[] listUser = objectMapper.readValue(new File(pathXml), User[].class);
-        for (User user : listUser) addUser(user);
+        for (User user : listUser) registerUser(user);
     }
 
     @Override
@@ -88,7 +98,7 @@ public class UserService implements IUserRepository, IDataIO {
     public void loadDataJson() throws IOException{
         final ObjectMapper objectMapper = new ObjectMapper();
         final User[] listUser = objectMapper.readValue(new File(pathJson), User[].class);
-        for (User user : listUser) addUser(user);
+        for (User user : listUser) registerUser(user);
     }
 
 }

@@ -4,16 +4,20 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.dataformat.xml.XmlMapper;
 import com.koror.app.api.IDataIO;
 import com.koror.app.api.repository.ITaskRepository;
+import com.koror.app.entity.AssigneeTask;
 import com.koror.app.entity.Task;
 import com.koror.app.error.WrongInputException;
 import com.koror.app.repository.TaskRepository;
 
 import java.io.*;
+import java.util.ArrayList;
 import java.util.List;
 
 public class TaskService implements ITaskRepository, IDataIO {
 
     private final TaskRepository taskRepository;
+
+    private final AssigneeTaskService assigneeTaskService;
 
     private final String pathXml = "data/task/data_task.xml";
 
@@ -21,8 +25,9 @@ public class TaskService implements ITaskRepository, IDataIO {
 
     private final String pathBin = "data/task/data_task.tmp";
 
-    public TaskService(TaskRepository taskRepository) {
+    public TaskService(TaskRepository taskRepository, AssigneeTaskService assigneeTaskService) {
         this.taskRepository = taskRepository;
+        this.assigneeTaskService = assigneeTaskService;
     }
 
     @Override
@@ -52,8 +57,8 @@ public class TaskService implements ITaskRepository, IDataIO {
     }
 
     @Override
-    public void clearTask() {
-        taskRepository.clearTask();
+    public void clearTask(List<Task> taskList) {
+        taskRepository.clearTask(taskList);
     }
 
     @Override
@@ -75,6 +80,16 @@ public class TaskService implements ITaskRepository, IDataIO {
     @Override
     public Task getTaskByIndex(Integer index) {
         return taskRepository.getTaskByIndex(index);
+    }
+
+    public List<Task> getListTaskByUserId(final String userId) {
+        final List<Task> taskList = new ArrayList<>();
+        for (final AssigneeTask assigneeTask : assigneeTaskService.getAssigneeTaskList()) {
+            if (userId.equals(assigneeTask.getUserId())) {
+                taskList.add(getTaskById(assigneeTask.getTaskId()));
+            }
+        }
+        return taskList;
     }
 
     @Override
@@ -124,7 +139,7 @@ public class TaskService implements ITaskRepository, IDataIO {
     }
 
     @Override
-    public void loadDataJson() throws IOException{
+    public void loadDataJson() throws IOException {
         final ObjectMapper objectMapper = new ObjectMapper();
         final Task[] listTask = objectMapper.readValue(new File(pathJson), Task[].class);
         for (Task task : listTask) addTask(task);

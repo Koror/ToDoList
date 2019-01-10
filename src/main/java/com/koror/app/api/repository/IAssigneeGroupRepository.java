@@ -11,6 +11,8 @@ public interface IAssigneeGroupRepository {
 
     void deleteAssignee(String id);
 
+    void deleteAssigneeByParam(String userId, String groupId);
+
     AssigneeGroup getAssigneeById(String id);
 
     AssigneeGroup getAssigneeByUserId(String userId);

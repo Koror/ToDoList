@@ -75,7 +75,7 @@ public class TaskRepositoryTest {
         final Task task = new Task("test task");
         taskRepository.addTask(task);
         taskRepository.getTaskById(task.getId()).setComplete();
-        taskRepository.clearTask();
+        taskRepository.clearTask(taskRepository.getTaskList());
         assertTrue(taskRepository.getTaskList().isEmpty());
     }
 
@@ -85,7 +85,7 @@ public class TaskRepositoryTest {
         Task task = new Task("test task");
         taskRepository.addTask(task);
         taskRepository.getTaskById(task.getId()).setComplete();
-        taskRepository.clearTask();
+        taskRepository.clearTask(taskRepository.getTaskList());
         task = taskRepository.getTaskById(task.getId());
         task.getId();
     }

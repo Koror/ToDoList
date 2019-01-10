@@ -4,16 +4,21 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.dataformat.xml.XmlMapper;
 import com.koror.app.api.IDataIO;
 import com.koror.app.api.repository.IGroupRepository;
+import com.koror.app.controller.Bootstrap;
+import com.koror.app.entity.AssigneeGroup;
 import com.koror.app.entity.Group;
 import com.koror.app.error.WrongInputException;
 import com.koror.app.repository.GroupRepository;
 
 import java.io.*;
+import java.util.ArrayList;
 import java.util.List;
 
 public class GroupService implements IGroupRepository, IDataIO {
 
     private final GroupRepository groupRepository;
+
+    private final AssigneeGroupService assigneeGroupService;
 
     private final String pathXml = "data/group/data_group.xml";
 
@@ -21,8 +26,9 @@ public class GroupService implements IGroupRepository, IDataIO {
 
     private final String pathBin = "data/group/data_group.tmp";
 
-    public GroupService(GroupRepository groupRepository) {
+    public GroupService(GroupRepository groupRepository, AssigneeGroupService assigneeGroupService) {
         this.groupRepository = groupRepository;
+        this.assigneeGroupService = assigneeGroupService;
     }
 
     @Override
@@ -63,6 +69,15 @@ public class GroupService implements IGroupRepository, IDataIO {
         return groupRepository.getGroupById(id);
     }
 
+    public List<Group> getListGroupByUserId(String userId) {
+        final List<Group> groupList = new ArrayList<>();
+        for (final AssigneeGroup assigneeGroups : assigneeGroupService.getAssigneeGroupList()) {
+            if (userId.equals(assigneeGroups.getUserId()))
+                groupList.add(getGroupById(assigneeGroups.getGroupId()));
+        }
+        return groupList;
+    }
+
     @Override
     public void saveDataSerialization() throws IOException {
         final FileOutputStream fos = new FileOutputStream(pathBin);
@@ -74,7 +89,7 @@ public class GroupService implements IGroupRepository, IDataIO {
     }
 
     @Override
-    public void loadDataSerialization() throws IOException, ClassNotFoundException{
+    public void loadDataSerialization() throws IOException, ClassNotFoundException {
         final FileInputStream fis = new FileInputStream(pathBin);
         final ObjectInputStream ois = new ObjectInputStream(fis);
         final List<Group> tasks = (List<Group>) ois.readObject();
@@ -109,7 +124,7 @@ public class GroupService implements IGroupRepository, IDataIO {
     }
 
     @Override
-    public void loadDataJson() throws IOException{
+    public void loadDataJson() throws IOException {
         final ObjectMapper objectMapper = new ObjectMapper();
         final Group[] listGroup = objectMapper.readValue(new File(pathJson), Group[].class);
         for (Group task : listGroup) addGroup(task);

@@ -26,4 +26,9 @@ public class Authorization {
         return userId;
     }
 
+    public void logout(){
+        login = null;
+        password = null;
+        userId = null;
+    }
 }

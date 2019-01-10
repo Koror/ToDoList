@@ -13,18 +13,32 @@ public class UserRepository implements IUserRepository {
     private final Map<String, User> userMap = new HashMap<>();
 
     @Override
-    public void addUser(User user) {
+    public void registerUser(User user) {
         userMap.put(user.getId(), user);
     }
 
     @Override
-    public void deleteUser(String id) {
+    public void deleteUserById(String id) {
         userMap.remove(id);
     }
 
     @Override
     public List<User> getUserList() {
         return new ArrayList<>(userMap.values());
+    }
+
+    @Override
+    public User findById(String id) {
+        return userMap.get(id);
+    }
+
+    @Override
+    public User findByLogin(final String login) {
+        for (User user : userMap.values()){
+            if(login.equals(user.getLogin()))
+                return user;
+        }
+        return null;
     }
 
 }

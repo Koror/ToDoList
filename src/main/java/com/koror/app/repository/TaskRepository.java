@@ -35,11 +35,10 @@ public class TaskRepository implements ITaskRepository {
     }
 
     @Override
-    public void clearTask() {
-        final Iterator<Task> taskIterator = taskMap.values().iterator();
-        while (taskIterator.hasNext()) {
-            if (taskIterator.next().getComplete())
-                taskIterator.remove();
+    public void clearTask(List<Task> taskList) {
+        for (Task task : taskList) {
+            if (task.getComplete())
+                deleteTask(task.getId());
         }
     }
 

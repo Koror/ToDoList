@@ -23,6 +23,14 @@ public class AssigneeTaskRepository implements IAssigneeTaskRepository {
     }
 
     @Override
+    public void deleteAssigneeByParam(String userId, String taskId) {
+        for (AssigneeTask assigneeTask : assigneeTaskMap.values()) {
+            if (userId.equals(assigneeTask.getUserId()) && taskId.equals(assigneeTask.getTaskId()))
+                assigneeTaskMap.remove(assigneeTask.getId());
+        }
+    }
+
+    @Override
     public AssigneeTask getAssigneeById(String id) {
         return assigneeTaskMap.get(id);
     }

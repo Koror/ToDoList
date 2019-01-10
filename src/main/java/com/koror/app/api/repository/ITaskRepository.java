@@ -15,7 +15,7 @@ public interface ITaskRepository {
 
     void updateTask(final Task task);
 
-    void clearTask();
+    void clearTask(List<Task> taskList);
 
     void setGroupId(final Task task);
 

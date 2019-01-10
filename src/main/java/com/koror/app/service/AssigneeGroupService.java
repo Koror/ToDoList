@@ -5,6 +5,7 @@ import com.fasterxml.jackson.dataformat.xml.XmlMapper;
 import com.koror.app.api.IDataIO;
 import com.koror.app.api.repository.IAssigneeGroupRepository;
 import com.koror.app.entity.AssigneeGroup;
+import com.koror.app.error.WrongInputException;
 import com.koror.app.repository.AssigneeGroupRepository;
 
 import java.io.*;
@@ -27,21 +28,32 @@ public class AssigneeGroupService implements IAssigneeGroupRepository, IDataIO {
 
     @Override
     public void addAssignee(AssigneeGroup assigneeGroup) {
+        if(assigneeGroup==null) throw new WrongInputException("Wrong Input");
         assigneeGroupRepository.addAssignee(assigneeGroup);
     }
 
     @Override
     public void deleteAssignee(String id) {
+        if(id==null || id.isEmpty()) throw new WrongInputException("Wrong Input");
         assigneeGroupRepository.deleteAssignee(id);
     }
 
     @Override
+    public void deleteAssigneeByParam(String userId, String groupId) {
+        if(userId==null || userId.isEmpty()) throw new WrongInputException("Wrong Input");
+        if(groupId==null || groupId.isEmpty()) throw new WrongInputException("Wrong Input");
+        assigneeGroupRepository.deleteAssigneeByParam(userId, groupId);
+    }
+
+    @Override
     public AssigneeGroup getAssigneeById(String id) {
+        if(id==null || id.isEmpty()) throw new WrongInputException("Wrong Input");
         return assigneeGroupRepository.getAssigneeById(id);
     }
 
     @Override
     public AssigneeGroup getAssigneeByUserId(String userId) {
+        if(userId==null || userId.isEmpty()) throw new WrongInputException("Wrong Input");
         return assigneeGroupRepository.getAssigneeByUserId(userId);
     }
 

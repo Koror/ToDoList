@@ -1,8 +1,9 @@
 package com.koror.app.entity;
 
+import java.io.Serializable;
 import java.util.UUID;
 
-public class AssigneeGroup {
+public class AssigneeGroup implements Serializable {
 
     private String id = UUID.randomUUID().toString();
 

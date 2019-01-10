@@ -1,8 +1,9 @@
 package com.koror.app.entity;
 
+import java.io.Serializable;
 import java.util.UUID;
 
-public class User {
+public class User implements Serializable {
 
     private String id = UUID.randomUUID().toString();
 
@@ -20,9 +21,12 @@ public class User {
 
     public User(String login, String password) {
         this.login = login;
-        this.password = password;
+        this.password = hashPassword(password);
     }
 
+    public static String hashPassword(String password){
+        return Integer.toString(password.hashCode());
+    }
     public String getId() {
         return id;
     }
@@ -63,4 +67,8 @@ public class User {
         this.name = name;
     }
 
+    @Override
+    public String toString() {
+        return login;
+    }
 }
