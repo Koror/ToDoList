@@ -8,6 +8,8 @@ public interface IUserRepository {
 
     void registerUser(User user);
 
+    void loadUser(User user);
+
     void deleteUserById(String id);
 
     List<User> getUserList();

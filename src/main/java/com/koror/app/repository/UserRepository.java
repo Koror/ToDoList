@@ -18,6 +18,16 @@ public class UserRepository implements IUserRepository {
     }
 
     @Override
+    public void loadUser(User user) {
+        boolean userExist = false;
+        for (User userTemp : getUserList())
+            if (user.getLogin().equals(userTemp.getLogin()))
+                userExist = true;
+        if (!userExist)
+            userMap.put(user.getId(), user);
+    }
+
+    @Override
     public void deleteUserById(String id) {
         userMap.remove(id);
     }
@@ -34,8 +44,8 @@ public class UserRepository implements IUserRepository {
 
     @Override
     public User findByLogin(final String login) {
-        for (User user : userMap.values()){
-            if(login.equals(user.getLogin()))
+        for (User user : userMap.values()) {
+            if (login.equals(user.getLogin()))
                 return user;
         }
         return null;

@@ -17,6 +17,8 @@ public class Task implements Serializable {
 
     private boolean complete = false;
 
+    private String creator = null;
+
     public Task() {
 
     }
@@ -74,6 +76,14 @@ public class Task implements Serializable {
 
     public void setText(final String text) {
         this.text = text;
+    }
+
+    public String getCreator() {
+        return creator;
+    }
+
+    public void setCreator(String creator) {
+        this.creator = creator;
     }
 
     @Override

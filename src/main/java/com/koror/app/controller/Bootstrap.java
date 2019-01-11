@@ -9,6 +9,7 @@ import com.koror.app.command.help.HelpLoginCommand;
 import com.koror.app.command.user.LoginCommand;
 import com.koror.app.command.user.UserRegisterCommand;
 import com.koror.app.entity.User;
+import com.koror.app.enumerated.Access;
 import com.koror.app.error.MissingCommandException;
 import com.koror.app.error.WrongInputException;
 import com.koror.app.repository.*;
@@ -53,16 +54,8 @@ public final class Bootstrap implements IBootstrap {
     }
 
     private Set<Class<? extends AbstractCommand>> registerClass() {
-        Reflections reflections = new Reflections("com.koror.app.command.task");
+        Reflections reflections = new Reflections("com.koror.app.command");
         final Set<Class<? extends AbstractCommand>> allClasses = reflections.getSubTypesOf(AbstractCommand.class);
-        reflections = new Reflections("com.koror.app.command.group");
-        allClasses.addAll(reflections.getSubTypesOf(AbstractCommand.class));
-        reflections = new Reflections("com.koror.app.command.data");
-        allClasses.addAll(reflections.getSubTypesOf(AbstractCommand.class));
-        reflections = new Reflections("com.koror.app.command.user");
-        allClasses.addAll(reflections.getSubTypesOf(AbstractCommand.class));
-        reflections = new Reflections("com.koror.app.command.help");
-        allClasses.addAll(reflections.getSubTypesOf(AbstractCommand.class));
         return allClasses;
     }
 
@@ -105,21 +98,23 @@ public final class Bootstrap implements IBootstrap {
     }
 
     private String startCommand(Map<String, AbstractCommand> commandMap) {
-        String action = nextLine();
-        for (String str : commandMap.keySet()) {
-            if (str.equals(action)) {
-                try {
+        try {
+            String action = nextLine();
+            for (String str : commandMap.keySet()) {
+                if (str.equals(action)) {
                     commandMap.get(str).execute();
-                } catch (Exception e) {
-                    System.out.println(e.getMessage());
                 }
             }
+            return action;
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
         }
-        return action;
+        return "";
     }
 
     private void defaultUserInit() {
         User user = new User("admin", "admin");
+        user.setAccess(Access.ADMIN);
         getUserService().registerUser(user);
         user = new User("test", "test");
         getUserService().registerUser(user);
@@ -133,7 +128,7 @@ public final class Bootstrap implements IBootstrap {
         String action;
         System.out.println("Action: Help, Exit");
         do {
-            if (authorization.getLogin() == null)
+            if (authorization.getUser() == null)
                 action = startCommand(commandLoginMap);
             else
                 action = startCommand(commandUserMap);

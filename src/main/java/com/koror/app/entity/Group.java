@@ -9,6 +9,8 @@ public class Group implements Serializable {
 
     private String name = "Group name";
 
+    private String creator = null;
+
     public Group() {
 
     }
@@ -31,6 +33,14 @@ public class Group implements Serializable {
 
     public void setId(final String id) {
         this.id = id;
+    }
+
+    public String getCreator() {
+        return creator;
+    }
+
+    public void setCreator(String creator) {
+        this.creator = creator;
     }
 
     @Override

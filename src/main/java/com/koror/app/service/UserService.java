@@ -5,6 +5,8 @@ import com.fasterxml.jackson.dataformat.xml.XmlMapper;
 import com.koror.app.api.IDataIO;
 import com.koror.app.api.repository.IUserRepository;
 import com.koror.app.entity.User;
+import com.koror.app.error.UserAlreadyExistsException;
+import com.koror.app.error.WrongInputException;
 import com.koror.app.repository.UserRepository;
 
 import java.io.*;
@@ -20,16 +22,27 @@ public class UserService implements IUserRepository, IDataIO {
 
     private final String pathBin = "data/user/data_user.tmp";
 
-    public UserService(UserRepository repository){
+    public UserService(UserRepository repository) {
         userRepository = repository;
     }
+
     @Override
     public void registerUser(User user) {
+        if(user == null) throw new WrongInputException("Wrong input");
+        for (User userTemp : getUserList())
+            if (user.getLogin().equals(userTemp.getLogin())) throw new UserAlreadyExistsException();
         userRepository.registerUser(user);
     }
 
     @Override
+    public void loadUser(User user) {
+        if(user == null) throw new WrongInputException("Wrong input");
+        userRepository.loadUser(user);
+    }
+
+    @Override
     public void deleteUserById(String id) {
+        if(id == null || id.isEmpty()) throw new WrongInputException("Wrong input");
         userRepository.deleteUserById(id);
     }
 
@@ -40,11 +53,13 @@ public class UserService implements IUserRepository, IDataIO {
 
     @Override
     public User findById(String id) {
+        if(id == null || id.isEmpty()) throw new WrongInputException("Wrong input");
         return userRepository.findById(id);
     }
 
     @Override
     public User findByLogin(String login) {
+        if(login == null || login.isEmpty()) throw new WrongInputException("Wrong input");
         return userRepository.findByLogin(login);
     }
 
@@ -64,7 +79,7 @@ public class UserService implements IUserRepository, IDataIO {
         final ObjectInputStream ois = new ObjectInputStream(fis);
         final List users = (List) ois.readObject();
         for (Object user : users)
-            if (user instanceof User) registerUser((User) user);
+            if (user instanceof User) loadUser((User)user);
     }
 
     @Override
@@ -81,7 +96,7 @@ public class UserService implements IUserRepository, IDataIO {
     public void loadDataXml() throws IOException {
         final ObjectMapper objectMapper = new XmlMapper();
         final User[] listUser = objectMapper.readValue(new File(pathXml), User[].class);
-        for (User user : listUser) registerUser(user);
+        for (User user : listUser) loadUser(user);
     }
 
     @Override
@@ -95,10 +110,10 @@ public class UserService implements IUserRepository, IDataIO {
     }
 
     @Override
-    public void loadDataJson() throws IOException{
+    public void loadDataJson() throws IOException {
         final ObjectMapper objectMapper = new ObjectMapper();
         final User[] listUser = objectMapper.readValue(new File(pathJson), User[].class);
-        for (User user : listUser) registerUser(user);
+        for (User user : listUser) loadUser(user);
     }
 
 }

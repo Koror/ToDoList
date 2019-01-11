@@ -6,6 +6,8 @@ import com.koror.app.api.IDataIO;
 import com.koror.app.api.repository.ITaskRepository;
 import com.koror.app.entity.AssigneeTask;
 import com.koror.app.entity.Task;
+import com.koror.app.entity.User;
+import com.koror.app.enumerated.Access;
 import com.koror.app.error.WrongInputException;
 import com.koror.app.repository.TaskRepository;
 
@@ -82,10 +84,11 @@ public class TaskService implements ITaskRepository, IDataIO {
         return taskRepository.getTaskByIndex(index);
     }
 
-    public List<Task> getListTaskByUserId(final String userId) {
+    public List<Task> getListTaskByUser(User user) {
+        if(user.getAccess()== Access.ADMIN) return getTaskList();
         final List<Task> taskList = new ArrayList<>();
         for (final AssigneeTask assigneeTask : assigneeTaskService.getAssigneeTaskList()) {
-            if (userId.equals(assigneeTask.getUserId())) {
+            if (user.getId().equals(assigneeTask.getUserId())) {
                 taskList.add(getTaskById(assigneeTask.getTaskId()));
             }
         }

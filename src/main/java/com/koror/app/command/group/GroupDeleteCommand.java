@@ -1,8 +1,8 @@
 package com.koror.app.command.group;
 
 import com.koror.app.command.AbstractCommand;
-import com.koror.app.entity.AssigneeGroup;
 import com.koror.app.entity.Group;
+import com.koror.app.entity.User;
 
 import java.util.List;
 
@@ -10,12 +10,12 @@ public final class GroupDeleteCommand extends AbstractCommand {
 
     @Override
     public void execute() {
-        final String userId = bootstrap.getAuthorization().getUserId();
-        final List<Group> groupList = bootstrap.getGroupService().getListGroupByUserId(userId);
+        final User user = bootstrap.getAuthorization().getUser();
+        final List<Group> groupList = bootstrap.getGroupService().getListGroupByUser(user);
         System.out.println(groupList);
         System.out.println("Input index group");
         final int inputIndex = bootstrap.nextInt();
-        bootstrap.getAssigneeGroupService().deleteAssigneeByParam(userId,groupList.get(inputIndex).getId());
+        bootstrap.getAssigneeGroupService().deleteAssigneeByParam(user.getId(),groupList.get(inputIndex).getId());
         bootstrap.getGroupService().deleteGroup(groupList.get(inputIndex).getId());
         System.out.println("Group deleted");
     }

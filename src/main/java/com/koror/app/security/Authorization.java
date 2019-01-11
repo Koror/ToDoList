@@ -1,34 +1,20 @@
 package com.koror.app.security;
 
+import com.koror.app.entity.User;
+
 public class Authorization {
 
-    private String login;
+    User user;
 
-    private String password;
-
-    private String userId;
-
-    public void auth(String login, String password, String userId){
-        this.login = login;
-        this.password = password;
-        this.userId = userId;
-    }
-
-    public String getLogin() {
-        return login;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public String getUserId() {
-        return userId;
+    public void auth(User user){
+        this.user = user;
     }
 
     public void logout(){
-        login = null;
-        password = null;
-        userId = null;
+        user = null;
+    }
+
+    public User getUser() {
+        return user;
     }
 }

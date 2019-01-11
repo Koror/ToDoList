@@ -1,5 +1,7 @@
 package com.koror.app.entity;
 
+import com.koror.app.enumerated.Access;
+
 import java.io.Serializable;
 import java.util.UUID;
 
@@ -15,7 +17,9 @@ public class User implements Serializable {
 
     private String name;
 
-    public User(){
+    private Access access = Access.USER;
+
+    public User() {
 
     }
 
@@ -24,9 +28,10 @@ public class User implements Serializable {
         this.password = hashPassword(password);
     }
 
-    public static String hashPassword(String password){
+    public static String hashPassword(String password) {
         return Integer.toString(password.hashCode());
     }
+
     public String getId() {
         return id;
     }
@@ -65,6 +70,14 @@ public class User implements Serializable {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public Access getAccess() {
+        return access;
+    }
+
+    public void setAccess(Access access) {
+        this.access = access;
     }
 
     @Override

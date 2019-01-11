@@ -14,13 +14,13 @@ public class LoginCommand extends AbstractCommand {
         final String login = bootstrap.nextLine();
         final String password = User.hashPassword(bootstrap.nextLine());
         final List<User> userList = bootstrap.getUserService().getUserList();
-        String userId = null;
-        for (User user : userList){
-            if((login.equals(user.getLogin())) && (password.equals(user.getPassword())))
-                userId = user.getId();
+        User user=null;
+        for (User userTemp : userList){
+            if((login.equals(userTemp.getLogin())) && (password.equals(userTemp.getPassword())))
+                user = userTemp;
         }
-        if(userId == null) throw new UserNotExistsException();
-        bootstrap.getAuthorization().auth(login, password, userId);
+        if(user == null) throw new UserNotExistsException();
+        bootstrap.getAuthorization().auth(user);
         System.out.println("Login complete");
     }
 

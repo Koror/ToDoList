@@ -7,6 +7,8 @@ import com.koror.app.api.repository.IGroupRepository;
 import com.koror.app.controller.Bootstrap;
 import com.koror.app.entity.AssigneeGroup;
 import com.koror.app.entity.Group;
+import com.koror.app.entity.User;
+import com.koror.app.enumerated.Access;
 import com.koror.app.error.WrongInputException;
 import com.koror.app.repository.GroupRepository;
 
@@ -69,10 +71,12 @@ public class GroupService implements IGroupRepository, IDataIO {
         return groupRepository.getGroupById(id);
     }
 
-    public List<Group> getListGroupByUserId(String userId) {
+    public List<Group> getListGroupByUser(User user) {
+        if(user.getAccess()== Access.ADMIN) return getGroupList();
+        
         final List<Group> groupList = new ArrayList<>();
         for (final AssigneeGroup assigneeGroups : assigneeGroupService.getAssigneeGroupList()) {
-            if (userId.equals(assigneeGroups.getUserId()))
+            if (user.getId().equals(assigneeGroups.getUserId()))
                 groupList.add(getGroupById(assigneeGroups.getGroupId()));
         }
         return groupList;
