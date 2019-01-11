@@ -52,15 +52,15 @@ public class UserService implements IUserRepository, IDataIO {
     }
 
     @Override
-    public User findById(String id) {
+    public User getById(String id) {
         if(id == null || id.isEmpty()) throw new WrongInputException("Wrong input");
-        return userRepository.findById(id);
+        return userRepository.getById(id);
     }
 
     @Override
-    public User findByLogin(String login) {
+    public User getByLogin(String login) {
         if(login == null || login.isEmpty()) throw new WrongInputException("Wrong input");
-        return userRepository.findByLogin(login);
+        return userRepository.getByLogin(login);
     }
 
     @Override

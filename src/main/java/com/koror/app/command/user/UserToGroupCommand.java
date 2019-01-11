@@ -4,20 +4,19 @@ import com.koror.app.command.AbstractCommand;
 
 import java.io.IOException;
 
-public class LogoutCommand extends AbstractCommand {
+public class UserToGroupCommand extends AbstractCommand {
     @Override
-    public void execute() {
-        bootstrap.getAuthorization().logout();
-        System.out.println("Logout complete");
+    public void execute(){
+
     }
 
     @Override
     public String command() {
-        return "Logout";
+        return "UserToGroup";
     }
 
     @Override
     public String description() {
-        return "Logout from app";
+        return "Link user to all task of group";
     }
 }

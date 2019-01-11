@@ -38,12 +38,12 @@ public class UserRepository implements IUserRepository {
     }
 
     @Override
-    public User findById(String id) {
+    public User getById(String id) {
         return userMap.get(id);
     }
 
     @Override
-    public User findByLogin(final String login) {
+    public User getByLogin(final String login) {
         for (User user : userMap.values()) {
             if (login.equals(user.getLogin()))
                 return user;

@@ -13,8 +13,9 @@ public final class TaskAddCommand extends AbstractCommand {
         final String name = bootstrap.nextLine();
         final String priority = bootstrap.nextLine();
         final Task task = new Task(name, Priority.getPriority(priority));
-        bootstrap.getTaskService().addTask(task);
         final String userId = bootstrap.getAuthorization().getUser().getId();
+        task.setCreator(userId);
+        bootstrap.getTaskService().addTask(task);
         final AssigneeTask assigneeTask = new AssigneeTask(userId, task.getId());
         bootstrap.getAssigneeTaskService().addAssignee(assigneeTask);
         System.out.println("Task created");

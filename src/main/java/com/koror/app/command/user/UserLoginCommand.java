@@ -6,7 +6,7 @@ import com.koror.app.error.UserNotExistsException;
 
 import java.util.List;
 
-public class LoginCommand extends AbstractCommand {
+public class UserLoginCommand extends AbstractCommand {
 
     @Override
     public void execute() {

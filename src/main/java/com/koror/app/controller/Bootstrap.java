@@ -6,7 +6,7 @@ import com.koror.app.command.data.LoadDataJsonCommand;
 import com.koror.app.command.data.LoadDataSerializationCommand;
 import com.koror.app.command.data.LoadDataXmlCommand;
 import com.koror.app.command.help.HelpLoginCommand;
-import com.koror.app.command.user.LoginCommand;
+import com.koror.app.command.user.UserLoginCommand;
 import com.koror.app.command.user.UserRegisterCommand;
 import com.koror.app.entity.User;
 import com.koror.app.enumerated.Access;
@@ -17,6 +17,7 @@ import com.koror.app.security.Authorization;
 import com.koror.app.service.*;
 import org.reflections.Reflections;
 
+import java.io.IOException;
 import java.util.*;
 
 public final class Bootstrap implements IBootstrap {
@@ -49,14 +50,21 @@ public final class Bootstrap implements IBootstrap {
 
     private final Scanner scanner = new Scanner(System.in);
 
-    private void registrar(Map<String, AbstractCommand> commandMap, final AbstractCommand command) {
+    private final AbstractCommand[] loginCommands = {
+            new HelpLoginCommand(),
+            new UserRegisterCommand(),
+            new UserLoginCommand(),
+            new LoadDataJsonCommand(),
+            new LoadDataSerializationCommand(),
+            new LoadDataXmlCommand()};
+
+    private void registerCommand(Map<String, AbstractCommand> commandMap, final AbstractCommand command) {
         commandMap.put(command.command(), command);
     }
 
-    private Set<Class<? extends AbstractCommand>> registerClass() {
-        Reflections reflections = new Reflections("com.koror.app.command");
-        final Set<Class<? extends AbstractCommand>> allClasses = reflections.getSubTypesOf(AbstractCommand.class);
-        return allClasses;
+    private Set<Class<? extends AbstractCommand>> userCommands() {
+        final Reflections reflections = new Reflections("com.koror.app.command");
+        return reflections.getSubTypesOf(AbstractCommand.class);
     }
 
     private void initUserCommand(final Set<Class<? extends AbstractCommand>> classes) throws ReflectiveOperationException, MissingCommandException {
@@ -65,33 +73,26 @@ public final class Bootstrap implements IBootstrap {
             if (commandNotAssignable(c)) continue;
             final AbstractCommand command = (AbstractCommand) c.newInstance();
             command.setBootstrap(this);
-            if (command instanceof LoginCommand) continue;
-            if (command instanceof UserRegisterCommand) continue;
-            if (command instanceof HelpLoginCommand) continue;
-            registrar(commandUserMap, command);
+            registerCommand(commandUserMap, command);
         }
     }
 
-    private void initLoginCommand(final Set<Class<? extends AbstractCommand>> classes) throws ReflectiveOperationException, MissingCommandException {
-        if (classes.size() == 0) throw new MissingCommandException();
-        for (final Class c : classes) {
-            if (commandNotAssignable(c)) continue;
-            final AbstractCommand command = (AbstractCommand) c.newInstance();
+    private void initLoginCommand(AbstractCommand[] commands) throws MissingCommandException {
+        for (AbstractCommand command : commands) {
             command.setBootstrap(this);
-            if (command instanceof LoginCommand ||
-                    command instanceof UserRegisterCommand ||
-                    command instanceof LoadDataJsonCommand ||
-                    command instanceof LoadDataSerializationCommand ||
-                    command instanceof LoadDataXmlCommand ||
-                    command instanceof HelpLoginCommand)
-                registrar(commandLoginMap, command);
+            registerCommand(commandLoginMap, command);
         }
     }
 
-
-    private boolean commandNotAssignable(final Class c) {
+    private boolean commandNotAssignable(final Class c) throws ReflectiveOperationException {
         if (!AbstractCommand.class.isAssignableFrom(c)) {
             System.out.println("Class is not command: " + c.getName());
+            return true;
+        }
+        AbstractCommand command = (AbstractCommand) c.newInstance();
+        if ((command instanceof UserLoginCommand)
+                || (command instanceof UserRegisterCommand)
+                || (command instanceof HelpLoginCommand)) {
             return true;
         }
         return false;
@@ -120,11 +121,20 @@ public final class Bootstrap implements IBootstrap {
         getUserService().registerUser(user);
     }
 
+    private void loadDataFromJson() throws IOException {
+        getTaskService().loadDataJson();
+        getGroupService().loadDataJson();
+        getUserService().loadDataJson();
+        getAssigneeTaskService().loadDataJson();
+        getAssigneeGroupService().loadDataJson();
+    }
+
     @Override
-    public void start() throws ReflectiveOperationException {
-        initUserCommand(registerClass());
-        initLoginCommand(registerClass());
+    public void start() throws ReflectiveOperationException, IOException {
+        initUserCommand(userCommands());
+        initLoginCommand(loginCommands);
         defaultUserInit();
+        loadDataFromJson();
         String action;
         System.out.println("Action: Help, Exit");
         do {

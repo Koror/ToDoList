@@ -14,6 +14,7 @@ public final class GroupReadCommand extends AbstractCommand {
         final User user = bootstrap.getAuthorization().getUser();
         final List<Group> groupList = bootstrap.getGroupService().getListGroupByUser(user);
         System.out.println(groupList);
+        System.out.println("Input index");
         final int groupIndex = bootstrap.nextInt();
         final Group group = bootstrap.getGroupService().getGroup(groupIndex);
         System.out.println(group.getName());

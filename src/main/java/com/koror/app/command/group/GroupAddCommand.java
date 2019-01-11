@@ -10,8 +10,9 @@ public final class GroupAddCommand extends AbstractCommand {
     public void execute() {
         System.out.println("Input name group");
         final Group group = new Group(bootstrap.nextLine());
-        bootstrap.getGroupService().addGroup(group);
         final String userId = bootstrap.getAuthorization().getUser().getId();
+        group.setCreator(userId);
+        bootstrap.getGroupService().addGroup(group);
         final AssigneeGroup assigneeGroup = new AssigneeGroup(userId, group.getId());
         bootstrap.getAssigneeGroupService().addAssignee(assigneeGroup);
         System.out.println("Group created");

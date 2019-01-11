@@ -3,9 +3,11 @@ package com.koror.app.api.controller;
 import com.koror.app.security.Authorization;
 import com.koror.app.service.*;
 
+import java.io.IOException;
+
 public interface IBootstrap {
 
-    void start() throws ReflectiveOperationException;
+    void start() throws ReflectiveOperationException, IOException;
 
     GroupService getGroupService();
 

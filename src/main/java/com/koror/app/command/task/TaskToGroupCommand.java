@@ -22,7 +22,7 @@ public final class TaskToGroupCommand extends AbstractCommand {
         final Group group = groupList.get(bootstrap.nextInt());
         task.setGroupId(group.getId());
         bootstrap.getTaskService().setGroupId(task);
-        System.out.println("Link task to group");
+        System.out.println("Link complete");
     }
 
     @Override

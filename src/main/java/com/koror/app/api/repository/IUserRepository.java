@@ -14,8 +14,8 @@ public interface IUserRepository {
 
     List<User> getUserList();
 
-    User findById(String id);
+    User getById(String id);
 
-    User findByLogin(String login);
+    User getByLogin(String login);
 
 }
