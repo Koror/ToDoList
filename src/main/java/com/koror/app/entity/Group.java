@@ -5,10 +5,13 @@ import java.util.UUID;
 
 public class Group extends AbstractEntity implements Serializable {
 
-
     private String creator = null;
 
     private String name = "Default name";
+
+    public Group(){
+
+    }
 
     public Group(final String name) {
         this.name = name;

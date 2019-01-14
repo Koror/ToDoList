@@ -15,13 +15,13 @@ import static org.junit.Assert.*;
 
 public class GroupServiceTest {
 
-/*    @Test(expected = WrongInputException.class)
+    @Test(expected = WrongInputException.class)
     public void testAddGroupNegative() {
         final AssigneeGroupRepository assigneeGroupRepository = new AssigneeGroupRepository();
         final AssigneeGroupService assigneeGroupService = new AssigneeGroupService(assigneeGroupRepository);
         final GroupRepository groupRepository = new GroupRepository();
         final GroupService groupService = new GroupService(groupRepository,assigneeGroupService);
-        groupService.addGroup(null);
+        groupService.add(null);
     }
 
     @Test
@@ -31,7 +31,7 @@ public class GroupServiceTest {
         final GroupRepository groupRepository = new GroupRepository();
         final GroupService groupService = new GroupService(groupRepository, assigneeGroupService);
         final Group group = new Group("test group");
-        groupService.addGroup(group);
+        groupService.add(group);
     }
 
     @Test(expected = WrongInputException.class)
@@ -40,7 +40,7 @@ public class GroupServiceTest {
         final AssigneeGroupService assigneeGroupService = new AssigneeGroupService(assigneeGroupRepository);
         final GroupRepository groupRepository = new GroupRepository();
         final GroupService groupService = new GroupService(groupRepository, assigneeGroupService);
-        groupService.updateGroup(null);
+        groupService.update(null);
     }
 
     @Test
@@ -50,9 +50,9 @@ public class GroupServiceTest {
         final GroupRepository groupRepository = new GroupRepository();
         final GroupService groupService = new GroupService(groupRepository, assigneeGroupService);
         final Group group = new Group("test group");
-        groupService.addGroup(group);
+        groupService.add(group);
         group.setName("new test group");
-        assertNotNull(groupService.updateGroup(group));
+        assertNotNull(groupService.update(group));
     }
 
     @Test(expected = WrongInputException.class)
@@ -61,7 +61,7 @@ public class GroupServiceTest {
         final AssigneeGroupService assigneeGroupService = new AssigneeGroupService(assigneeGroupRepository);
         final GroupRepository groupRepository = new GroupRepository();
         final GroupService groupService = new GroupService(groupRepository, assigneeGroupService);
-        groupService.deleteGroup("undefined group id");
+        groupService.delete("undefined group id");
     }
 
     @Test
@@ -71,8 +71,8 @@ public class GroupServiceTest {
         final GroupRepository groupRepository = new GroupRepository();
         final GroupService groupService = new GroupService(groupRepository, assigneeGroupService);
         final Group group = new Group();
-        groupService.addGroup(group);
-        groupService.deleteGroup(group.getId());
+        groupService.add(group);
+        groupService.delete(group.getId());
     }
 
     @Test(expected = WrongInputException.class)
@@ -91,7 +91,7 @@ public class GroupServiceTest {
         final GroupRepository groupRepository = new GroupRepository();
         final GroupService groupService = new GroupService(groupRepository, assigneeGroupService);
         final Group group = new Group("test group");
-        groupService.addGroup(group);
+        groupService.add(group);
         groupService.getGroupByIndex(0);
     }
 
@@ -102,7 +102,7 @@ public class GroupServiceTest {
         final GroupRepository groupRepository = new GroupRepository();
         final GroupService groupService = new GroupService(groupRepository, assigneeGroupService);
         final Group group = new Group("test group");
-        groupService.addGroup(group);
+        groupService.add(group);
 
         final String pathBin = "test_data/group/data_group.tmp";
         final FileOutputStream fos = new FileOutputStream(pathBin);
@@ -110,7 +110,7 @@ public class GroupServiceTest {
         final File f = new File(pathBin);
         new File("test_data/group/").mkdirs();
         if (f.isFile()) f.delete();
-        oos.writeObject(groupService.getGroupList());
+        oos.writeObject(groupService.getList());
         File checkFile = new File("test_data/group/data_group.tmp");
         assertTrue(checkFile.exists());
     }
@@ -126,8 +126,8 @@ public class GroupServiceTest {
         final FileInputStream fis = new FileInputStream(pathBin);
         final ObjectInputStream ois = new ObjectInputStream(fis);
         final List<Group> tasks = (List<Group>) ois.readObject();
-        for (Group group : tasks) groupService.addGroup(group);
-        assertNotNull(groupService.getGroupList().get(0).getId());
+        for (Group group : tasks) groupService.add(group);
+        assertNotNull(groupService.getList().get(0).getId());
     }
 
     @Test
@@ -137,14 +137,14 @@ public class GroupServiceTest {
         final GroupRepository groupRepository = new GroupRepository();
         final GroupService groupService = new GroupService(groupRepository, assigneeGroupService);
         final Group group = new Group("test group");
-        groupService.addGroup(group);
+        groupService.add(group);
 
         final String pathXml = "test_data/group/data_group.xml";
         final File f = new File(pathXml);
         new File("test_data/group/").mkdirs();
         if (f.isFile()) f.delete();
         final ObjectMapper objectMapper = new XmlMapper();
-        final Group[] listGroup = groupService.getGroupList().toArray(new Group[groupService.getGroupList().size()]);
+        final Group[] listGroup = groupService.getList().toArray(new Group[groupService.getList().size()]);
         objectMapper.writeValue(new File(pathXml), listGroup);
         File checkFile = new File("test_data/group/data_group.xml");
         assertTrue(checkFile.exists());
@@ -160,7 +160,7 @@ public class GroupServiceTest {
         final String pathXml = "test_data/group/data_group.xml";
         final ObjectMapper objectMapper = new XmlMapper();
         final Group[] listGroup = objectMapper.readValue(new File(pathXml), Group[].class);
-        for (Group group : listGroup) groupService.addGroup(group);
+        for (Group group : listGroup) groupService.add(group);
     }
 
     @Test
@@ -170,14 +170,14 @@ public class GroupServiceTest {
         final GroupRepository groupRepository = new GroupRepository();
         final GroupService groupService = new GroupService(groupRepository, assigneeGroupService);
         final Group group = new Group("test group");
-        groupService.addGroup(group);
+        groupService.add(group);
 
         final String pathJson = "data/group/data_group.json";
         final File f = new File(pathJson);
         new File("data/group/").mkdirs();
         if (f.isFile()) f.delete();
         final ObjectMapper objectMapper = new ObjectMapper();
-        final Group[] listGroup = groupService.getGroupList().toArray(new Group[groupService.getGroupList().size()]);
+        final Group[] listGroup = groupService.getList().toArray(new Group[groupService.getList().size()]);
         objectMapper.writeValue(new File(pathJson), listGroup);
     }
 
@@ -191,6 +191,6 @@ public class GroupServiceTest {
         final String pathJson = "data/group/data_group.json";
         final ObjectMapper objectMapper = new ObjectMapper();
         final Group[] listGroup = objectMapper.readValue(new File(pathJson), Group[].class);
-        for (Group task : listGroup) groupService.addGroup(task);
-    }*/
+        for (Group task : listGroup) groupService.add(task);
+    }
 }

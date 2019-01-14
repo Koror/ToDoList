@@ -43,8 +43,6 @@ public final class Bootstrap implements IBootstrap {
 
     private final UserService userService = new UserService(userRepository);
 
-    private Authorization authorization = new Authorization();
-
     private final Map<String, AbstractCommand> commandUserMap = new HashMap<>();
 
     private final Map<String, AbstractCommand> commandLoginMap = new HashMap<>();
@@ -58,6 +56,8 @@ public final class Bootstrap implements IBootstrap {
             new LoadDataJsonCommand(),
             new LoadDataSerializationCommand(),
             new LoadDataXmlCommand()};
+
+    private Authorization authorization = new Authorization();
 
     private void registerCommand(Map<String, AbstractCommand> commandMap, final AbstractCommand command) {
         commandMap.put(command.command(), command);
@@ -99,6 +99,26 @@ public final class Bootstrap implements IBootstrap {
         return false;
     }
 
+    private void defaultUserInit() {
+        User user = new User("admin", "admin");
+        user.setAccess(Access.ADMIN);
+        getUserService().add(user);
+        user = new User("test", "test");
+        getUserService().add(user);
+    }
+
+    private void loadDataFromJson() throws IOException {
+        try {
+            getTaskService().loadDataJson();
+            getGroupService().loadDataJson();
+            getUserService().loadDataJson();
+            getAssigneeTaskService().loadDataJson();
+            getAssigneeGroupService().loadDataJson();
+        }catch (FileNotFoundException e){
+            System.out.println("Data is empty");
+        }
+    }
+
     private String startCommand(Map<String, AbstractCommand> commandMap) {
         try {
             String action = nextLine();
@@ -114,28 +134,12 @@ public final class Bootstrap implements IBootstrap {
         return "";
     }
 
-    private void defaultUserInit() {
-        User user = new User("admin", "admin");
-        user.setAccess(Access.ADMIN);
-        getUserService().add(user);
-        user = new User("test", "test");
-        getUserService().add(user);
-    }
-
-    private void loadDataFromJson() throws IOException {
-        getTaskService().loadDataJson();
-        getGroupService().loadDataJson();
-        getUserService().loadDataJson();
-        getAssigneeTaskService().loadDataJson();
-        getAssigneeGroupService().loadDataJson();
-    }
-
     @Override
     public void start() throws ReflectiveOperationException, IOException {
         initUserCommand(userCommands());
         initLoginCommand(loginCommands);
         defaultUserInit();
-        //loadDataFromJson();
+        loadDataFromJson();
         String action;
         System.out.println("Action: Help, Exit");
         do {
@@ -176,10 +180,12 @@ public final class Bootstrap implements IBootstrap {
         return authorization;
     }
 
+    @Override
     public Map<String, AbstractCommand> getCommandUserMap() {
         return commandUserMap;
     }
 
+    @Override
     public Map<String, AbstractCommand> getCommandLoginMap() {
         return commandLoginMap;
     }

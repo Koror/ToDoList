@@ -19,6 +19,8 @@ public class UserService extends AbstractService<UserRepository, User> implement
 
     private final String pathBin = "data/user/data_user.tmp";
 
+    private final String pathPackage = "data/user/";
+
     public UserService(UserRepository repository) {
         this.repository = repository;
     }
@@ -40,7 +42,7 @@ public class UserService extends AbstractService<UserRepository, User> implement
         final FileOutputStream fos = new FileOutputStream(pathBin);
         final ObjectOutputStream oos = new ObjectOutputStream(fos);
         final File f = new File(pathBin);
-        new File("data/user/").mkdirs();
+        new File(pathPackage).mkdirs();
         if (f.isFile()) f.delete();
         oos.writeObject(getList());
     }
@@ -57,7 +59,7 @@ public class UserService extends AbstractService<UserRepository, User> implement
     @Override
     public void saveDataXml() throws IOException {
         final File f = new File(pathXml);
-        new File("data/user/").mkdirs();
+        new File(pathPackage).mkdirs();
         if (f.isFile()) f.delete();
         final ObjectMapper objectMapper = new XmlMapper();
         final User[] listUser = getList().toArray(new User[getList().size()]);
@@ -74,7 +76,7 @@ public class UserService extends AbstractService<UserRepository, User> implement
     @Override
     public void saveDataJson() throws IOException {
         final File f = new File(pathJson);
-        new File("data/user/").mkdirs();
+        new File(pathPackage).mkdirs();
         if (f.isFile()) f.delete();
         final ObjectMapper objectMapper = new ObjectMapper();
         final User[] listUser = getList().toArray(new User[getList().size()]);

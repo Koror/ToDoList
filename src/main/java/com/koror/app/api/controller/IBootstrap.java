@@ -1,9 +1,11 @@
 package com.koror.app.api.controller;
 
+import com.koror.app.command.AbstractCommand;
 import com.koror.app.security.Authorization;
 import com.koror.app.service.*;
 
 import java.io.IOException;
+import java.util.Map;
 
 public interface IBootstrap {
 
@@ -20,6 +22,10 @@ public interface IBootstrap {
     AssigneeTaskService getAssigneeTaskService();
 
     Authorization getAuthorization();
+
+    Map<String, AbstractCommand> getCommandUserMap();
+
+    Map<String, AbstractCommand> getCommandLoginMap();
 
     Integer nextInt();
 

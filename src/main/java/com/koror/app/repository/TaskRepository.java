@@ -9,12 +9,7 @@ public class TaskRepository extends AbstractRepository<Task> implements ITaskRep
 
     @Override
     public void completeTask(final Task task) {
-        mapEntity.get(task.getId()).setComplete();
-    }
-
-    @Override
-    public void updateTask(final Task task) {
-        mapEntity.put(task.getId(), task);
+        mapEntity.get(task.getId()).setComplete(true);
     }
 
     @Override

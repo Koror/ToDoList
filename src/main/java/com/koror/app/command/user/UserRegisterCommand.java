@@ -18,7 +18,7 @@ public class UserRegisterCommand extends AbstractCommand {
 
     @Override
     public String command() {
-        return "RegisteredUser";
+        return "RegisterUser";
     }
 
     @Override

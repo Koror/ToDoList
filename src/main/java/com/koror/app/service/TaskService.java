@@ -25,6 +25,8 @@ public class TaskService extends AbstractService<TaskRepository, Task> implement
 
     private final String pathBin = "data/task/data_task.tmp";
 
+    private final String pathPackage = "data/task/";
+
     public TaskService(TaskRepository taskRepository, AssigneeTaskService assigneeTaskService) {
         this.repository = taskRepository;
         this.assigneeTaskService = assigneeTaskService;
@@ -34,12 +36,6 @@ public class TaskService extends AbstractService<TaskRepository, Task> implement
     public void completeTask(final Task task) throws WrongInputException {
         if (task == null) throw new WrongInputException("Wrong input");
         repository.completeTask(task);
-    }
-
-    @Override
-    public void updateTask(final Task task) throws WrongInputException {
-        if (task == null) throw new WrongInputException("Wrong input");
-        repository.updateTask(task);
     }
 
     @Override
@@ -74,7 +70,7 @@ public class TaskService extends AbstractService<TaskRepository, Task> implement
         final FileOutputStream fos = new FileOutputStream(pathBin);
         final ObjectOutputStream oos = new ObjectOutputStream(fos);
         final File f = new File(pathBin);
-        new File("data/task/").mkdirs();
+        new File(pathPackage).mkdirs();
         if (f.isFile()) f.delete();
         oos.writeObject(getList());
     }
@@ -91,7 +87,7 @@ public class TaskService extends AbstractService<TaskRepository, Task> implement
     @Override
     public void saveDataXml() throws IOException {
         final File f = new File(pathXml);
-        new File("data/task/").mkdirs();
+        new File(pathPackage).mkdirs();
         if (f.isFile()) f.delete();
         final ObjectMapper objectMapper = new XmlMapper();
         final Task[] listTask = getList().toArray(new Task[getList().size()]);
@@ -108,7 +104,7 @@ public class TaskService extends AbstractService<TaskRepository, Task> implement
     @Override
     public void saveDataJson() throws IOException {
         final File f = new File(pathJson);
-        new File("data/task/").mkdirs();
+        new File(pathPackage).mkdirs();
         if (f.isFile()) f.delete();
         final ObjectMapper objectMapper = new ObjectMapper();
         final Task[] listTask = getList().toArray(new Task[getList().size()]);

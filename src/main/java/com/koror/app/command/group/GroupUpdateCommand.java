@@ -19,7 +19,7 @@ public final class GroupUpdateCommand extends AbstractCommand {
         }
         final Group group = groupList.get(bootstrap.nextInt());
         group.setName(bootstrap.nextLine());
-        bootstrap.getGroupService().updateGroup(group);
+        bootstrap.getGroupService().update(group);
         System.out.println("Group update");
     }
 

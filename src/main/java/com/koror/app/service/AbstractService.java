@@ -33,4 +33,8 @@ public abstract class AbstractService<R extends AbstractRepository, E extends Ab
         return repository.getList();
     }
 
+    public E update(final E entity) {
+        if (entity == null) throw new WrongInputException("Wrong input");
+        return (E)repository.update(entity);
+    }
 }

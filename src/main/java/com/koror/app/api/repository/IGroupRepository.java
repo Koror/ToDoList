@@ -7,8 +7,6 @@ import java.util.List;
 
 public interface IGroupRepository extends IRepository<Group>{
 
-    Group updateGroup(final Group group);
-
     Group getGroupByIndex(final Integer index);
 
 }

@@ -27,4 +27,8 @@ public abstract class AbstractRepository<E extends AbstractEntity> {
         return new ArrayList<>(mapEntity.values());
     }
 
+    public E update(final E entity) {
+        return mapEntity.put(entity.getId(), entity);
+    }
+
 }

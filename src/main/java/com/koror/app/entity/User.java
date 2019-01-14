@@ -17,6 +17,10 @@ public class User extends AbstractEntity implements Serializable {
 
     private Access access = Access.USER;
 
+    public User(){
+
+    }
+
     public User(String login, String password) {
         this.login = login;
         this.password = hashPassword(password);

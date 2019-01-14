@@ -17,6 +17,10 @@ public class Task extends AbstractEntity implements Serializable {
 
     private String creator = null;
 
+    public Task(){
+        
+    }
+
     public Task(final String name) {
         this.name = name;
     }
@@ -36,8 +40,8 @@ public class Task extends AbstractEntity implements Serializable {
         return complete;
     }
 
-    public void setComplete() {
-        complete = true;
+    public void setComplete(boolean complete) {
+        this.complete = complete;
     }
 
     public String getName() {

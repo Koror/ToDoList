@@ -33,14 +33,6 @@ public class GroupService extends AbstractService<GroupRepository, Group> implem
     }
 
     @Override
-    public Group updateGroup(final Group group) throws WrongInputException {
-        if (group == null) throw new WrongInputException("Wrong input");
-        final Group oldGroup = repository.updateGroup(group);
-        if (oldGroup == null) throw new WrongInputException("Wrong input");
-        return oldGroup;
-    }
-
-    @Override
     public Group getGroupByIndex(final Integer index) throws WrongInputException {
         if (index == null) throw new WrongInputException("Wrong input");
         return repository.getGroupByIndex(index);

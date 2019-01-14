@@ -21,6 +21,8 @@ public class AssigneeTaskService extends AbstractService<AssigneeTaskRepository,
 
     private final String pathBin = "data/assignee_task/data_assignee_task.tmp";
 
+    private final String pathPackage = "data/assignee_task/";
+
     public AssigneeTaskService(AssigneeTaskRepository repository) {
         this.repository = repository;
     }
@@ -44,7 +46,7 @@ public class AssigneeTaskService extends AbstractService<AssigneeTaskRepository,
         final FileOutputStream fos = new FileOutputStream(pathBin);
         final ObjectOutputStream oos = new ObjectOutputStream(fos);
         final File f = new File(pathBin);
-        new File("data/assignee_task/").mkdirs();
+        new File(pathPackage).mkdirs();
         if (f.isFile()) f.delete();
         oos.writeObject(getList());
     }
@@ -60,7 +62,7 @@ public class AssigneeTaskService extends AbstractService<AssigneeTaskRepository,
     @Override
     public void saveDataXml() throws IOException {
         final File f = new File(pathXml);
-        new File("data/assignee_task/").mkdirs();
+        new File(pathPackage).mkdirs();
         if (f.isFile()) f.delete();
         final ObjectMapper objectMapper = new XmlMapper();
         final AssigneeTask[] listAssignee = getList().toArray(new AssigneeTask[getList().size()]);
@@ -77,7 +79,7 @@ public class AssigneeTaskService extends AbstractService<AssigneeTaskRepository,
     @Override
     public void saveDataJson() throws IOException {
         final File f = new File(pathJson);
-        new File("data/assignee_task/").mkdirs();
+        new File(pathPackage).mkdirs();
         if (f.isFile()) f.delete();
         final ObjectMapper objectMapper = new ObjectMapper();
         final AssigneeTask[] listAssignee = getList().toArray(new AssigneeTask[getList().size()]);

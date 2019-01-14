@@ -2,13 +2,9 @@ package com.koror.app.entity;
 
 import java.util.UUID;
 
-public abstract class AbstractEntity {
+public abstract class AbstractEntity{
 
     private String id = UUID.randomUUID().toString();
-
-    public AbstractEntity() {
-
-    }
 
     public String getId() {
         return id;

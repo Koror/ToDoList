@@ -9,10 +9,9 @@ public final class TaskAddCommand extends AbstractCommand {
 
     @Override
     public void execute() {
-        System.out.println("Input task name and priority{LOW MEDIUM HIGH}");
+        System.out.println("Input task name");
         final String name = bootstrap.nextLine();
-        final String priority = bootstrap.nextLine();
-        final Task task = new Task(name, Priority.getPriority(priority));
+        final Task task = new Task(name);
         final String userId = bootstrap.getAuthorization().getUser().getId();
         task.setCreator(userId);
         bootstrap.getTaskService().add(task);

@@ -9,8 +9,6 @@ public interface ITaskRepository extends IRepository<Task> {
 
     void completeTask(final Task task);
 
-    void updateTask(final Task task);
-
     void clearTask(List<Task> taskList);
 
     void setGroupId(final Task task);

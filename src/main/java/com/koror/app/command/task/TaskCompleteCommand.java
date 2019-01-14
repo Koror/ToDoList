@@ -15,7 +15,7 @@ public final class TaskCompleteCommand extends AbstractCommand {
         System.out.println(taskList);
         System.out.println("Input index task");
         final Task task = taskList.get(bootstrap.nextInt());
-        task.setComplete();
+        task.setComplete(true);
         bootstrap.getTaskService().completeTask(task);
         System.out.println("Task complete");
     }

@@ -21,6 +21,8 @@ public class AssigneeGroupService extends AbstractService<AssigneeGroupRepositor
 
     private final String pathBin = "data/assignee_group/data_assignee_group.tmp";
 
+    private final String pathPackage = "data/assignee_group/";
+
     public AssigneeGroupService(AssigneeGroupRepository repository) {
         this.repository = repository;
     }
@@ -43,7 +45,7 @@ public class AssigneeGroupService extends AbstractService<AssigneeGroupRepositor
         final FileOutputStream fos = new FileOutputStream(pathBin);
         final ObjectOutputStream oos = new ObjectOutputStream(fos);
         final File f = new File(pathBin);
-        new File("data/assignee_group/").mkdirs();
+        new File(pathPackage).mkdirs();
         if (f.isFile()) f.delete();
         oos.writeObject(getList());
     }
@@ -59,7 +61,7 @@ public class AssigneeGroupService extends AbstractService<AssigneeGroupRepositor
     @Override
     public void saveDataXml() throws IOException {
         final File f = new File(pathXml);
-        new File("data/assignee_group/").mkdirs();
+        new File(pathPackage).mkdirs();
         if (f.isFile()) f.delete();
         final ObjectMapper objectMapper = new XmlMapper();
         final AssigneeGroup[] listAssignee = getList().toArray(new AssigneeGroup[getList().size()]);
@@ -76,7 +78,7 @@ public class AssigneeGroupService extends AbstractService<AssigneeGroupRepositor
     @Override
     public void saveDataJson() throws IOException {
         final File f = new File(pathJson);
-        new File("data/assignee_group/").mkdirs();
+        new File(pathPackage).mkdirs();
         if (f.isFile()) f.delete();
         final ObjectMapper objectMapper = new ObjectMapper();
         final AssigneeGroup[] listAssignee = getList().toArray(new AssigneeGroup[getList().size()]);

@@ -9,6 +9,10 @@ public class AssigneeGroup extends AbstractEntity implements Serializable {
 
     private String groupId;
 
+    public AssigneeGroup(){
+
+    }
+
     public AssigneeGroup(String userId, String groupId) {
         this.userId = userId;
         this.groupId = groupId;
