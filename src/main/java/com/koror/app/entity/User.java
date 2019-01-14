@@ -5,23 +5,17 @@ import com.koror.app.enumerated.Access;
 import java.io.Serializable;
 import java.util.UUID;
 
-public class User implements Serializable {
-
-    private String id = UUID.randomUUID().toString();
+public class User extends AbstractEntity implements Serializable {
 
     private String login;
 
     private String password;
 
+    private String name = "Default name";
+
     private String email;
 
-    private String name;
-
     private Access access = Access.USER;
-
-    public User() {
-
-    }
 
     public User(String login, String password) {
         this.login = login;
@@ -32,12 +26,12 @@ public class User implements Serializable {
         return Integer.toString(password.hashCode());
     }
 
-    public String getId() {
-        return id;
+    public String getName() {
+        return name;
     }
 
-    public void setId(String id) {
-        this.id = id;
+    public void setName(final String newName) {
+        name = newName;
     }
 
     public String getLogin() {
@@ -62,14 +56,6 @@ public class User implements Serializable {
 
     public void setEmail(String email) {
         this.email = email;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
     }
 
     public Access getAccess() {

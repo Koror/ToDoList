@@ -1,65 +1,38 @@
 package com.koror.app.repository;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.dataformat.xml.XmlMapper;
 import com.koror.app.api.repository.ITaskRepository;
 import com.koror.app.entity.Task;
 
-import java.io.*;
-import java.net.URL;
-import java.nio.file.Files;
 import java.util.*;
 
-public class TaskRepository implements ITaskRepository {
-
-    private final Map<String, Task> taskMap = new HashMap<>();
-
-    @Override
-    public void addTask(final Task task) {
-        taskMap.put(task.getId(), task);
-    }
+public class TaskRepository extends AbstractRepository<Task> implements ITaskRepository {
 
     @Override
     public void completeTask(final Task task) {
-        taskMap.get(task.getId()).setComplete();
-    }
-
-    @Override
-    public Task deleteTask(final String id) {
-        return taskMap.remove(id);
+        mapEntity.get(task.getId()).setComplete();
     }
 
     @Override
     public void updateTask(final Task task) {
-        taskMap.put(task.getId(), task);
+        mapEntity.put(task.getId(), task);
     }
 
     @Override
     public void clearTask(List<Task> taskList) {
         for (Task task : taskList) {
             if (task.getComplete())
-                deleteTask(task.getId());
+                delete(task.getId());
         }
     }
 
     @Override
     public void setGroupId(final Task task) {
-        taskMap.put(task.getId(), task);
-    }
-
-    @Override
-    public Task getTaskById(final String id) {
-        return taskMap.get(id);
+        mapEntity.put(task.getId(), task);
     }
 
     @Override
     public Task getTaskByIndex(Integer index) {
-        return getTaskList().get(index);
-    }
-
-    @Override
-    public List<Task> getTaskList() {
-        return new ArrayList<>(taskMap.values());
+        return getList().get(index);
     }
 
 }

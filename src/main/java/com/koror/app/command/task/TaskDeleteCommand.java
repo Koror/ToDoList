@@ -16,7 +16,7 @@ public final class TaskDeleteCommand extends AbstractCommand {
         System.out.println("Input index task");
         final int inputIndex = bootstrap.nextInt();
         bootstrap.getAssigneeTaskService().deleteAssigneeByParam(user.getId(), taskList.get(inputIndex).getId());
-        bootstrap.getTaskService().deleteTask(taskList.get(inputIndex).getId());
+        bootstrap.getTaskService().delete(taskList.get(inputIndex).getId());
         System.out.println("Task delete");
     }
 

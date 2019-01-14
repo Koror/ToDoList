@@ -16,11 +16,11 @@ public final class GroupReadCommand extends AbstractCommand {
         System.out.println(groupList);
         System.out.println("Input index");
         final int groupIndex = bootstrap.nextInt();
-        final Group group = bootstrap.getGroupService().getGroup(groupIndex);
+        final Group group = bootstrap.getGroupService().getGroupByIndex(groupIndex);
         System.out.println(group.getName());
         for (Task task : bootstrap.getTaskService().getListTaskByUser(user)) {
             if (task.getGroupId().equals(group.getId()))
-                System.out.println("  " + " [" + "Name:" + task.getText() + " Priority: "
+                System.out.println("  " + " [" + "Name:" + task.getName() + " Priority: "
                         + task.getPriority() + " Complete: " + task.getComplete() + "]");
         }
     }

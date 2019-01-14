@@ -12,8 +12,8 @@ public final class TaskReadAllCommand extends AbstractCommand {
         final User user = bootstrap.getAuthorization().getUser();
         for (Task task : bootstrap.getTaskService().getListTaskByUser(user)) {
             final String creatorLogin = bootstrap.getUserService().getById(task.getCreator()).getLogin();
-            final String groupName = bootstrap.getGroupService().getGroupById(task.getGroupId()).getName();
-            System.out.println(index + " [" + "Name:" + task.getText() + " Priority: "
+            final String groupName = bootstrap.getGroupService().getById(task.getGroupId()).getName();
+            System.out.println(index + " [" + "Name:" + task.getName() + " Priority: "
                     + task.getPriority() + " Complete:" + task.getComplete() + " Creator:"
                     + creatorLogin + " Group:" + groupName + "]");
             index++;

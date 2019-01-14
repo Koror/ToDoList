@@ -5,35 +5,29 @@ import com.koror.app.enumerated.Priority;
 import java.io.Serializable;
 import java.util.UUID;
 
-public class Task implements Serializable {
-
-    private String id = UUID.randomUUID().toString();
+public class Task extends AbstractEntity implements Serializable {
 
     private String groupId = null;
 
     private Priority priority = Priority.MEDIUM;
 
-    private String text = "Task name";
+    private String name = "Default name";
 
     private boolean complete = false;
 
     private String creator = null;
 
-    public Task() {
-
+    public Task(final String name) {
+        this.name = name;
     }
 
-    public Task(final String text) {
-        this.text = text;
-    }
-
-    public Task(final String text, final Priority priority) {
-        this.text = text;
+    public Task(final String name, final Priority priority) {
+        setName(name);
         this.priority = priority;
     }
 
-    public Task(final String text, final Priority priority, final String groupId) {
-        this.text = text;
+    public Task(final String name, final Priority priority, final String groupId) {
+        setName(name);
         this.priority = priority;
         this.groupId = groupId;
     }
@@ -46,12 +40,12 @@ public class Task implements Serializable {
         complete = true;
     }
 
-    public String getId() {
-        return id;
+    public String getName() {
+        return name;
     }
 
-    public void setId(final String id) {
-        this.id = id;
+    public void setName(final String newName) {
+        name = newName;
     }
 
     public String getGroupId() {
@@ -70,14 +64,6 @@ public class Task implements Serializable {
         this.priority = priority;
     }
 
-    public String getText() {
-        return text;
-    }
-
-    public void setText(final String text) {
-        this.text = text;
-    }
-
     public String getCreator() {
         return creator;
     }
@@ -88,7 +74,7 @@ public class Task implements Serializable {
 
     @Override
     public String toString() {
-        return "Name:" + text + " Complete: " + complete;
+        return "Name:" + getName() + " Complete: " + complete;
     }
 
 }

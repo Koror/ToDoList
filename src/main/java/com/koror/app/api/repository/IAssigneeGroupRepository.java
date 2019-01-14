@@ -5,18 +5,10 @@ import com.koror.app.entity.AssigneeTask;
 
 import java.util.List;
 
-public interface IAssigneeGroupRepository {
-
-    void addAssignee(AssigneeGroup assigneeGroup);
-
-    void deleteAssignee(String id);
+public interface IAssigneeGroupRepository extends IRepository<AssigneeGroup> {
 
     void deleteAssigneeByParam(String userId, String groupId);
 
-    AssigneeGroup getAssigneeById(String id);
-
     AssigneeGroup getAssigneeByUserId(String userId);
-
-    List<AssigneeGroup> getAssigneeGroupList();
 
 }

@@ -11,7 +11,7 @@ public class UserRegisterCommand extends AbstractCommand {
         System.out.println("Input password");
         final String password = User.hashPassword(bootstrap.nextLine());
         final User user = new User(login, password);
-        bootstrap.getUserService().registerUser(user);
+        bootstrap.getUserService().add(user);
         bootstrap.getAuthorization().auth(user);
         System.out.println("User created and login");
     }

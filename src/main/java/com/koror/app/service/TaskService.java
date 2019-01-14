@@ -15,9 +15,7 @@ import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class TaskService implements ITaskRepository, IDataIO {
-
-    private final TaskRepository taskRepository;
+public class TaskService extends AbstractService<TaskRepository, Task> implements ITaskRepository, IDataIO {
 
     private final AssigneeTaskService assigneeTaskService;
 
@@ -28,68 +26,44 @@ public class TaskService implements ITaskRepository, IDataIO {
     private final String pathBin = "data/task/data_task.tmp";
 
     public TaskService(TaskRepository taskRepository, AssigneeTaskService assigneeTaskService) {
-        this.taskRepository = taskRepository;
+        this.repository = taskRepository;
         this.assigneeTaskService = assigneeTaskService;
-    }
-
-    @Override
-    public void addTask(final Task task) throws WrongInputException {
-        if (task == null) throw new WrongInputException("Wrong input");
-        taskRepository.addTask(task);
     }
 
     @Override
     public void completeTask(final Task task) throws WrongInputException {
         if (task == null) throw new WrongInputException("Wrong input");
-        taskRepository.completeTask(task);
-    }
-
-    @Override
-    public Task deleteTask(final String id) throws WrongInputException {
-        if (id == null || "".equals(id)) throw new WrongInputException("Wrong input");
-        Task task = taskRepository.deleteTask(id);
-        if (task == null) throw new WrongInputException("Wrong input");
-        return task;
+        repository.completeTask(task);
     }
 
     @Override
     public void updateTask(final Task task) throws WrongInputException {
         if (task == null) throw new WrongInputException("Wrong input");
-        taskRepository.updateTask(task);
+        repository.updateTask(task);
     }
 
     @Override
     public void clearTask(List<Task> taskList) {
-        taskRepository.clearTask(taskList);
+        repository.clearTask(taskList);
     }
 
     @Override
     public void setGroupId(final Task task) throws WrongInputException {
         if (task == null) throw new WrongInputException("Wrong input");
-        taskRepository.setGroupId(task);
-    }
-
-    @Override
-    public List<Task> getTaskList() {
-        return taskRepository.getTaskList();
-    }
-
-    @Override
-    public Task getTaskById(String id) {
-        return taskRepository.getTaskById(id);
+        repository.setGroupId(task);
     }
 
     @Override
     public Task getTaskByIndex(Integer index) {
-        return taskRepository.getTaskByIndex(index);
+        return repository.getTaskByIndex(index);
     }
 
     public List<Task> getListTaskByUser(User user) {
-        if(user.getAccess()== Access.ADMIN) return getTaskList();
+        if(user.getAccess()== Access.ADMIN) return getList();
         final List<Task> taskList = new ArrayList<>();
-        for (final AssigneeTask assigneeTask : assigneeTaskService.getAssigneeTaskList()) {
+        for (final AssigneeTask assigneeTask : assigneeTaskService.getList()) {
             if (user.getId().equals(assigneeTask.getUserId())) {
-                taskList.add(getTaskById(assigneeTask.getTaskId()));
+                taskList.add(getById(assigneeTask.getTaskId()));
             }
         }
         return taskList;
@@ -102,7 +76,7 @@ public class TaskService implements ITaskRepository, IDataIO {
         final File f = new File(pathBin);
         new File("data/task/").mkdirs();
         if (f.isFile()) f.delete();
-        oos.writeObject(getTaskList());
+        oos.writeObject(getList());
     }
 
     @Override
@@ -111,7 +85,7 @@ public class TaskService implements ITaskRepository, IDataIO {
         final ObjectInputStream ois = new ObjectInputStream(fis);
         final List tasks = (List) ois.readObject();
         for (Object task : tasks)
-            if (task instanceof Task) addTask((Task) task);
+            if (task instanceof Task) add((Task) task);
     }
 
     @Override
@@ -120,7 +94,7 @@ public class TaskService implements ITaskRepository, IDataIO {
         new File("data/task/").mkdirs();
         if (f.isFile()) f.delete();
         final ObjectMapper objectMapper = new XmlMapper();
-        final Task[] listTask = getTaskList().toArray(new Task[getTaskList().size()]);
+        final Task[] listTask = getList().toArray(new Task[getList().size()]);
         objectMapper.writeValue(new File(pathXml), listTask);
     }
 
@@ -128,7 +102,7 @@ public class TaskService implements ITaskRepository, IDataIO {
     public void loadDataXml() throws IOException {
         final ObjectMapper objectMapper = new XmlMapper();
         final Task[] listTask = objectMapper.readValue(new File(pathXml), Task[].class);
-        for (Task task : listTask) addTask(task);
+        for (Task task : listTask) add(task);
     }
 
     @Override
@@ -137,7 +111,7 @@ public class TaskService implements ITaskRepository, IDataIO {
         new File("data/task/").mkdirs();
         if (f.isFile()) f.delete();
         final ObjectMapper objectMapper = new ObjectMapper();
-        final Task[] listTask = getTaskList().toArray(new Task[getTaskList().size()]);
+        final Task[] listTask = getList().toArray(new Task[getList().size()]);
         objectMapper.writeValue(new File(pathJson), listTask);
     }
 
@@ -145,7 +119,7 @@ public class TaskService implements ITaskRepository, IDataIO {
     public void loadDataJson() throws IOException {
         final ObjectMapper objectMapper = new ObjectMapper();
         final Task[] listTask = objectMapper.readValue(new File(pathJson), Task[].class);
-        for (Task task : listTask) addTask(task);
+        for (Task task : listTask) add(task);
     }
 
 }

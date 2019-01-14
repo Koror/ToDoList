@@ -4,17 +4,9 @@ import com.koror.app.entity.User;
 
 import java.util.List;
 
-public interface IUserRepository {
-
-    void registerUser(User user);
+public interface IUserRepository extends IRepository<User>{
 
     void loadUser(User user);
-
-    void deleteUserById(String id);
-
-    List<User> getUserList();
-
-    User getById(String id);
 
     User getByLogin(String login);
 

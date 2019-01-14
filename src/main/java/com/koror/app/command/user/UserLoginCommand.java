@@ -13,7 +13,7 @@ public class UserLoginCommand extends AbstractCommand {
         System.out.println("Input login and password");
         final String login = bootstrap.nextLine();
         final String password = User.hashPassword(bootstrap.nextLine());
-        final List<User> userList = bootstrap.getUserService().getUserList();
+        final List<User> userList = bootstrap.getUserService().getList();
         User user=null;
         for (User userTemp : userList){
             if((login.equals(userTemp.getLogin())) && (password.equals(userTemp.getPassword())))

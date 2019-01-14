@@ -11,7 +11,7 @@ import java.util.List;
 public class UserToTaskCommand extends AbstractCommand {
     @Override
     public void execute() {
-        List<User> userList = bootstrap.getUserService().getUserList();
+        List<User> userList = bootstrap.getUserService().getList();
         System.out.println(userList);
         System.out.println("Input user index");
         String userId = userList.get(bootstrap.nextInt()).getId();
@@ -23,7 +23,7 @@ public class UserToTaskCommand extends AbstractCommand {
         String taskId = taskList.get(bootstrap.nextInt()).getId();
 
         AssigneeTask assigneeTask = new AssigneeTask(userId,taskId);
-        bootstrap.getAssigneeTaskService().addAssignee(assigneeTask);
+        bootstrap.getAssigneeTaskService().add(assigneeTask);
     }
 
     @Override

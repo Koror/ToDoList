@@ -3,17 +3,12 @@ package com.koror.app.entity;
 import java.io.Serializable;
 import java.util.UUID;
 
-public class Group implements Serializable {
+public class Group extends AbstractEntity implements Serializable {
 
-    private String id = UUID.randomUUID().toString();
-
-    private String name = "Group name";
 
     private String creator = null;
 
-    public Group() {
-
-    }
+    private String name = "Default name";
 
     public Group(final String name) {
         this.name = name;
@@ -27,14 +22,6 @@ public class Group implements Serializable {
         name = newName;
     }
 
-    public String getId() {
-        return id;
-    }
-
-    public void setId(final String id) {
-        this.id = id;
-    }
-
     public String getCreator() {
         return creator;
     }
@@ -45,7 +32,7 @@ public class Group implements Serializable {
 
     @Override
     public String toString() {
-        return name;
+        return getName();
     }
 
 }

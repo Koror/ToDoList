@@ -5,16 +5,13 @@ import com.fasterxml.jackson.dataformat.xml.XmlMapper;
 import com.koror.app.api.IDataIO;
 import com.koror.app.api.repository.IUserRepository;
 import com.koror.app.entity.User;
-import com.koror.app.error.UserAlreadyExistsException;
 import com.koror.app.error.WrongInputException;
 import com.koror.app.repository.UserRepository;
 
 import java.io.*;
 import java.util.List;
 
-public class UserService implements IUserRepository, IDataIO {
-
-    private final UserRepository userRepository;
+public class UserService extends AbstractService<UserRepository, User> implements IUserRepository, IDataIO {
 
     private final String pathXml = "data/user/data_user.xml";
 
@@ -23,44 +20,19 @@ public class UserService implements IUserRepository, IDataIO {
     private final String pathBin = "data/user/data_user.tmp";
 
     public UserService(UserRepository repository) {
-        userRepository = repository;
-    }
-
-    @Override
-    public void registerUser(User user) {
-        if(user == null) throw new WrongInputException("Wrong input");
-        for (User userTemp : getUserList())
-            if (user.getLogin().equals(userTemp.getLogin())) throw new UserAlreadyExistsException();
-        userRepository.registerUser(user);
+        this.repository = repository;
     }
 
     @Override
     public void loadUser(User user) {
         if(user == null) throw new WrongInputException("Wrong input");
-        userRepository.loadUser(user);
-    }
-
-    @Override
-    public void deleteUserById(String id) {
-        if(id == null || id.isEmpty()) throw new WrongInputException("Wrong input");
-        userRepository.deleteUserById(id);
-    }
-
-    @Override
-    public List<User> getUserList() {
-        return userRepository.getUserList();
-    }
-
-    @Override
-    public User getById(String id) {
-        if(id == null || id.isEmpty()) throw new WrongInputException("Wrong input");
-        return userRepository.getById(id);
+        repository.loadUser(user);
     }
 
     @Override
     public User getByLogin(String login) {
         if(login == null || login.isEmpty()) throw new WrongInputException("Wrong input");
-        return userRepository.getByLogin(login);
+        return repository.getByLogin(login);
     }
 
     @Override
@@ -70,7 +42,7 @@ public class UserService implements IUserRepository, IDataIO {
         final File f = new File(pathBin);
         new File("data/user/").mkdirs();
         if (f.isFile()) f.delete();
-        oos.writeObject(getUserList());
+        oos.writeObject(getList());
     }
 
     @Override
@@ -88,7 +60,7 @@ public class UserService implements IUserRepository, IDataIO {
         new File("data/user/").mkdirs();
         if (f.isFile()) f.delete();
         final ObjectMapper objectMapper = new XmlMapper();
-        final User[] listUser = getUserList().toArray(new User[getUserList().size()]);
+        final User[] listUser = getList().toArray(new User[getList().size()]);
         objectMapper.writeValue(new File(pathXml), listUser);
     }
 
@@ -105,7 +77,7 @@ public class UserService implements IUserRepository, IDataIO {
         new File("data/user/").mkdirs();
         if (f.isFile()) f.delete();
         final ObjectMapper objectMapper = new ObjectMapper();
-        final User[] listUser = getUserList().toArray(new User[getUserList().size()]);
+        final User[] listUser = getList().toArray(new User[getList().size()]);
         objectMapper.writeValue(new File(pathJson), listUser);
     }
 

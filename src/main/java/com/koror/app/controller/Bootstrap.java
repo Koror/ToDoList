@@ -17,6 +17,7 @@ import com.koror.app.security.Authorization;
 import com.koror.app.service.*;
 import org.reflections.Reflections;
 
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.*;
 
@@ -116,9 +117,9 @@ public final class Bootstrap implements IBootstrap {
     private void defaultUserInit() {
         User user = new User("admin", "admin");
         user.setAccess(Access.ADMIN);
-        getUserService().registerUser(user);
+        getUserService().add(user);
         user = new User("test", "test");
-        getUserService().registerUser(user);
+        getUserService().add(user);
     }
 
     private void loadDataFromJson() throws IOException {
@@ -134,7 +135,7 @@ public final class Bootstrap implements IBootstrap {
         initUserCommand(userCommands());
         initLoginCommand(loginCommands);
         defaultUserInit();
-        loadDataFromJson();
+        //loadDataFromJson();
         String action;
         System.out.println("Action: Help, Exit");
         do {

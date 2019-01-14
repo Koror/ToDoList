@@ -16,7 +16,7 @@ public final class GroupDeleteCommand extends AbstractCommand {
         System.out.println("Input index group");
         final int inputIndex = bootstrap.nextInt();
         bootstrap.getAssigneeGroupService().deleteAssigneeByParam(user.getId(),groupList.get(inputIndex).getId());
-        bootstrap.getGroupService().deleteGroup(groupList.get(inputIndex).getId());
+        bootstrap.getGroupService().delete(groupList.get(inputIndex).getId());
         System.out.println("Group deleted");
     }
 

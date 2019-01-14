@@ -5,23 +5,15 @@ import com.koror.app.entity.Task;
 import java.io.IOException;
 import java.util.*;
 
-public interface ITaskRepository {
-
-    void addTask(final Task task);
+public interface ITaskRepository extends IRepository<Task> {
 
     void completeTask(final Task task);
-
-    Task deleteTask(final String id);
 
     void updateTask(final Task task);
 
     void clearTask(List<Task> taskList);
 
     void setGroupId(final Task task);
-
-    List<Task> getTaskList();
-
-    Task getTaskById(final String id);
 
     Task getTaskByIndex(Integer index);
 

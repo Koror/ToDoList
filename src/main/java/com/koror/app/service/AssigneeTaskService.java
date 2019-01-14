@@ -13,9 +13,7 @@ import java.io.*;
 import java.util.List;
 import java.util.Map;
 
-public class AssigneeTaskService implements IAssigneeTaskRepository, IDataIO {
-
-    private final AssigneeTaskRepository assigneeTaskRepository;
+public class AssigneeTaskService extends AbstractService<AssigneeTaskRepository, AssigneeTask> implements IAssigneeTaskRepository, IDataIO {
 
     private final String pathXml = "data/assignee_task/data_assignee_task.xml";
 
@@ -23,39 +21,22 @@ public class AssigneeTaskService implements IAssigneeTaskRepository, IDataIO {
 
     private final String pathBin = "data/assignee_task/data_assignee_task.tmp";
 
-    public AssigneeTaskService(AssigneeTaskRepository assigneeTaskRepository) {
-        this.assigneeTaskRepository = assigneeTaskRepository;
-    }
-
-    @Override
-    public void addAssignee(AssigneeTask assigneeTask) {
-        if(assigneeTask==null) throw new WrongInputException("Wrong Input");
-        assigneeTaskRepository.addAssignee(assigneeTask);
-    }
-
-    @Override
-    public void deleteAssignee(String id) {
-        if(id==null || id.isEmpty()) throw new WrongInputException("Wrong Input");
-        assigneeTaskRepository.deleteAssignee(id);
+    public AssigneeTaskService(AssigneeTaskRepository repository) {
+        this.repository = repository;
     }
 
     @Override
     public void deleteAssigneeByParam(String userId, String taskId) {
-        if(userId==null || userId.isEmpty()) throw new WrongInputException("Wrong Input");
-        if(taskId==null || taskId.isEmpty()) throw new WrongInputException("Wrong Input");
-        assigneeTaskRepository.deleteAssigneeByParam(userId, taskId);
+        if (userId == null || userId.isEmpty()) throw new WrongInputException("Wrong Input");
+        if (taskId == null || taskId.isEmpty()) throw new WrongInputException("Wrong Input");
+        repository.deleteAssigneeByParam(userId, taskId);
     }
 
-    @Override
-    public AssigneeTask getAssigneeById(String id) {
-        if(id==null || id.isEmpty()) throw new WrongInputException("Wrong Input");
-        return assigneeTaskRepository.getAssigneeById(id);
-    }
 
     @Override
     public AssigneeTask getAssigneeByUserId(String userId) {
-        if(userId==null || userId.isEmpty()) throw new WrongInputException("Wrong Input");
-        return assigneeTaskRepository.getAssigneeByUserId(userId);
+        if (userId == null || userId.isEmpty()) throw new WrongInputException("Wrong Input");
+        return repository.getAssigneeByUserId(userId);
     }
 
     @Override
@@ -65,15 +46,15 @@ public class AssigneeTaskService implements IAssigneeTaskRepository, IDataIO {
         final File f = new File(pathBin);
         new File("data/assignee_task/").mkdirs();
         if (f.isFile()) f.delete();
-        oos.writeObject(getAssigneeTaskList());
+        oos.writeObject(getList());
     }
 
     @Override
-    public void loadDataSerialization() throws IOException, ClassNotFoundException{
+    public void loadDataSerialization() throws IOException, ClassNotFoundException {
         final FileInputStream fis = new FileInputStream(pathBin);
         final ObjectInputStream ois = new ObjectInputStream(fis);
         final List<AssigneeTask> assigneeTasks = (List<AssigneeTask>) ois.readObject();
-        for (AssigneeTask assigneeTask : assigneeTasks) addAssignee(assigneeTask);
+        for (AssigneeTask assigneeTask : assigneeTasks) add(assigneeTask);
     }
 
     @Override
@@ -82,7 +63,7 @@ public class AssigneeTaskService implements IAssigneeTaskRepository, IDataIO {
         new File("data/assignee_task/").mkdirs();
         if (f.isFile()) f.delete();
         final ObjectMapper objectMapper = new XmlMapper();
-        final AssigneeTask[] listAssignee = getAssigneeTaskList().toArray(new AssigneeTask[getAssigneeTaskList().size()]);
+        final AssigneeTask[] listAssignee = getList().toArray(new AssigneeTask[getList().size()]);
         objectMapper.writeValue(new File(pathXml), listAssignee);
     }
 
@@ -90,7 +71,7 @@ public class AssigneeTaskService implements IAssigneeTaskRepository, IDataIO {
     public void loadDataXml() throws IOException {
         final ObjectMapper objectMapper = new XmlMapper();
         final AssigneeTask[] listAssignee = objectMapper.readValue(new File(pathXml), AssigneeTask[].class);
-        for (AssigneeTask assigneeTask : listAssignee) addAssignee(assigneeTask);
+        for (AssigneeTask assigneeTask : listAssignee) add(assigneeTask);
     }
 
     @Override
@@ -99,20 +80,15 @@ public class AssigneeTaskService implements IAssigneeTaskRepository, IDataIO {
         new File("data/assignee_task/").mkdirs();
         if (f.isFile()) f.delete();
         final ObjectMapper objectMapper = new ObjectMapper();
-        final AssigneeTask[] listAssignee = getAssigneeTaskList().toArray(new AssigneeTask[getAssigneeTaskList().size()]);
+        final AssigneeTask[] listAssignee = getList().toArray(new AssigneeTask[getList().size()]);
         objectMapper.writeValue(new File(pathJson), listAssignee);
     }
 
     @Override
-    public void loadDataJson() throws IOException{
+    public void loadDataJson() throws IOException {
         final ObjectMapper objectMapper = new ObjectMapper();
         final AssigneeTask[] listAssignee = objectMapper.readValue(new File(pathJson), AssigneeTask[].class);
-        for (AssigneeTask assigneeTask : listAssignee) addAssignee(assigneeTask);
-    }
-
-    @Override
-    public List<AssigneeTask> getAssigneeTaskList() {
-        return assigneeTaskRepository.getAssigneeTaskList();
+        for (AssigneeTask assigneeTask : listAssignee) add(assigneeTask);
     }
 
 }

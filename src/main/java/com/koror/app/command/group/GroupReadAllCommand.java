@@ -18,7 +18,7 @@ public class GroupReadAllCommand extends AbstractCommand {
             System.out.println(indexGroup + " [" + group.toString() + "]");
             for (final Task task : taskList) {
                 if (task.getGroupId() != null && task.getGroupId().equals(group.getId())) {
-                    System.out.println("  " + " [" + "Name:" + task.getText() + " Priority: "
+                    System.out.println("  " + " [" + "Name:" + task.getName() + " Priority: "
                             + task.getPriority() + " Complete: " + task.getComplete() + "]");
                 }
             }

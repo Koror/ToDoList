@@ -15,7 +15,7 @@ public final class TaskUpdateCommand extends AbstractCommand {
         final List<Task> taskList = bootstrap.getTaskService().getListTaskByUser(user);
         System.out.println("index task, task name and priority{LOW MEDIUM HIGH}");
         final Task task = taskList.get(bootstrap.nextInt());
-        task.setText(bootstrap.nextLine());
+        task.setName(bootstrap.nextLine());
         task.setPriority(Priority.valueOf(bootstrap.nextLine()));
         bootstrap.getTaskService().updateTask(task);
         System.out.println("Task update");

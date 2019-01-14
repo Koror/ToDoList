@@ -8,12 +8,12 @@ import java.util.List;
 public class UserDeleteCommand extends AbstractCommand {
     @Override
     public void execute() {
-        List<User> userList = bootstrap.getUserService().getUserList();
+        List<User> userList = bootstrap.getUserService().getList();
         System.out.println(userList);
         System.out.println("Input index");
         final int index = bootstrap.nextInt();
         final User user = userList.get(index);
-        bootstrap.getUserService().deleteUserById(user.getId());
+        bootstrap.getUserService().delete(user.getId());
         System.out.println("User delete");
     }
 

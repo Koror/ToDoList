@@ -7,14 +7,13 @@ import com.koror.app.api.repository.IAssigneeGroupRepository;
 import com.koror.app.entity.AssigneeGroup;
 import com.koror.app.error.WrongInputException;
 import com.koror.app.repository.AssigneeGroupRepository;
+import com.koror.app.repository.AssigneeTaskRepository;
 
 import java.io.*;
 import java.util.List;
 
 
-public class AssigneeGroupService implements IAssigneeGroupRepository, IDataIO {
-
-    private final AssigneeGroupRepository assigneeGroupRepository;
+public class AssigneeGroupService extends AbstractService<AssigneeGroupRepository, AssigneeGroup> implements IAssigneeGroupRepository, IDataIO {
 
     private final String pathXml = "data/assignee_group/data_assignee_group.xml";
 
@@ -22,39 +21,21 @@ public class AssigneeGroupService implements IAssigneeGroupRepository, IDataIO {
 
     private final String pathBin = "data/assignee_group/data_assignee_group.tmp";
 
-    public AssigneeGroupService(AssigneeGroupRepository assigneeGroupRepository){
-        this.assigneeGroupRepository = assigneeGroupRepository;
-    }
-
-    @Override
-    public void addAssignee(AssigneeGroup assigneeGroup) {
-        if(assigneeGroup==null) throw new WrongInputException("Wrong Input");
-        assigneeGroupRepository.addAssignee(assigneeGroup);
-    }
-
-    @Override
-    public void deleteAssignee(String id) {
-        if(id==null || id.isEmpty()) throw new WrongInputException("Wrong Input");
-        assigneeGroupRepository.deleteAssignee(id);
+    public AssigneeGroupService(AssigneeGroupRepository repository) {
+        this.repository = repository;
     }
 
     @Override
     public void deleteAssigneeByParam(String userId, String groupId) {
-        if(userId==null || userId.isEmpty()) throw new WrongInputException("Wrong Input");
-        if(groupId==null || groupId.isEmpty()) throw new WrongInputException("Wrong Input");
-        assigneeGroupRepository.deleteAssigneeByParam(userId, groupId);
-    }
-
-    @Override
-    public AssigneeGroup getAssigneeById(String id) {
-        if(id==null || id.isEmpty()) throw new WrongInputException("Wrong Input");
-        return assigneeGroupRepository.getAssigneeById(id);
+        if (userId == null || userId.isEmpty()) throw new WrongInputException("Wrong Input");
+        if (groupId == null || groupId.isEmpty()) throw new WrongInputException("Wrong Input");
+        repository.deleteAssigneeByParam(userId, groupId);
     }
 
     @Override
     public AssigneeGroup getAssigneeByUserId(String userId) {
-        if(userId==null || userId.isEmpty()) throw new WrongInputException("Wrong Input");
-        return assigneeGroupRepository.getAssigneeByUserId(userId);
+        if (userId == null || userId.isEmpty()) throw new WrongInputException("Wrong Input");
+        return repository.getAssigneeByUserId(userId);
     }
 
     @Override
@@ -64,15 +45,15 @@ public class AssigneeGroupService implements IAssigneeGroupRepository, IDataIO {
         final File f = new File(pathBin);
         new File("data/assignee_group/").mkdirs();
         if (f.isFile()) f.delete();
-        oos.writeObject(getAssigneeGroupList());
+        oos.writeObject(getList());
     }
 
     @Override
-    public void loadDataSerialization() throws IOException, ClassNotFoundException{
+    public void loadDataSerialization() throws IOException, ClassNotFoundException {
         final FileInputStream fis = new FileInputStream(pathBin);
         final ObjectInputStream ois = new ObjectInputStream(fis);
         final List<AssigneeGroup> assigneeGroups = (List<AssigneeGroup>) ois.readObject();
-        for (AssigneeGroup assigneeGroup : assigneeGroups) addAssignee(assigneeGroup);
+        for (AssigneeGroup assigneeGroup : assigneeGroups) add(assigneeGroup);
     }
 
     @Override
@@ -81,7 +62,7 @@ public class AssigneeGroupService implements IAssigneeGroupRepository, IDataIO {
         new File("data/assignee_group/").mkdirs();
         if (f.isFile()) f.delete();
         final ObjectMapper objectMapper = new XmlMapper();
-        final AssigneeGroup[] listAssignee = getAssigneeGroupList().toArray(new AssigneeGroup[getAssigneeGroupList().size()]);
+        final AssigneeGroup[] listAssignee = getList().toArray(new AssigneeGroup[getList().size()]);
         objectMapper.writeValue(new File(pathXml), listAssignee);
     }
 
@@ -89,7 +70,7 @@ public class AssigneeGroupService implements IAssigneeGroupRepository, IDataIO {
     public void loadDataXml() throws IOException {
         final ObjectMapper objectMapper = new XmlMapper();
         final AssigneeGroup[] listAssignee = objectMapper.readValue(new File(pathXml), AssigneeGroup[].class);
-        for (AssigneeGroup assigneeGroup : listAssignee) addAssignee(assigneeGroup);
+        for (AssigneeGroup assigneeGroup : listAssignee) add(assigneeGroup);
     }
 
     @Override
@@ -98,20 +79,15 @@ public class AssigneeGroupService implements IAssigneeGroupRepository, IDataIO {
         new File("data/assignee_group/").mkdirs();
         if (f.isFile()) f.delete();
         final ObjectMapper objectMapper = new ObjectMapper();
-        final AssigneeGroup[] listAssignee = getAssigneeGroupList().toArray(new AssigneeGroup[getAssigneeGroupList().size()]);
+        final AssigneeGroup[] listAssignee = getList().toArray(new AssigneeGroup[getList().size()]);
         objectMapper.writeValue(new File(pathJson), listAssignee);
     }
 
     @Override
-    public void loadDataJson() throws IOException{
+    public void loadDataJson() throws IOException {
         final ObjectMapper objectMapper = new ObjectMapper();
         final AssigneeGroup[] listAssignee = objectMapper.readValue(new File(pathJson), AssigneeGroup[].class);
-        for (AssigneeGroup assigneeGroup : listAssignee) addAssignee(assigneeGroup);
-    }
-
-    @Override
-    public List<AssigneeGroup> getAssigneeGroupList() {
-        return assigneeGroupRepository.getAssigneeGroupList();
+        for (AssigneeGroup assigneeGroup : listAssignee) add(assigneeGroup);
     }
 
 }

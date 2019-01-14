@@ -8,7 +8,7 @@ import java.util.List;
 public class UserReadCommand extends AbstractCommand {
     @Override
     public void execute() {
-        List<User> userList = bootstrap.getUserService().getUserList();
+        List<User> userList = bootstrap.getUserService().getList();
         System.out.println(userList);
     }
 
