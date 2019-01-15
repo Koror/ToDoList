@@ -7,7 +7,10 @@
     <groupId>com.koror.app</groupId>
     <artifactId>to-do-list</artifactId>
     <version>1.0-SNAPSHOT</version>
-    <packaging>jar</packaging>
+    <modules>
+        <module>client-to-do-list</module>
+    </modules>
+    <packaging>pom</packaging>
 
     <name>to-do-list</name>
 

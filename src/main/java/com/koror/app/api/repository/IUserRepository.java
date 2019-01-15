@@ -10,4 +10,6 @@ public interface IUserRepository extends IRepository<User>{
 
     User getByLogin(String login);
 
+    User login(String login, String password);
+
 }

@@ -2,6 +2,9 @@ package com.koror.app.repository;
 
 import com.koror.app.api.repository.IUserRepository;
 import com.koror.app.entity.User;
+import com.koror.app.error.UserNotExistsException;
+
+import java.util.List;
 
 public class UserRepository extends AbstractRepository<User> implements IUserRepository {
 
@@ -22,6 +25,17 @@ public class UserRepository extends AbstractRepository<User> implements IUserRep
                 return user;
         }
         return null;
+    }
+
+    @Override
+    public User login(String login, String password){
+        User user=null;
+        password = User.hashPassword(password);
+        for (User userTemp : getList()){
+            if((login.equals(userTemp.getLogin())) && (password.equals(userTemp.getPassword())))
+                user = userTemp;
+        }
+        return user;
     }
 
 }

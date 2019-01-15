@@ -5,6 +5,7 @@ import com.fasterxml.jackson.dataformat.xml.XmlMapper;
 import com.koror.app.api.IDataIO;
 import com.koror.app.api.repository.IUserRepository;
 import com.koror.app.entity.User;
+import com.koror.app.error.UserNotExistsException;
 import com.koror.app.error.WrongInputException;
 import com.koror.app.repository.UserRepository;
 
@@ -35,6 +36,13 @@ public class UserService extends AbstractService<UserRepository, User> implement
     public User getByLogin(String login) {
         if(login == null || login.isEmpty()) throw new WrongInputException("Wrong input");
         return repository.getByLogin(login);
+    }
+
+    @Override
+    public User login(String login, String password) {
+        User user = repository.login(login, password);
+        if(user == null) throw new UserNotExistsException();
+        return user;
     }
 
     @Override
