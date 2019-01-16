@@ -1,14 +1,17 @@
 package com.koror.app.command.user;
 
 import com.koror.app.command.AbstractCommand;
-
-import java.io.IOException;
+import com.koror.app.endpoint.Result;
+import com.koror.app.endpoint.Session;
 
 public class UserLogoutCommand extends AbstractCommand {
     @Override
     public void execute() {
-//        bootstrap.logout();
-//        System.out.println("Logout complete");
+        Session session = bootstrap.getSession();
+        Result result = bootstrap.getUserService().logoutUser(session);
+        bootstrap.setSession(null);
+        System.out.println(result.getResult());
+        System.out.println("Logout complete");
     }
 
     @Override

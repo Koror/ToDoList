@@ -5,7 +5,7 @@ import com.koror.app.command.help.HelpLoginCommand;
 import com.koror.app.command.user.UserLoginCommand;
 import com.koror.app.command.user.UserRegisterCommand;
 import com.koror.app.endpoint.*;
-import com.koror.app.entity.Session;
+import com.koror.app.endpoint.Session;
 import com.koror.app.error.MissingCommandException;
 import com.koror.app.error.WrongInputException;
 import org.reflections.Reflections;
@@ -32,9 +32,6 @@ public class Bootstrap {
             new HelpLoginCommand(),
             new UserRegisterCommand(),
             new UserLoginCommand()};
-//            new LoadDataJsonCommand(),
-//            new LoadDataSerializationCommand(),
-//            new LoadDataXmlCommand()};
 
     private Session session;
 
@@ -78,7 +75,7 @@ public class Bootstrap {
         return false;
     }
 
-    private String startCommand(Map<String, AbstractCommand> commandMap) {
+    private String startCommand(Map<String, AbstractCommand> commandMap){
         try {
             String action = nextLine();
             for (String str : commandMap.keySet()) {
@@ -93,16 +90,10 @@ public class Bootstrap {
         return "";
     }
 
-//    private void defaultUserInit() {
-//        getUserService().add("admin", "admin");
-//        getUserService().register("login", "login");
-//    }
-
-    public void start() throws ReflectiveOperationException, IOException {
+    public void start() throws ReflectiveOperationException, IOException{
         initUserCommand(userCommands());
         initLoginCommand(loginCommands);
-        //defaultUserInit();
-        String action;
+        String action = "";
         System.out.println("Action: Help, Exit");
         do {
             if (session == null)
@@ -126,7 +117,11 @@ public class Bootstrap {
         return input;
     }
 
-    public void setSession (Session session){
+    public Session getSession() {
+        return session;
+    }
+
+    public void setSession(Session session) {
         this.session = session;
     }
 

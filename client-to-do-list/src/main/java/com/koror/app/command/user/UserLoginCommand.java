@@ -1,7 +1,7 @@
 package com.koror.app.command.user;
 
 import com.koror.app.command.AbstractCommand;
-import com.koror.app.entity.Session;
+import com.koror.app.endpoint.Session;
 
 public class UserLoginCommand extends AbstractCommand {
 
@@ -10,7 +10,8 @@ public class UserLoginCommand extends AbstractCommand {
         System.out.println("Input login and password");
         final String login = bootstrap.nextLine();
         final String password = bootstrap.nextLine();
-        //Session session = bootstrap.getUserService().login(login, password);
+        Session session = bootstrap.getUserService().loginUser(login, password);
+        bootstrap.setSession(session);
         System.out.println("Login complete");
     }
 

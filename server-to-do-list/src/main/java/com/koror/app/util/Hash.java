@@ -1,0 +1,23 @@
+package com.koror.app.util;
+
+import javax.xml.bind.DatatypeConverter;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+
+public class Hash {
+
+    public static String getHashString(String value) {
+        String hashValue = null;
+        try {
+            MessageDigest md = MessageDigest.getInstance("MD5");
+            md.update(value.getBytes());
+            byte[] digest = md.digest();
+            hashValue = DatatypeConverter
+                    .printHexBinary(digest).toUpperCase();
+        } catch (NoSuchAlgorithmException e) {
+            e.printStackTrace();
+        }
+        return hashValue;
+    }
+
+}
