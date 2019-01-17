@@ -6,8 +6,6 @@ import java.util.List;
 
 public interface IUserRepository extends IRepository<User>{
 
-    void loadUser(User user);
-
     User getByLogin(String login);
 
     User login(String login, String password);

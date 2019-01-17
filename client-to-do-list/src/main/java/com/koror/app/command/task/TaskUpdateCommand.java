@@ -1,20 +1,24 @@
 package com.koror.app.command.task;
 
 import com.koror.app.command.AbstractCommand;
+import com.koror.app.endpoint.Priority;
+import com.koror.app.endpoint.Result;
+import com.koror.app.endpoint.Task;
+
+import java.util.List;
 
 public final class TaskUpdateCommand extends AbstractCommand {
 
     @Override
     public void execute() {
-//        String userId = bootstrap.getSession().getUserId();
-//        final User user = bootstrap.getUserService().getById(userId);
-//        final List<Task> taskList = bootstrap.getTaskService().getListTaskByUser(user);
-//        System.out.println("index task, task name and priority{LOW MEDIUM HIGH}");
-//        final Task task = taskList.get(bootstrap.nextInt());
-//        task.setName(bootstrap.nextLine());
-//        task.setPriority(Priority.valueOf(bootstrap.nextLine()));
-//        bootstrap.getTaskService().update(task);
-//        System.out.println("Task update");
+        final List<Task> taskList = bootstrap.getTaskService().getTaskList(bootstrap.getSession());
+        final Task task = bootstrap.getTaskByList(taskList);
+        System.out.println("Input task name and priority{LOW MEDIUM HIGH}");
+        task.setName(bootstrap.nextLine());
+        task.setPriority(Priority.valueOf(bootstrap.nextLine()));
+        Result result = bootstrap.getTaskService().updateTask(task, bootstrap.getSession());
+        System.out.println(result);
+        System.out.println("Task update");
     }
 
     @Override

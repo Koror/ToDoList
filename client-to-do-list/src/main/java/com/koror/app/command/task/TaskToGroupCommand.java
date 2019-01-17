@@ -1,24 +1,23 @@
 package com.koror.app.command.task;
 
 import com.koror.app.command.AbstractCommand;
+import com.koror.app.endpoint.Group;
+import com.koror.app.endpoint.Result;
+import com.koror.app.endpoint.Task;
+
+import java.util.List;
 
 public final class TaskToGroupCommand extends AbstractCommand {
 
     @Override
     public void execute() {
-//        String userId = bootstrap.getSession().getUserId();
-//        final User user = bootstrap.getUserService().getById(userId);
-//        final List<Task> taskList = bootstrap.getTaskService().getListTaskByUser(user);
-//        System.out.println(taskList);
-//        System.out.println("Input index task");
-//        final Task task = taskList.get(bootstrap.nextInt());
-//        final List<Group> groupList = bootstrap.getGroupService().getListGroupByUser(user);
-//        System.out.println(groupList);
-//        System.out.println("Input index group");
-//        final Group group = groupList.get(bootstrap.nextInt());
-//        task.setGroupId(group.getId());
-//        bootstrap.getTaskService().setGroupId(task);
-//        System.out.println("Link complete");
+        final List<Task> taskList = bootstrap.getTaskService().getTaskList(bootstrap.getSession());
+        final Task task = bootstrap.getTaskByList(taskList);
+        final List<Group> groupList = bootstrap.getGroupService().getGroupList(bootstrap.getSession());
+        final Group group = bootstrap.getGroupByList(groupList);
+        Result result = bootstrap.getTaskService().taskToGroupTask(task.getId(), group.getId(), bootstrap.getSession());
+        System.out.println(result);
+        System.out.println("Link complete");
     }
 
     @Override

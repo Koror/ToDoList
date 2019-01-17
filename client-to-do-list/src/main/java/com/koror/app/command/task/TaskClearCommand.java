@@ -1,16 +1,18 @@
 package com.koror.app.command.task;
 
 import com.koror.app.command.AbstractCommand;
+import com.koror.app.endpoint.Result;
+import com.koror.app.endpoint.Task;
+
+import java.util.List;
 
 public final class TaskClearCommand extends AbstractCommand {
 
     @Override
     public void execute() {
-//        String userId = bootstrap.getSession().getUserId();
-//        final User user = bootstrap.getUserService().getById(userId);
-//        List<Task> taskList = bootstrap.getTaskService().getListTaskByUser(user);
-//        bootstrap.getTaskService().clearTask(taskList);
-//        System.out.println("Complete task clear");
+        Result result = bootstrap.getTaskService().clearTask(bootstrap.getSession());
+        System.out.println(result);
+        System.out.println("Complete task clear");
     }
 
     @Override

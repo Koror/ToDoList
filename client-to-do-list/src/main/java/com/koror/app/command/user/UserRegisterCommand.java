@@ -14,7 +14,7 @@ public class UserRegisterCommand extends AbstractCommand {
         final User user = new User();
         user.setLogin(login);
         user.setPassword(password);
-        Session session = bootstrap.getUserService().registerUser(user);
+        final Session session = bootstrap.getUserService().registerUser(user);
         bootstrap.setSession(session);
         System.out.println("User created and login");
     }

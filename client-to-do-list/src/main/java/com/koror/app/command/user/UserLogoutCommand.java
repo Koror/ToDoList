@@ -7,8 +7,8 @@ import com.koror.app.endpoint.Session;
 public class UserLogoutCommand extends AbstractCommand {
     @Override
     public void execute() {
-        Session session = bootstrap.getSession();
-        Result result = bootstrap.getUserService().logoutUser(session);
+        final Session session = bootstrap.getSession();
+        final Result result = bootstrap.getUserService().logoutUser(session);
         bootstrap.setSession(null);
         System.out.println(result.getResult());
         System.out.println("Logout complete");

@@ -22,12 +22,15 @@ C:\Users\skorikov\MyProjects\ToDoList\server-to-do-list\src\main\java\com\koror\
 C:\Users\skorikov\MyProjects\ToDoList\server-to-do-list\src\main\java\com\koror\app\entity\AssigneeTask.java
 C:\Users\skorikov\MyProjects\ToDoList\server-to-do-list\src\main\java\com\koror\app\command\data\SaveDataJsonCommand.java
 C:\Users\skorikov\MyProjects\ToDoList\server-to-do-list\src\main\java\com\koror\app\repository\SessionRepository.java
+C:\Users\skorikov\MyProjects\ToDoList\server-to-do-list\src\main\java\com\koror\app\command\help\HelpLoginCommand.java
 C:\Users\skorikov\MyProjects\ToDoList\server-to-do-list\src\main\java\com\koror\app\command\data\SaveDataSerializationCommand.java
 C:\Users\skorikov\MyProjects\ToDoList\server-to-do-list\src\main\java\com\koror\app\repository\GroupRepository.java
+C:\Users\skorikov\MyProjects\ToDoList\server-to-do-list\src\main\java\com\koror\app\command\help\HelpUserCommand.java
 C:\Users\skorikov\MyProjects\ToDoList\server-to-do-list\src\main\java\com\koror\app\api\repository\IRepository.java
 C:\Users\skorikov\MyProjects\ToDoList\server-to-do-list\src\main\java\com\koror\app\error\UserNotExistsException.java
 C:\Users\skorikov\MyProjects\ToDoList\server-to-do-list\src\main\java\com\koror\app\command\data\LoadDataSerializationCommand.java
 C:\Users\skorikov\MyProjects\ToDoList\server-to-do-list\src\main\java\com\koror\app\api\repository\IAssigneeGroupRepository.java
+C:\Users\skorikov\MyProjects\ToDoList\server-to-do-list\src\main\java\com\koror\app\endpoint\GroupEndpoint.java
 C:\Users\skorikov\MyProjects\ToDoList\server-to-do-list\src\main\java\com\koror\app\repository\AssigneeTaskRepository.java
 C:\Users\skorikov\MyProjects\ToDoList\server-to-do-list\src\main\java\com\koror\app\endpoint\TaskEndpoint.java
 C:\Users\skorikov\MyProjects\ToDoList\server-to-do-list\src\main\java\com\koror\app\api\repository\IUserRepository.java

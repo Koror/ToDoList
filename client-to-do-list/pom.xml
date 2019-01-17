@@ -55,6 +55,9 @@
                                     <wsdl>http://localhost:8080/TaskEndpoint?WSDL</wsdl>
                                 </wsdlOption>
                                 <wsdlOption>
+                                    <wsdl>http://localhost:8080/GroupEndpoint?WSDL</wsdl>
+                                </wsdlOption>
+                                <wsdlOption>
                                     <wsdl>http://localhost:8080/UserEndpoint?WSDL</wsdl>
                                 </wsdlOption>
                             </wsdlOptions>

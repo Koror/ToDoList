@@ -14,5 +14,5 @@ public interface IRepository<E extends AbstractEntity>{
 
     List<E> getList();
 
-    E update(final E entity);
+    void update(final E entity);
 }

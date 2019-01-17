@@ -2,6 +2,8 @@ package com.koror.app.controller;
 
 import com.koror.app.api.controller.IBootstrap;
 import com.koror.app.command.AbstractCommand;
+import com.koror.app.database.DatabaseConnection;
+import com.koror.app.endpoint.GroupEndpoint;
 import com.koror.app.endpoint.TaskEndpoint;
 import com.koror.app.endpoint.UserEndpoint;
 import com.koror.app.entity.User;
@@ -92,18 +94,6 @@ public final class Bootstrap implements IBootstrap {
         return "";
     }
 
-    private void loadDataFromJson() throws IOException {
-        try {
-            getTaskService().loadDataJson();
-            getGroupService().loadDataJson();
-            getUserService().loadDataJson();
-            getAssigneeTaskService().loadDataJson();
-            getAssigneeGroupService().loadDataJson();
-        } catch (FileNotFoundException e) {
-            System.out.println("Data is empty");
-        }
-    }
-
     private void defaultUserInit() {
         final User userAdmin = new User("admin", "admin");
         userAdmin.setAccess(Access.ADMIN);
@@ -113,16 +103,18 @@ public final class Bootstrap implements IBootstrap {
     }
 
     public void startServer() throws ReflectiveOperationException,IOException {
-        loadDataFromJson();
         defaultUserInit();
+        DatabaseConnection.setConnection();
         Endpoint.publish("http://localhost:8080/TaskEndpoint?WSDL", new TaskEndpoint(this));
         Endpoint.publish("http://localhost:8080/UserEndpoint?WSDL", new UserEndpoint(this));
+        Endpoint.publish("http://localhost:8080/GroupEndpoint?WSDL", new GroupEndpoint(this));
         initCommand(userCommands());
         String action="";
         System.out.println("Action: Help, Exit");
         do {
             action = startCommand(serverCommands);
         } while (!action.equals("Exit"));
+        DatabaseConnection.closeConnection();
     }
 
     @Override

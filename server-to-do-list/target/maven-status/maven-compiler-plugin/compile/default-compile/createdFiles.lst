@@ -20,6 +20,7 @@ com\koror\app\entity\Group.class
 com\koror\app\api\repository\IGroupRepository.class
 com\koror\app\command\data\SaveDataXmlCommand.class
 com\koror\app\error\UserNotExistsException.class
+com\koror\app\command\help\HelpLoginCommand.class
 com\koror\app\error\SessionNotValidateException.class
 com\koror\app\command\AbstractCommand.class
 com\koror\app\entity\User.class
@@ -39,8 +40,10 @@ com\koror\app\repository\AssigneeGroupRepository.class
 com\koror\app\controller\Bootstrap.class
 com\koror\app\command\data\SaveDataSerializationCommand.class
 com\koror\app\enumerated\Priority.class
+com\koror\app\endpoint\GroupEndpoint.class
 com\koror\app\entity\Task.class
 com\koror\app\api\repository\IAssigneeGroupRepository.class
+com\koror\app\command\help\HelpUserCommand.class
 com\koror\app\api\IDataIO.class
 com\koror\app\entity\AssigneeGroup.class
 com\koror\app\error\WrongInputException.class

@@ -25,4 +25,11 @@ public class AssigneeTask extends AbstractEntity implements Serializable {
         return taskId;
     }
 
+    public void setUserId(String userId) {
+        this.userId = userId;
+    }
+
+    public void setTaskId(String taskId) {
+        this.taskId = taskId;
+    }
 }

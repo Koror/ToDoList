@@ -10,7 +10,7 @@ public class UserLoginCommand extends AbstractCommand {
         System.out.println("Input login and password");
         final String login = bootstrap.nextLine();
         final String password = bootstrap.nextLine();
-        Session session = bootstrap.getUserService().loginUser(login, password);
+        final Session session = bootstrap.getUserService().loginUser(login, password);
         bootstrap.setSession(session);
         System.out.println("Login complete");
     }

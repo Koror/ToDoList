@@ -11,7 +11,7 @@ public interface ITaskRepository extends IRepository<Task> {
 
     void clearTask(List<Task> taskList);
 
-    void setGroupId(final Task task);
+    void setGroupId(final Task task, String idGroup);
 
     Task getTaskByIndex(Integer index);
 

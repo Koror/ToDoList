@@ -93,7 +93,7 @@ public class TaskEndpoint {
         final Task task = bootstrap.getTaskService().getById(idTask);
         final Group group = bootstrap.getGroupService().getById(idGroup);
         task.setGroupId(group.getId());
-        bootstrap.getTaskService().setGroupId(task);
+        bootstrap.getTaskService().setGroupId(task, group.getId());
         final Result result = new Result();
         result.success();
         return result;

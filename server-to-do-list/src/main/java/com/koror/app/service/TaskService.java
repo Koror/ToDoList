@@ -1,8 +1,5 @@
 package com.koror.app.service;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.dataformat.xml.XmlMapper;
-import com.koror.app.api.IDataIO;
 import com.koror.app.api.repository.ITaskRepository;
 import com.koror.app.entity.AssigneeTask;
 import com.koror.app.entity.Task;
@@ -11,25 +8,43 @@ import com.koror.app.enumerated.Access;
 import com.koror.app.error.WrongInputException;
 import com.koror.app.repository.TaskRepository;
 
-import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class TaskService extends AbstractService<TaskRepository, Task> implements ITaskRepository, IDataIO {
+public class TaskService implements ITaskRepository {
+
+    private final TaskRepository repository;
 
     private final AssigneeTaskService assigneeTaskService;
 
-    private final String pathXml = "data/task/data_task.xml";
-
-    private final String pathJson = "data/task/data_task.json";
-
-    private final String pathBin = "data/task/data_task.tmp";
-
-    private final String pathPackage = "data/task/";
 
     public TaskService(TaskRepository taskRepository, AssigneeTaskService assigneeTaskService) {
         this.repository = taskRepository;
         this.assigneeTaskService = assigneeTaskService;
+    }
+
+    public void add(Task entity) {
+        if (entity == null) throw new WrongInputException("Wrong Input");
+        repository.add(entity);
+    }
+
+    public void delete(String id) {
+        if (id == null || id.isEmpty()) throw new WrongInputException("Wrong Input");
+        repository.delete(id);
+    }
+
+    public Task getById(String id) {
+        if (id == null || id.isEmpty()) throw new WrongInputException("Wrong Input");
+        return repository.getById(id);
+    }
+
+    public List<Task> getList() {
+        return repository.getList();
+    }
+
+    public void update(final Task entity) {
+        if (entity == null) throw new WrongInputException("Wrong input");
+        repository.update(entity);
     }
 
     @Override
@@ -44,9 +59,9 @@ public class TaskService extends AbstractService<TaskRepository, Task> implement
     }
 
     @Override
-    public void setGroupId(final Task task) throws WrongInputException {
+    public void setGroupId(final Task task, String groupId) throws WrongInputException {
         if (task == null) throw new WrongInputException("Wrong input");
-        repository.setGroupId(task);
+        repository.setGroupId(task, groupId);
     }
 
     @Override
@@ -55,7 +70,7 @@ public class TaskService extends AbstractService<TaskRepository, Task> implement
     }
 
     public List<Task> getListTaskByUser(User user) {
-        if(user.getAccess()== Access.ADMIN) return getList();
+        if (user.getAccess() == Access.ADMIN) return getList();
         final List<Task> taskList = new ArrayList<>();
         for (final AssigneeTask assigneeTask : assigneeTaskService.getList()) {
             if (user.getId().equals(assigneeTask.getUserId())) {
@@ -63,59 +78,6 @@ public class TaskService extends AbstractService<TaskRepository, Task> implement
             }
         }
         return taskList;
-    }
-
-    @Override
-    public void saveDataSerialization() throws IOException {
-        final FileOutputStream fos = new FileOutputStream(pathBin);
-        final ObjectOutputStream oos = new ObjectOutputStream(fos);
-        final File f = new File(pathBin);
-        new File(pathPackage).mkdirs();
-        if (f.isFile()) f.delete();
-        oos.writeObject(getList());
-    }
-
-    @Override
-    public void loadDataSerialization() throws IOException, ClassNotFoundException {
-        final FileInputStream fis = new FileInputStream(pathBin);
-        final ObjectInputStream ois = new ObjectInputStream(fis);
-        final List tasks = (List) ois.readObject();
-        for (Object task : tasks)
-            if (task instanceof Task) add((Task) task);
-    }
-
-    @Override
-    public void saveDataXml() throws IOException {
-        final File f = new File(pathXml);
-        new File(pathPackage).mkdirs();
-        if (f.isFile()) f.delete();
-        final ObjectMapper objectMapper = new XmlMapper();
-        final Task[] listTask = getList().toArray(new Task[getList().size()]);
-        objectMapper.writeValue(new File(pathXml), listTask);
-    }
-
-    @Override
-    public void loadDataXml() throws IOException {
-        final ObjectMapper objectMapper = new XmlMapper();
-        final Task[] listTask = objectMapper.readValue(new File(pathXml), Task[].class);
-        for (Task task : listTask) add(task);
-    }
-
-    @Override
-    public void saveDataJson() throws IOException {
-        final File f = new File(pathJson);
-        new File(pathPackage).mkdirs();
-        if (f.isFile()) f.delete();
-        final ObjectMapper objectMapper = new ObjectMapper();
-        final Task[] listTask = getList().toArray(new Task[getList().size()]);
-        objectMapper.writeValue(new File(pathJson), listTask);
-    }
-
-    @Override
-    public void loadDataJson() throws IOException {
-        final ObjectMapper objectMapper = new ObjectMapper();
-        final Task[] listTask = objectMapper.readValue(new File(pathJson), Task[].class);
-        for (Task task : listTask) add(task);
     }
 
 }

@@ -11,16 +11,15 @@ import com.koror.app.error.WrongInputException;
 import org.reflections.Reflections;
 
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Scanner;
-import java.util.Set;
+import java.util.*;
 
 public class Bootstrap {
 
-    UserEndpoint userService = new UserEndpointService().getUserEndpointPort();
+    private final UserEndpoint userService = new UserEndpointService().getUserEndpointPort();
 
-    TaskEndpoint taskService = new TaskEndpointService().getTaskEndpointPort();
+    private final TaskEndpoint taskService = new TaskEndpointService().getTaskEndpointPort();
+
+    private final GroupEndpoint groupService = new GroupEndpointService().getGroupEndpointPort();
 
     private final Map<String, AbstractCommand> commandUserMap = new HashMap<>();
 
@@ -75,7 +74,7 @@ public class Bootstrap {
         return false;
     }
 
-    private String startCommand(Map<String, AbstractCommand> commandMap){
+    private String startCommand(Map<String, AbstractCommand> commandMap) {
         try {
             String action = nextLine();
             for (String str : commandMap.keySet()) {
@@ -90,7 +89,7 @@ public class Bootstrap {
         return "";
     }
 
-    public void start() throws ReflectiveOperationException, IOException{
+    public void start() throws ReflectiveOperationException, IOException {
         initUserCommand(userCommands());
         initLoginCommand(loginCommands);
         String action = "";
@@ -117,6 +116,39 @@ public class Bootstrap {
         return input;
     }
 
+    public Task getTaskByList(List<Task> taskList) {
+        int indexTask = 0;
+        for (Task task : taskList) {
+            System.out.println(indexTask + ": " + task.getName());
+            indexTask++;
+        }
+        System.out.println("Input index task");
+        final int inputIndex = nextInt();
+        return taskList.get(inputIndex);
+    }
+
+    public User getUserByList(List<User> userList) {
+        int indexUser = 0;
+        for (User user : userList) {
+            System.out.println(indexUser + ": " + user.getName());
+            indexUser++;
+        }
+        System.out.println("Input index user");
+        final int inputIndex = nextInt();
+        return userList.get(inputIndex);
+    }
+
+    public Group getGroupByList(List<Group> groupList) {
+        int indexUser = 0;
+        for (Group group : groupList) {
+            System.out.println(indexUser + ": " + group.getName());
+            indexUser++;
+        }
+        System.out.println("Input index group");
+        final int inputIndex = nextInt();
+        return groupList.get(inputIndex);
+    }
+
     public Session getSession() {
         return session;
     }
@@ -139,6 +171,10 @@ public class Bootstrap {
 
     public TaskEndpoint getTaskService() {
         return taskService;
+    }
+
+    public GroupEndpoint getGroupService() {
+        return groupService;
     }
 
 }

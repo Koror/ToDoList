@@ -1,24 +1,26 @@
 package com.koror.app.command.user;
 
 import com.koror.app.command.AbstractCommand;
+import com.koror.app.endpoint.Result;
+import com.koror.app.endpoint.Task;
+import com.koror.app.endpoint.User;
+
+import java.util.List;
 
 public class UserToTaskCommand extends AbstractCommand {
     @Override
     public void execute() {
-//        final List<User> userList = bootstrap.getUserService().getList();
-//        System.out.println(userList);
-//        System.out.println("Input user index");
-//        final String userId = userList.get(bootstrap.nextInt()).getId();
-//
-//        final String currentUserId = bootstrap.getSession().getUserId();
-//        final User currentUser = bootstrap.getUserService().getById(currentUserId);
-//        final List<Task> taskList = bootstrap.getTaskService().getListTaskByUser(currentUser);
-//        System.out.println(taskList);
-//        System.out.println("Input task index");
-//        final String taskId = taskList.get(bootstrap.nextInt()).getId();
-//
-//        final AssigneeTask assigneeTask = new AssigneeTask(userId,taskId);
-//        bootstrap.getAssigneeTaskService().add(assigneeTask);
+        final List<User> userList = bootstrap.getUserService().getUserList(bootstrap.getSession());
+        User user = bootstrap.getUserByList(userList);
+        final String userId = user.getId();
+
+        final List<Task> taskList = bootstrap.getTaskService().getTaskList(bootstrap.getSession());
+        Task task = bootstrap.getTaskByList(taskList);
+        final String taskId = task.getId();
+
+        Result result = bootstrap.getUserService().linkToTaskUser(userId, taskId, bootstrap.getSession());
+        System.out.println(result);
+        System.out.println("Link complete");
     }
 
     @Override
@@ -28,6 +30,6 @@ public class UserToTaskCommand extends AbstractCommand {
 
     @Override
     public String description() {
-        return "Join user to task";
+        return "Link user to task";
     }
 }
