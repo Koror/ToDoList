@@ -33,6 +33,7 @@ public class TaskRepository implements ITaskRepository {
         }
     }
 
+    @Override
     public void delete(String id) {
         try {
             final PreparedStatement stmt = connection.prepareStatement("delete from task where `ID` = ?");
@@ -44,6 +45,7 @@ public class TaskRepository implements ITaskRepository {
         }
     }
 
+    @Override
     public Task getById(String id) {
         final Task task = new Task();
         try {
@@ -66,6 +68,7 @@ public class TaskRepository implements ITaskRepository {
         return task;
     }
 
+    @Override
     public List<Task> getList() {
         final List<Task> list = new ArrayList<>();
         try {
@@ -89,6 +92,7 @@ public class TaskRepository implements ITaskRepository {
         return list;
     }
 
+    @Override
     public void update(final Task task) {
         try {
             final PreparedStatement stmt = connection.prepareStatement("update task set `NAME` = ?, `PRIORITY` = ?, `COMPLETE` = ?, `CREATOR` = ?, `GROUPID` = ? where ID = ?");
@@ -105,31 +109,10 @@ public class TaskRepository implements ITaskRepository {
         }
     }
 
-
-    @Override
-    public void completeTask(final Task task) {
-        task.setComplete(true);
-        update(task);
-    }
-
-    @Override
-    public void clearTask(final List<Task> taskList) {
-        for (Task task : taskList) {
-            if (task.isComplete())
-                delete(task.getId());
-        }
-    }
-
-    @Override
-    public void setGroupId(final Task task, final String idGroup) {
-        task.setGroupId(idGroup);
-        update(task);
-    }
-
-    @Override
-    public Task getTaskByIndex(Integer index) {
-        return getList().get(index);
-    }
+    //@Override
+   // public Task getTaskByIndex(Integer index) {
+    //    return getList().get(index);
+    //}
 
 }
 

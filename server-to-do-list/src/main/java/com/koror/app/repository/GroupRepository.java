@@ -91,9 +91,9 @@ public class GroupRepository implements IGroupRepository {
         }
     }
 
-    @Override
-    public Group getGroupByIndex(final Integer index) {
-        return getList().get(index);
-    }
+//    @Override
+//    public Group getGroupByIndex(final Integer index) {
+//        return getList().get(index);
+//    }
 
 }

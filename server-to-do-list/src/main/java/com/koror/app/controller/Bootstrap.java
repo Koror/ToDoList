@@ -1,6 +1,7 @@
 package com.koror.app.controller;
 
 import com.koror.app.api.controller.IBootstrap;
+import com.koror.app.api.repository.IUserRepository;
 import com.koror.app.command.AbstractCommand;
 import com.koror.app.database.DatabaseConnection;
 import com.koror.app.endpoint.GroupEndpoint;
@@ -12,11 +13,15 @@ import com.koror.app.error.MissingCommandException;
 import com.koror.app.error.WrongInputException;
 import com.koror.app.repository.*;
 import com.koror.app.service.*;
+import org.apache.ibatis.io.Resources;
+import org.apache.ibatis.session.SqlSessionFactory;
+import org.apache.ibatis.session.SqlSessionFactoryBuilder;
 import org.reflections.Reflections;
 
 import javax.xml.ws.Endpoint;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.Reader;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Scanner;
@@ -52,8 +57,23 @@ public final class Bootstrap implements IBootstrap {
 
     private final Map<String, AbstractCommand> serverCommands = new HashMap<>();
 
-    static{
+    //private final SqlSessionFactory sqlSessionFactory;
+
+    //private final IUserRepository userMapper;
+
+    public Bootstrap(){
         DatabaseConnection.setConnection();
+//        Reader reader = null;
+//        try {
+//            reader = Resources
+//                    .getResourceAsReader("mybatis-config.xml"); //Читаем файл с настройками подключения и настройками MyBatis
+//            sqlSessionFactory = new SqlSessionFactoryBuilder().build(reader);
+//            userMapper = sqlSessionFactory.openSession().getMapper(IUserRepository.class); //Создаем маппер, из которого и будем вызывать методы getSubscriberById и getSubscribers
+//            List<Subscriber> subscribers = userMapper.getSubscribers();
+//            Subscriber subscriber = userMapper.getSubscriberById(101);
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
     }
 
     private void registerCommand(Map<String, AbstractCommand> commandMap, final AbstractCommand command) {

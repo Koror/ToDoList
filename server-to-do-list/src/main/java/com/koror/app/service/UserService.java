@@ -14,7 +14,7 @@ import java.util.List;
 
 public class UserService implements IUserRepository{
 
-    private final UserRepository repository;
+    //private final UserRepository repository;
 
     public UserService(UserRepository repository) {
         this.repository = repository;
