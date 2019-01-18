@@ -19,7 +19,7 @@ public class UserToTaskCommand extends AbstractCommand {
         final String taskId = task.getId();
 
         Result result = bootstrap.getUserService().linkToTaskUser(userId, taskId, bootstrap.getSession());
-        System.out.println(result);
+        System.out.println(result.getResult());
         System.out.println("Link complete");
     }
 

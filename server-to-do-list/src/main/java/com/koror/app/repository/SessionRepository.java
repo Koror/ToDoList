@@ -19,7 +19,7 @@ public class SessionRepository implements ISessionRepository {
     @Override
     public void add(Session session) {
         try {
-            final PreparedStatement stmt = connection.prepareStatement("insert into SESSION (`ID`, `USERID`, `SIGNATURE`) values(?,?,?)");
+            final PreparedStatement stmt = connection.prepareStatement("insert into session (`ID`, `USERID`, `SIGNATURE`) values(?,?,?)");
             stmt.setString(1, session.getId());
             stmt.setString(2, session.getUserId());
             stmt.setString(3, session.getSignature());
@@ -32,7 +32,7 @@ public class SessionRepository implements ISessionRepository {
 
     public void delete(String id) {
         try {
-            final PreparedStatement stmt = connection.prepareStatement("delete from SESSION where `ID` = ?");
+            final PreparedStatement stmt = connection.prepareStatement("delete from session where `ID` = ?");
             stmt.setString(1, id);
             stmt.executeUpdate();
             stmt.close();
@@ -44,7 +44,7 @@ public class SessionRepository implements ISessionRepository {
     public Session getById(String id) {
         final Session session = new Session();
         try {
-            final PreparedStatement stmt = connection.prepareStatement("select * from SESSION where `ID` = ?");
+            final PreparedStatement stmt = connection.prepareStatement("select * from session where `ID` = ?");
             stmt.setString(1, id);
             final ResultSet result = stmt.executeQuery();
             while (result.next()) {
@@ -63,7 +63,7 @@ public class SessionRepository implements ISessionRepository {
     public List<Session> getList() {
         final List<Session> list = new ArrayList<>();
         try {
-            final PreparedStatement stmt = connection.prepareStatement("select * from SESSION");
+            final PreparedStatement stmt = connection.prepareStatement("select * from session");
             final ResultSet result = stmt.executeQuery();
             while (result.next()) {
                 final Session session = new Session();
@@ -82,10 +82,10 @@ public class SessionRepository implements ISessionRepository {
 
     public void update(final Session session) {
         try {
-            final PreparedStatement stmt = connection.prepareStatement("update SESSION set `ID` = ?, `USERID` = ?, `SIGNATURE` = ?");
-            stmt.setString(1, session.getId());
-            stmt.setString(2, session.getUserId());
-            stmt.setString(3, session.getSignature());
+            final PreparedStatement stmt = connection.prepareStatement("update session set `USERID` = ?, `SIGNATURE` = ? where `ID` = ?");
+            stmt.setString(1, session.getUserId());
+            stmt.setString(2, session.getSignature());
+            stmt.setString(3, session.getId());
             stmt.executeUpdate();
             stmt.close();
         } catch (SQLException e) {

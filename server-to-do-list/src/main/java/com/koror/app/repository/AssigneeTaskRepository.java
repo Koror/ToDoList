@@ -18,7 +18,7 @@ public class AssigneeTaskRepository extends AbstractRepository<AssigneeTask> imp
     @Override
     public void add(AssigneeTask assigneeTask) {
         try {
-            final PreparedStatement stmt = connection.prepareStatement("insert into ASSIGNEETASK (`ID`, `USERID`, `TASKID`) values(?,?,?)");
+            final PreparedStatement stmt = connection.prepareStatement("insert into assigneetask (`ID`, `USERID`, `TASKID`) values(?,?,?)");
             stmt.setString(1, assigneeTask.getId());
             stmt.setString(2, assigneeTask.getUserId());
             stmt.setString(3, assigneeTask.getTaskId());
@@ -31,7 +31,7 @@ public class AssigneeTaskRepository extends AbstractRepository<AssigneeTask> imp
 
     public void delete(String id) {
         try {
-            final PreparedStatement stmt = connection.prepareStatement("delete from ASSIGNEETASK where `ID` = ?");
+            final PreparedStatement stmt = connection.prepareStatement("delete from assigneetask where `ID` = ?");
             stmt.setString(1, id);
             stmt.executeUpdate();
             stmt.close();
@@ -43,7 +43,7 @@ public class AssigneeTaskRepository extends AbstractRepository<AssigneeTask> imp
     public AssigneeTask getById(String id) {
         final AssigneeTask assigneeTask = new AssigneeTask();
         try {
-            final PreparedStatement stmt = connection.prepareStatement("select * from ASSIGNEETASK where `ID` = ?");
+            final PreparedStatement stmt = connection.prepareStatement("select * from assigneetask where `ID` = ?");
             stmt.setString(1, id);
             final ResultSet result = stmt.executeQuery();
             while (result.next()) {
@@ -62,7 +62,7 @@ public class AssigneeTaskRepository extends AbstractRepository<AssigneeTask> imp
     public List<AssigneeTask> getList() {
         final List<AssigneeTask> list = new ArrayList<>();
         try {
-            final PreparedStatement stmt = connection.prepareStatement("select * from ASSIGNEETASK");
+            final PreparedStatement stmt = connection.prepareStatement("select * from assigneetask");
             final ResultSet result = stmt.executeQuery();
             while (result.next()) {
                 final AssigneeTask assigneeTask = new AssigneeTask();
@@ -81,10 +81,10 @@ public class AssigneeTaskRepository extends AbstractRepository<AssigneeTask> imp
 
     public void update(final AssigneeTask assigneeTask) {
         try {
-            final PreparedStatement stmt = connection.prepareStatement("update ASSIGNEETASK set `ID` = ?, `USERID` = ? 'TASKID' id = ?");
-            stmt.setString(1, assigneeTask.getId());
-            stmt.setString(2, assigneeTask.getUserId());
-            stmt.setString(3, assigneeTask.getTaskId());
+            final PreparedStatement stmt = connection.prepareStatement("update assigneetask set `USERID` = ? 'TASKID' id = ? where `ID` = ?");
+            stmt.setString(1, assigneeTask.getUserId());
+            stmt.setString(2, assigneeTask.getTaskId());
+            stmt.setString(3, assigneeTask.getId());
             stmt.executeUpdate();
             stmt.close();
         } catch (SQLException e) {

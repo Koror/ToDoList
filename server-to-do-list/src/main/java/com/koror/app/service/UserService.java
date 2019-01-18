@@ -31,7 +31,7 @@ public class UserService implements IUserRepository{
     }
 
     public User getById(String id) {
-        if(id==null || id.isEmpty()) throw new WrongInputException("Wrong Input");
+        if(id==null || id.isEmpty()) return null;
         return repository.getById(id);
     }
 

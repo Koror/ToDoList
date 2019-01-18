@@ -19,7 +19,7 @@ public class TaskRepository implements ITaskRepository {
     @Override
     public void add(Task task) {
         try {
-            final PreparedStatement stmt = connection.prepareStatement("insert into TASK (`ID`, `NAME`, `PRIORITY`, `COMPLETE`, `CREATOR`, `GROUPID`) values(?,?,?,?,?,?)");
+            final PreparedStatement stmt = connection.prepareStatement("insert into task (`ID`, `NAME`, `PRIORITY`, `COMPLETE`, `CREATOR`, `GROUPID`) values(?,?,?,?,?,?)");
             stmt.setString(1, task.getId());
             stmt.setString(2, task.getName());
             stmt.setString(3, task.getPriority().toString());
@@ -35,7 +35,7 @@ public class TaskRepository implements ITaskRepository {
 
     public void delete(String id) {
         try {
-            final PreparedStatement stmt = connection.prepareStatement("delete from TASK where `ID` = ?");
+            final PreparedStatement stmt = connection.prepareStatement("delete from task where `ID` = ?");
             stmt.setString(1, id);
             stmt.executeUpdate();
             stmt.close();
@@ -47,7 +47,7 @@ public class TaskRepository implements ITaskRepository {
     public Task getById(String id) {
         final Task task = new Task();
         try {
-            final PreparedStatement stmt = connection.prepareStatement("select * from TASK where `ID`=?");
+            final PreparedStatement stmt = connection.prepareStatement("select * from task where `ID`=?");
             stmt.setString(1, id);
             final ResultSet result = stmt.executeQuery();
             while (result.next()) {
@@ -69,7 +69,7 @@ public class TaskRepository implements ITaskRepository {
     public List<Task> getList() {
         final List<Task> list = new ArrayList<>();
         try {
-            final PreparedStatement stmt = connection.prepareStatement("select * from TASK");
+            final PreparedStatement stmt = connection.prepareStatement("select * from task");
             final ResultSet result = stmt.executeQuery();
             while (result.next()) {
                 final Task task = new Task();
@@ -91,13 +91,13 @@ public class TaskRepository implements ITaskRepository {
 
     public void update(final Task task) {
         try {
-            final PreparedStatement stmt = connection.prepareStatement("update TASK set `ID` = ?, `USERID` = ?, `NAME` = ?, `PRIORITY` = ?, `COMPLETE` = ?, `CREATOR` = ?, `GROUPID` = ?");
-            stmt.setString(1, task.getId());
-            stmt.setString(2, task.getName());
-            stmt.setString(3, task.getPriority().toString());
-            stmt.setBoolean(4, task.isComplete());
-            stmt.setString(5, task.getCreator());
-            stmt.setString(6, task.getGroupId());
+            final PreparedStatement stmt = connection.prepareStatement("update task set `NAME` = ?, `PRIORITY` = ?, `COMPLETE` = ?, `CREATOR` = ?, `GROUPID` = ? where ID = ?");
+            stmt.setString(1, task.getName());
+            stmt.setString(2, task.getPriority().toString());
+            stmt.setBoolean(3, task.isComplete());
+            stmt.setString(4, task.getCreator());
+            stmt.setString(5, task.getGroupId());
+            stmt.setString(6, task.getId());
             stmt.executeUpdate();
             stmt.close();
         } catch (SQLException e) {

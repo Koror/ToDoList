@@ -130,7 +130,7 @@ public class Bootstrap {
     public User getUserByList(List<User> userList) {
         int indexUser = 0;
         for (User user : userList) {
-            System.out.println(indexUser + ": " + user.getName());
+            System.out.println(indexUser + ": " + user.getLogin());
             indexUser++;
         }
         System.out.println("Input index user");

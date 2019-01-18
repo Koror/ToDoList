@@ -14,7 +14,7 @@ public final class TaskCompleteCommand extends AbstractCommand {
         final List<Task> taskList = bootstrap.getTaskService().getTaskList(bootstrap.getSession());
         final Task task = bootstrap.getTaskByList(taskList);
         Result result = bootstrap.getTaskService().completeTask(task.getId(), bootstrap.getSession());
-        System.out.println(result);
+        System.out.println(result.getResult());
         System.out.println("Task complete");
     }
 

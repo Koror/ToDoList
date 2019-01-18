@@ -1,6 +1,7 @@
 package com.koror.app.command.user;
 
 import com.koror.app.command.AbstractCommand;
+import com.koror.app.endpoint.Result;
 import com.koror.app.endpoint.User;
 
 import java.util.List;
@@ -14,7 +15,8 @@ public class UserDeleteCommand extends AbstractCommand {
         System.out.println("Input index");
         final int indexUser = bootstrap.nextInt();
         final User user = userList.get(indexUser);
-        bootstrap.getUserService().deleteUser(user.getId(), bootstrap.getSession());
+        Result result = bootstrap.getUserService().deleteUser(user.getId(), bootstrap.getSession());
+        System.out.println(result.getResult());
         System.out.println("User delete");
     }
 

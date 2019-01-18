@@ -9,7 +9,6 @@ import com.koror.app.error.SessionNotValidateException;
 import javax.jws.WebMethod;
 import javax.jws.WebParam;
 import javax.jws.WebService;
-import java.util.Iterator;
 import java.util.List;
 
 @WebService
@@ -26,7 +25,7 @@ public class UserEndpoint {
             @WebParam(name = "id", partName = "id") String userId,
             @WebParam(name = "session", partName = "session") Session session) {
         final boolean validateSession = bootstrap.getSessionService().validate(session);
-        if(!validateSession) throw new SessionNotValidateException();
+        if (!validateSession) throw new SessionNotValidateException();
         bootstrap.getUserService().delete(userId);
         for (Session sessionTemp : bootstrap.getSessionService().getList()) {
             if (userId.equals(sessionTemp.getUserId()))
@@ -41,8 +40,14 @@ public class UserEndpoint {
     public Session loginUser(
             @WebParam(name = "login", partName = "login") String login,
             @WebParam(name = "password", partName = "password") String password) {
-        User user = bootstrap.getUserService().login(login, password);
-        Session session = new Session(user.getId());
+        final User user = bootstrap.getUserService().login(login, password);
+        Session session = null;
+        for (Session sessionTemp : bootstrap.getSessionService().getList()) {
+            if (user.equals(sessionTemp.getUserId()))
+                session = sessionTemp;
+        }
+        if (session == null)
+            session = new Session(user.getId());
         bootstrap.getSessionService().add(session);
         return session;
     }
@@ -58,9 +63,9 @@ public class UserEndpoint {
     }
 
     @WebMethod
-    public List<User> getUserList(@WebParam( name = "session", partName = "session") Session session) {
+    public List<User> getUserList(@WebParam(name = "session", partName = "session") Session session) {
         final boolean validateSession = bootstrap.getSessionService().validate(session);
-        if(!validateSession) throw new SessionNotValidateException();
+        if (!validateSession) throw new SessionNotValidateException();
         final Result result = new Result();
         result.success();
         return bootstrap.getUserService().getList();
@@ -69,9 +74,9 @@ public class UserEndpoint {
     @WebMethod
     public User getUserById(
             @WebParam(name = "userId", partName = "userId") String userId,
-            @WebParam( name = "session", partName = "session") Session session) {
+            @WebParam(name = "session", partName = "session") Session session) {
         final boolean validateSession = bootstrap.getSessionService().validate(session);
-        if(!validateSession) throw new SessionNotValidateException();
+        if (!validateSession) throw new SessionNotValidateException();
         return bootstrap.getUserService().getById(userId);
     }
 
@@ -87,9 +92,9 @@ public class UserEndpoint {
     public Result linkToTaskUser(
             @WebParam(name = "userId", partName = "userId") String userId,
             @WebParam(name = "taskId", partName = "taskId") String taskId,
-            @WebParam( name = "session", partName = "session") Session session) {
+            @WebParam(name = "session", partName = "session") Session session) {
         final boolean validateSession = bootstrap.getSessionService().validate(session);
-        if(!validateSession) throw new SessionNotValidateException();
+        if (!validateSession) throw new SessionNotValidateException();
         final AssigneeTask assigneeTask = new AssigneeTask(userId, taskId);
         bootstrap.getAssigneeTaskService().add(assigneeTask);
         final Result result = new Result();

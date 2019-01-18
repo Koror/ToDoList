@@ -1,5 +1,9 @@
 /target/
 /data
+/test_data
+/client-to-do-list/target
+/server-to-do-list/target
+/client-to-do-list/src/main/java/com/koror/app/endpoint
 !.mvn/wrapper/maven-wrapper.jar
 
 ### STS ###

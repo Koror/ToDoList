@@ -2,6 +2,7 @@ package com.koror.app.command.group;
 
 import com.koror.app.command.AbstractCommand;
 import com.koror.app.endpoint.Group;
+import com.koror.app.endpoint.Result;
 
 import java.util.List;
 
@@ -13,7 +14,8 @@ public final class GroupUpdateCommand extends AbstractCommand {
         final Group group = bootstrap.getGroupByList(groupList);
         System.out.println("Input name");
         group.setName(bootstrap.nextLine());
-        bootstrap.getGroupService().updateGroup(group, bootstrap.getSession());
+        Result result = bootstrap.getGroupService().updateGroup(group, bootstrap.getSession());
+        System.out.println(result.getResult());
         System.out.println("Group update");
     }
 

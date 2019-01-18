@@ -1,13 +1,28 @@
 package com.koror.app.database;
 
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.util.Properties;
+
 public class DatabaseConfig {
 
-    public static final String JDBC_DRIVER = "org.h2.Driver";
+    public static String JDBC_DRIVER;
 
-    public static final String URL = "jdbc:h2:~/test";
+    public static String URL;
 
-    public static final String USER = "admin";
+    public static String USER;
 
-    public static final String PASSWORD = "admin";
+    public static String PASSWORD;
+
+    public static void init() throws IOException{
+        FileInputStream fis;
+        Properties property = new Properties();
+        fis = new FileInputStream(DatabaseConfig.class.getClassLoader().getResource("config.properties").getPath());
+        property.load(fis);
+        JDBC_DRIVER = property.getProperty("db.driver");
+        URL = property.getProperty("db.url");
+        USER = property.getProperty("db.user");
+        PASSWORD = property.getProperty("db.password");
+    }
 
 }

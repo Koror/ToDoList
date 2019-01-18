@@ -7,7 +7,7 @@ import java.io.IOException;
 
 public class App {
 
-    public static void main(String[] args) throws ReflectiveOperationException, IOException {
+    public static void main(String[] args) throws ReflectiveOperationException {
         final Bootstrap bootstrap = new Bootstrap();
         bootstrap.startServer();
     }

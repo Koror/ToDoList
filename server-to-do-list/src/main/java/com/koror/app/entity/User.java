@@ -48,6 +48,10 @@ public class User extends AbstractEntity implements Serializable {
     }
 
     public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public void setHashPassword(String password){
         this.password = Hash.getHashString(password);
     }
 

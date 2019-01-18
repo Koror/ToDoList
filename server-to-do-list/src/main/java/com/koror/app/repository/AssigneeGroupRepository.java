@@ -18,7 +18,7 @@ public class AssigneeGroupRepository implements IAssigneeGroupRepository {
     @Override
     public void add(AssigneeGroup assigneeGroup) {
         try {
-            final PreparedStatement stmt = connection.prepareStatement("insert into ASSIGNEEGROUP (`ID`, `USERID`, `GROUPID`) values(?,?,?)");
+            final PreparedStatement stmt = connection.prepareStatement("insert into assigneegroup (`ID`, `USERID`, `GROUPID`) values(?,?,?)");
             stmt.setString(1, assigneeGroup.getId());
             stmt.setString(2, assigneeGroup.getUserId());
             stmt.setString(3, assigneeGroup.getGroupId());
@@ -31,7 +31,7 @@ public class AssigneeGroupRepository implements IAssigneeGroupRepository {
 
     public void delete(String id) {
         try {
-            final PreparedStatement stmt = connection.prepareStatement("delete from ASSIGNEEGROUP where `ID` = ?");
+            final PreparedStatement stmt = connection.prepareStatement("delete from assigneegroup where `ID` = ?");
             stmt.setString(1, id);
             stmt.executeUpdate();
             stmt.close();
@@ -43,7 +43,7 @@ public class AssigneeGroupRepository implements IAssigneeGroupRepository {
     public AssigneeGroup getById(String id) {
         final AssigneeGroup assigneeGroup = new AssigneeGroup();
         try {
-            final PreparedStatement stmt = connection.prepareStatement("select * from ASSIGNEEGROUP where `ID`=?");
+            final PreparedStatement stmt = connection.prepareStatement("select * from assigneegroup where `ID`=?");
             stmt.setString(1, id);
             final ResultSet result = stmt.executeQuery();
             while (result.next()) {
@@ -62,7 +62,7 @@ public class AssigneeGroupRepository implements IAssigneeGroupRepository {
     public List<AssigneeGroup> getList() {
         final List<AssigneeGroup> list = new ArrayList<>();
         try {
-            final PreparedStatement stmt = connection.prepareStatement("select * from ASSIGNEEGROUP");
+            final PreparedStatement stmt = connection.prepareStatement("select * from assigneegroup");
             final ResultSet result = stmt.executeQuery();
             while (result.next()) {
                 final AssigneeGroup assigneeGroup = new AssigneeGroup();
@@ -81,10 +81,10 @@ public class AssigneeGroupRepository implements IAssigneeGroupRepository {
 
     public void update(final AssigneeGroup assigneeGroup) {
         try {
-            final PreparedStatement stmt = connection.prepareStatement("update ASSIGNEEGROUP set `ID` = ?, `USERID` = ? 'GROUPID' id = ?");
-            stmt.setString(1, assigneeGroup.getId());
-            stmt.setString(2, assigneeGroup.getUserId());
-            stmt.setString(3, assigneeGroup.getGroupId());
+            final PreparedStatement stmt = connection.prepareStatement("update assigneegroup set `USERID` = ? 'GROUPID' id = ? `ID` = ?");
+            stmt.setString(1, assigneeGroup.getUserId());
+            stmt.setString(2, assigneeGroup.getGroupId());
+            stmt.setString(3, assigneeGroup.getId());
             stmt.executeUpdate();
             stmt.close();
         } catch (SQLException e) {

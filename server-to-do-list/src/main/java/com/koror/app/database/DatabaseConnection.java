@@ -1,5 +1,6 @@
 package com.koror.app.database;
 
+import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
@@ -10,9 +11,10 @@ public class DatabaseConnection {
 
     public static void setConnection() {
         try {
+            DatabaseConfig.init();
             Class.forName(DatabaseConfig.JDBC_DRIVER);
             connection = DriverManager.getConnection(DatabaseConfig.URL, DatabaseConfig.USER, DatabaseConfig.PASSWORD);
-        } catch (SQLException | ClassNotFoundException e) {
+        } catch (SQLException | ClassNotFoundException | IOException e) {
             e.printStackTrace();
         }
     }

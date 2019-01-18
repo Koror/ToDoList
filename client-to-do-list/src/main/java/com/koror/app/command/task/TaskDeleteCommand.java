@@ -1,6 +1,7 @@
 package com.koror.app.command.task;
 
 import com.koror.app.command.AbstractCommand;
+import com.koror.app.endpoint.Result;
 import com.koror.app.endpoint.Task;
 
 import java.util.List;
@@ -11,7 +12,8 @@ public final class TaskDeleteCommand extends AbstractCommand {
     public void execute() {
         final List<Task> taskList = bootstrap.getTaskService().getTaskList(bootstrap.getSession());
         Task task = bootstrap.getTaskByList(taskList);
-        bootstrap.getTaskService().deleteTask(task.getId(), bootstrap.getSession());
+        Result result = bootstrap.getTaskService().deleteTask(task.getId(), bootstrap.getSession());
+        System.out.println(result.getResult());
         System.out.println("Task delete");
     }
 

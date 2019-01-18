@@ -17,7 +17,7 @@ public class GroupRepository implements IGroupRepository {
 
     public void add(Group group) {
         try {
-            final PreparedStatement stmt = connection.prepareStatement("insert into `GROUP` (`ID`, `NAME`, `CREATOR`) values(?,?,?)");
+            final PreparedStatement stmt = connection.prepareStatement("insert into `group` (`ID`, `NAME`, `CREATOR`) values(?,?,?)");
             stmt.setString(1, group.getId());
             stmt.setString(2, group.getName());
             stmt.setString(3, group.getCreator());
@@ -30,7 +30,7 @@ public class GroupRepository implements IGroupRepository {
 
     public void delete(String id) {
         try {
-            final PreparedStatement stmt = connection.prepareStatement("delete from `GROUP` where `ID` = ?");
+            final PreparedStatement stmt = connection.prepareStatement("delete from `group` where `ID` = ?");
             stmt.setString(1, id);
             stmt.executeUpdate();
             stmt.close();
@@ -42,7 +42,7 @@ public class GroupRepository implements IGroupRepository {
     public Group getById(String id) {
         final Group group = new Group();
         try {
-            final PreparedStatement stmt = connection.prepareStatement("select * from `GROUP` where `ID` = ?");
+            final PreparedStatement stmt = connection.prepareStatement("select * from `group` where `ID` = ?");
             stmt.setString(1, id);
             final ResultSet result = stmt.executeQuery();
             while (result.next()) {
@@ -61,7 +61,7 @@ public class GroupRepository implements IGroupRepository {
     public List<Group> getList() {
         final List<Group> list = new ArrayList<>();
         try {
-            final PreparedStatement stmt = connection.prepareStatement("select * from `GROUP`");
+            final PreparedStatement stmt = connection.prepareStatement("select * from `group`");
             final ResultSet result = stmt.executeQuery();
             while (result.next()) {
                 final Group group = new Group();
@@ -80,10 +80,10 @@ public class GroupRepository implements IGroupRepository {
 
     public void update(final Group session) {
         try {
-            final PreparedStatement stmt = connection.prepareStatement("update `GROUP` set `ID` = ?, `NAME` = ?, `CREATOR` = ?");
-            stmt.setString(1, session.getId());
-            stmt.setString(2, session.getName());
-            stmt.setString(3, session.getCreator());
+            final PreparedStatement stmt = connection.prepareStatement("update `group` set `NAME` = ?, `CREATOR` = ? where `ID` = ?");
+            stmt.setString(1, session.getName());
+            stmt.setString(2, session.getCreator());
+            stmt.setString(3, session.getId());
             stmt.executeUpdate();
             stmt.close();
         } catch (SQLException e) {

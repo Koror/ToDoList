@@ -16,13 +16,13 @@ public final class TaskToGroupCommand extends AbstractCommand {
         final List<Group> groupList = bootstrap.getGroupService().getGroupList(bootstrap.getSession());
         final Group group = bootstrap.getGroupByList(groupList);
         Result result = bootstrap.getTaskService().taskToGroupTask(task.getId(), group.getId(), bootstrap.getSession());
-        System.out.println(result);
+        System.out.println(result.getResult());
         System.out.println("Link complete");
     }
 
     @Override
     public String command() {
-        return "AddTaskToGroup";
+        return "TaskToGroup";
     }
 
     @Override

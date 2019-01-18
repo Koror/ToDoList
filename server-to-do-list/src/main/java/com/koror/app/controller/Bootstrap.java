@@ -52,6 +52,10 @@ public final class Bootstrap implements IBootstrap {
 
     private final Map<String, AbstractCommand> serverCommands = new HashMap<>();
 
+    static{
+        DatabaseConnection.setConnection();
+    }
+
     private void registerCommand(Map<String, AbstractCommand> commandMap, final AbstractCommand command) {
         commandMap.put(command.command(), command);
     }
@@ -102,9 +106,7 @@ public final class Bootstrap implements IBootstrap {
         getUserService().add(userTest);
     }
 
-    public void startServer() throws ReflectiveOperationException,IOException {
-        defaultUserInit();
-        DatabaseConnection.setConnection();
+    public void startServer() throws ReflectiveOperationException {
         Endpoint.publish("http://localhost:8080/TaskEndpoint?WSDL", new TaskEndpoint(this));
         Endpoint.publish("http://localhost:8080/UserEndpoint?WSDL", new UserEndpoint(this));
         Endpoint.publish("http://localhost:8080/GroupEndpoint?WSDL", new GroupEndpoint(this));

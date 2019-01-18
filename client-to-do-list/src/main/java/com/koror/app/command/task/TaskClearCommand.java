@@ -11,7 +11,7 @@ public final class TaskClearCommand extends AbstractCommand {
     @Override
     public void execute() {
         Result result = bootstrap.getTaskService().clearTask(bootstrap.getSession());
-        System.out.println(result);
+        System.out.println(result.getResult());
         System.out.println("Complete task clear");
     }
 
