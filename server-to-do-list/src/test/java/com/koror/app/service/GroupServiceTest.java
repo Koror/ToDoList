@@ -4,8 +4,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.dataformat.xml.XmlMapper;
 import com.koror.app.entity.Group;
 import com.koror.app.error.WrongInputException;
-import com.koror.app.repository.AssigneeGroupRepository;
-import com.koror.app.repository.GroupRepository;
 import org.junit.Test;
 
 import java.io.*;

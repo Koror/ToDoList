@@ -3,11 +3,11 @@
         PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-config.dtd">
 <configuration>
-    <properties resource="src/main/resources/config.properties"> <!--ссылка на файл со свойствами(ссылка на СУБД, логин, пароль и тп.)-->
+    <properties resource="config.properties"> <!--ссылка на файл со свойствами(ссылка на СУБД, логин, пароль и тп.)-->
     </properties>
-    <settings>
-        <setting name="logImpl" value="LOG4J"/>
-    </settings>
+    <!--<settings>-->
+        <!--<setting name="logImpl" value="LOG4J"/>-->
+    <!--</settings>-->
     <environments default="development"><!--в данном блоке настраиваются подключения к БД-->
         <environment id="development">
             <transactionManager type="JDBC"/>
@@ -20,8 +20,11 @@
         </environment>
     </environments>
     <mappers><!--в данном блоке необходимо описать маперы, которые используются в проекте-->
-        <mapper class="kz.jazzsoft.mapper.SubscriberMapper"/>
-        <mapper class="kz.jazzsoft.mapper.TariffMapper"/>
-        <mapper class="kz.jazzsoft.mapper.PaymentMapper"/>
+        <mapper class="com.koror.app.api.repository.IUserRepository"/>
+        <mapper class="com.koror.app.api.repository.ITaskRepository"/>
+        <mapper class="com.koror.app.api.repository.IGroupRepository"/>
+        <mapper class="com.koror.app.api.repository.ISessionRepository"/>
+        <mapper class="com.koror.app.api.repository.IAssigneeTaskRepository"/>
+        <mapper class="com.koror.app.api.repository.IAssigneeGroupRepository"/>
     </mappers>
 </configuration>

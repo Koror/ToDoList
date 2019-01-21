@@ -5,24 +5,34 @@ import com.koror.app.command.help.HelpLoginCommand;
 import com.koror.app.command.user.UserLoginCommand;
 import com.koror.app.command.user.UserRegisterCommand;
 import com.koror.app.endpoint.*;
-import com.koror.app.endpoint.Session;
 import com.koror.app.error.MissingCommandException;
 import com.koror.app.error.WrongInputException;
+import lombok.Getter;
 import org.reflections.Reflections;
 
 import java.io.IOException;
+import java.net.InetAddress;
+import java.net.UnknownHostException;
 import java.util.*;
 
 public class Bootstrap {
 
+    @Getter
     private final UserEndpoint userService = new UserEndpointService().getUserEndpointPort();
 
+    @Getter
     private final TaskEndpoint taskService = new TaskEndpointService().getTaskEndpointPort();
 
+    @Getter
     private final GroupEndpoint groupService = new GroupEndpointService().getGroupEndpointPort();
 
+    @Getter
+    private final SessionEndpoint sessionService = new SessionEndpointService().getSessionEndpointPort();
+
+    @Getter
     private final Map<String, AbstractCommand> commandUserMap = new HashMap<>();
 
+    @Getter
     private final Map<String, AbstractCommand> commandLoginMap = new HashMap<>();
 
     private final Scanner scanner = new Scanner(System.in);
@@ -66,12 +76,9 @@ public class Bootstrap {
             return true;
         }
         AbstractCommand command = (AbstractCommand) c.newInstance();
-        if ((command instanceof UserLoginCommand)
-                || (command instanceof UserRegisterCommand)
-                || (command instanceof HelpLoginCommand)) {
-            return true;
-        }
-        return false;
+        return command instanceof UserLoginCommand
+                || command instanceof UserRegisterCommand
+                || command instanceof HelpLoginCommand;
     }
 
     private String startCommand(Map<String, AbstractCommand> commandMap) {
@@ -89,7 +96,7 @@ public class Bootstrap {
         return "";
     }
 
-    public void start() throws ReflectiveOperationException, IOException {
+    public void start() throws ReflectiveOperationException {
         initUserCommand(userCommands());
         initLoginCommand(loginCommands);
         String action = "";
@@ -154,27 +161,20 @@ public class Bootstrap {
     }
 
     public void setSession(Session session) {
+        session.setIp(getIp());
         this.session = session;
     }
 
-    public Map<String, AbstractCommand> getCommandUserMap() {
-        return commandUserMap;
+    public void deleteSession(){
+        session = null;
     }
-
-    public Map<String, AbstractCommand> getCommandLoginMap() {
-        return commandLoginMap;
-    }
-
-    public UserEndpoint getUserService() {
-        return userService;
-    }
-
-    public TaskEndpoint getTaskService() {
-        return taskService;
-    }
-
-    public GroupEndpoint getGroupService() {
-        return groupService;
+    public String getIp() {
+        try {
+            return InetAddress.getLocalHost().getHostAddress();
+        } catch (UnknownHostException e) {
+            System.out.println(e.getMessage());
+        }
+        return null;
     }
 
 }

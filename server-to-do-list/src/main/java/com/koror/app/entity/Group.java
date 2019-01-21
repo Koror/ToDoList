@@ -1,13 +1,20 @@
 package com.koror.app.entity;
 
+import lombok.Getter;
+import lombok.Setter;
+
 import java.io.Serializable;
 import java.util.UUID;
 
 public class Group extends AbstractEntity implements Serializable {
 
-    private String creator = null;
+    @Setter
+    @Getter
+    private String creator;
 
-    private String name = "Default name";
+    @Setter
+    @Getter
+    private String name;
 
     public Group(){
 
@@ -17,21 +24,6 @@ public class Group extends AbstractEntity implements Serializable {
         this.name = name;
     }
 
-    public String getName() {
-        return name;
-    }
-
-    public void setName(final String newName) {
-        name = newName;
-    }
-
-    public String getCreator() {
-        return creator;
-    }
-
-    public void setCreator(String creator) {
-        this.creator = creator;
-    }
 
     @Override
     public String toString() {

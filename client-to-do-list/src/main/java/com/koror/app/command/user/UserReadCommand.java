@@ -15,7 +15,7 @@ public class UserReadCommand extends AbstractCommand {
 
     @Override
     public String command() {
-        return "ReadAllUser";
+        return "ReadUserAll";
     }
 
     @Override

@@ -1,11 +1,18 @@
 package com.koror.app.entity;
 
+import lombok.Getter;
+import lombok.Setter;
+
 import java.io.Serializable;
 
 public class AssigneeTask extends AbstractEntity implements Serializable {
 
+    @Setter
+    @Getter
     private String userId;
 
+    @Setter
+    @Getter
     private String taskId;
 
     public AssigneeTask(){
@@ -17,19 +24,4 @@ public class AssigneeTask extends AbstractEntity implements Serializable {
         this.taskId = taskId;
     }
 
-    public String getUserId() {
-        return userId;
-    }
-
-    public String getTaskId() {
-        return taskId;
-    }
-
-    public void setUserId(String userId) {
-        this.userId = userId;
-    }
-
-    public void setTaskId(String taskId) {
-        this.taskId = taskId;
-    }
 }

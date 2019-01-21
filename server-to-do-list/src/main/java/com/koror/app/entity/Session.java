@@ -1,14 +1,24 @@
 package com.koror.app.entity;
 
 import com.koror.app.util.Hash;
+import lombok.Getter;
+import lombok.Setter;
 
+import java.net.InetAddress;
 import java.util.Objects;
 
 public class Session extends AbstractEntity{
 
+    @Getter
     private String userId;
 
+    @Setter
+    @Getter
     private String signature;
+
+    @Setter
+    @Getter
+    private String ip;
 
     public Session(){
 
@@ -18,22 +28,18 @@ public class Session extends AbstractEntity{
         this.userId = userId;
         this.signature = Hash.getHashString(getId() + userId);
     }
+
+    public Session(String userId, String ip){
+        this.userId = userId;
+        this.signature = Hash.getHashString(getId() + userId);
+        this.ip = ip;
+    }
+
     public void setUserId(String userId){
         this.userId = userId;
         this.signature = Hash.getHashString(getId() + userId);
     }
 
-    public String getUserId() {
-        return userId;
-    }
-
-    public String getSignature() {
-        return signature;
-    }
-
-    public void setSignature(String signature) {
-        this.signature = signature;
-    }
 
     @Override
     public boolean equals(Object o) {

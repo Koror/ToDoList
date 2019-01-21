@@ -4,7 +4,6 @@ import com.koror.app.controller.Bootstrap;
 import com.koror.app.database.DatabaseConnection;
 import com.koror.app.entity.User;
 import com.koror.app.enumerated.Access;
-import com.koror.app.repository.UserRepository;
 import org.junit.Test;
 
 import static org.junit.Assert.*;

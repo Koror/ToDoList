@@ -9,7 +9,7 @@ public class UserLogoutCommand extends AbstractCommand {
     public void execute() {
         final Session session = bootstrap.getSession();
         final Result result = bootstrap.getUserService().logoutUser(session);
-        bootstrap.setSession(null);
+        bootstrap.deleteSession();
         System.out.println(result.getResult());
         System.out.println("Logout complete");
     }

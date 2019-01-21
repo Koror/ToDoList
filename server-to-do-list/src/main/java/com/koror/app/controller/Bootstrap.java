@@ -1,27 +1,24 @@
 package com.koror.app.controller;
 
 import com.koror.app.api.controller.IBootstrap;
-import com.koror.app.api.repository.IUserRepository;
+import com.koror.app.api.repository.*;
 import com.koror.app.command.AbstractCommand;
 import com.koror.app.database.DatabaseConnection;
 import com.koror.app.endpoint.GroupEndpoint;
+import com.koror.app.endpoint.SessionEndpoint;
 import com.koror.app.endpoint.TaskEndpoint;
 import com.koror.app.endpoint.UserEndpoint;
 import com.koror.app.entity.User;
 import com.koror.app.enumerated.Access;
 import com.koror.app.error.MissingCommandException;
 import com.koror.app.error.WrongInputException;
-import com.koror.app.repository.*;
 import com.koror.app.service.*;
-import org.apache.ibatis.io.Resources;
-import org.apache.ibatis.session.SqlSessionFactory;
-import org.apache.ibatis.session.SqlSessionFactoryBuilder;
+import com.koror.app.util.Transaction;
+import lombok.Getter;
 import org.reflections.Reflections;
 
 import javax.xml.ws.Endpoint;
-import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.io.Reader;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Scanner;
@@ -29,51 +26,57 @@ import java.util.Set;
 
 public final class Bootstrap implements IBootstrap {
 
-    private final AssigneeTaskRepository assigneeTaskRepository = new AssigneeTaskRepository();
+    private IUserRepository userRepository;
 
-    private final AssigneeTaskService assigneeTaskService = new AssigneeTaskService(assigneeTaskRepository);
+    private ITaskRepository taskRepository;
 
-    private final AssigneeGroupRepository assigneeGroupRepository = new AssigneeGroupRepository();
+    private IGroupRepository groupRepository;
 
-    private final AssigneeGroupService assigneeGroupService = new AssigneeGroupService(assigneeGroupRepository);
+    private ISessionRepository sessionRepository;
 
-    private final GroupRepository groupRepository = new GroupRepository();
+    private IAssigneeGroupRepository assigneeGroupRepository;
 
-    private final TaskRepository taskRepository = new TaskRepository();
+    private IAssigneeTaskRepository assigneeTaskRepository;
 
-    private final GroupService groupService = new GroupService(groupRepository, assigneeGroupService);
+    @Getter
+    private AssigneeTaskService assigneeTaskService;
 
-    private final TaskService taskService = new TaskService(taskRepository, assigneeTaskService);
+    @Getter
+    private AssigneeGroupService assigneeGroupService;
 
-    private final UserRepository userRepository = new UserRepository();
+    @Getter
+    private GroupService groupService;
 
-    private final UserService userService = new UserService(userRepository);
+    @Getter
+    private TaskService taskService;
 
-    private final SessionRepository sessionRepository = new SessionRepository();
+    @Getter
+    private UserService userService;
 
-    private final SessionService sessionService = new SessionService(sessionRepository);
+    @Getter
+    private SessionService sessionService;
 
     private final Scanner scanner = new Scanner(System.in);
 
+    @Getter
     private final Map<String, AbstractCommand> serverCommands = new HashMap<>();
 
-    //private final SqlSessionFactory sqlSessionFactory;
-
-    //private final IUserRepository userMapper;
-
-    public Bootstrap(){
+    public Bootstrap() throws IOException {
         DatabaseConnection.setConnection();
-//        Reader reader = null;
-//        try {
-//            reader = Resources
-//                    .getResourceAsReader("mybatis-config.xml"); //Читаем файл с настройками подключения и настройками MyBatis
-//            sqlSessionFactory = new SqlSessionFactoryBuilder().build(reader);
-//            userMapper = sqlSessionFactory.openSession().getMapper(IUserRepository.class); //Создаем маппер, из которого и будем вызывать методы getSubscriberById и getSubscribers
-//            List<Subscriber> subscribers = userMapper.getSubscribers();
-//            Subscriber subscriber = userMapper.getSubscriberById(101);
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
+        Transaction.openSqlSession();
+        userRepository = Transaction.getSqlSession().getMapper(IUserRepository.class);
+        taskRepository = Transaction.getSqlSession().getMapper(ITaskRepository.class);
+        groupRepository = Transaction.getSqlSession().getMapper(IGroupRepository.class);
+        sessionRepository = Transaction.getSqlSession().getMapper(ISessionRepository.class);
+        assigneeGroupRepository = Transaction.getSqlSession().getMapper(IAssigneeGroupRepository.class);
+        assigneeTaskRepository = Transaction.getSqlSession().getMapper(IAssigneeTaskRepository.class);
+
+        userService = new UserService(userRepository);
+        sessionService = new SessionService(sessionRepository);
+        assigneeTaskService = new AssigneeTaskService(assigneeTaskRepository);
+        assigneeGroupService = new AssigneeGroupService(assigneeGroupRepository);
+        taskService = new TaskService(taskRepository, assigneeTaskService);
+        groupService = new GroupService(groupRepository, assigneeGroupService);
     }
 
     private void registerCommand(Map<String, AbstractCommand> commandMap, final AbstractCommand command) {
@@ -130,48 +133,14 @@ public final class Bootstrap implements IBootstrap {
         Endpoint.publish("http://localhost:8080/TaskEndpoint?WSDL", new TaskEndpoint(this));
         Endpoint.publish("http://localhost:8080/UserEndpoint?WSDL", new UserEndpoint(this));
         Endpoint.publish("http://localhost:8080/GroupEndpoint?WSDL", new GroupEndpoint(this));
+        Endpoint.publish("http://localhost:8080/SessionEndpoint?WSDL", new SessionEndpoint(this));
         initCommand(userCommands());
-        String action="";
+        String action = "";
         System.out.println("Action: Help, Exit");
         do {
             action = startCommand(serverCommands);
         } while (!action.equals("Exit"));
         DatabaseConnection.closeConnection();
-    }
-
-    @Override
-    public GroupService getGroupService() {
-        return groupService;
-    }
-
-    @Override
-    public TaskService getTaskService() {
-        return taskService;
-    }
-
-    @Override
-    public UserService getUserService() {
-        return userService;
-    }
-
-    @Override
-    public AssigneeGroupService getAssigneeGroupService() {
-        return assigneeGroupService;
-    }
-
-    @Override
-    public AssigneeTaskService getAssigneeTaskService() {
-        return assigneeTaskService;
-    }
-
-    @Override
-    public SessionService getSessionService() {
-        return sessionService;
-    }
-
-    @Override
-    public Map<String, AbstractCommand> getServerCommands() {
-        return serverCommands;
     }
 
     @Override

@@ -18,7 +18,7 @@ public interface IAssigneeGroupRepository {
     @Results(value = {
             @Result(property = "id", column = "ID"),
             @Result(property = "userId", column = "USERID"),
-            @Result(property = "groupId", column = "GROUPID"),
+            @Result(property = "groupId", column = "GROUPID")
     })
     AssigneeGroup getById(String id);
 
@@ -26,7 +26,7 @@ public interface IAssigneeGroupRepository {
     @Results(value = {
             @Result(property = "id", column = "ID"),
             @Result(property = "userId", column = "USERID"),
-            @Result(property = "groupId", column = "GROUPID"),
+            @Result(property = "groupId", column = "GROUPID")
     })
     List<AssigneeGroup> getList();
 
@@ -40,7 +40,7 @@ public interface IAssigneeGroupRepository {
     @Results(value = {
             @Result(property = "id", column = "ID"),
             @Result(property = "userId", column = "USERID"),
-            @Result(property = "groupId", column = "GROUPID"),
+            @Result(property = "groupId", column = "GROUPID")
     })
     AssigneeGroup getAssigneeByUserId(String userId);
 

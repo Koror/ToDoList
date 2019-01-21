@@ -1,12 +1,8 @@
 package com.koror.app.service;
 
 import com.koror.app.entity.AbstractEntity;
-import com.koror.app.error.WrongInputException;
-import com.koror.app.repository.AbstractRepository;
 
-import java.util.List;
-
-public abstract class AbstractService<R extends AbstractRepository, E extends AbstractEntity> {
+public abstract class AbstractService< E extends AbstractEntity> {
 
 //    protected R repository;
 //

@@ -1,21 +1,33 @@
 package com.koror.app.entity;
 
 import com.koror.app.enumerated.Priority;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.io.Serializable;
 import java.util.UUID;
 
 public class Task extends AbstractEntity implements Serializable {
 
-    private String groupId = null;
+    @Setter
+    @Getter
+    private String groupId;
 
-    private Priority priority = Priority.MEDIUM;
+    @Setter
+    @Getter
+    private Priority priority;
 
-    private String name = "Default name";
+    @Setter
+    @Getter
+    private String name;
 
-    private boolean complete = false;
+    @Setter
+    @Getter
+    private boolean complete;
 
-    private String creator = null;
+    @Setter
+    @Getter
+    private String creator;
 
     public Task(){
         
@@ -34,46 +46,6 @@ public class Task extends AbstractEntity implements Serializable {
         setName(name);
         this.priority = priority;
         this.groupId = groupId;
-    }
-
-    public boolean isComplete() {
-        return complete;
-    }
-
-    public void setComplete(boolean complete) {
-        this.complete = complete;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(final String newName) {
-        name = newName;
-    }
-
-    public String getGroupId() {
-        return groupId;
-    }
-
-    public void setGroupId(final String groupId) {
-        this.groupId = groupId;
-    }
-
-    public Priority getPriority() {
-        return priority;
-    }
-
-    public void setPriority(final Priority priority) {
-        this.priority = priority;
-    }
-
-    public String getCreator() {
-        return creator;
-    }
-
-    public void setCreator(String creator) {
-        this.creator = creator;
     }
 
     @Override

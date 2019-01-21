@@ -1,12 +1,19 @@
 package com.koror.app.entity;
 
+import lombok.Getter;
+import lombok.Setter;
+
 import java.io.Serializable;
 import java.util.UUID;
 
 public class AssigneeGroup extends AbstractEntity implements Serializable {
 
+    @Setter
+    @Getter
     private String userId;
 
+    @Setter
+    @Getter
     private String groupId;
 
     public AssigneeGroup(){
@@ -18,19 +25,4 @@ public class AssigneeGroup extends AbstractEntity implements Serializable {
         this.groupId = groupId;
     }
 
-    public String getUserId() {
-        return userId;
-    }
-
-    public String getGroupId() {
-        return groupId;
-    }
-
-    public void setUserId(String userId) {
-        this.userId = userId;
-    }
-
-    public void setGroupId(String groupId) {
-        this.groupId = groupId;
-    }
 }

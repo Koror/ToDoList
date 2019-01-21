@@ -44,7 +44,7 @@ public interface IUserRepository{
             @Result(property = "email", column = "EMAIL"),
             @Result(property = "access", column = "ACCESS")
     })
-    User login(String login, String password);
+    User login(@Param(value = "login") String login, @Param(value = "password")String password);
 
     @Select("select * from user")
     @Results(value = {

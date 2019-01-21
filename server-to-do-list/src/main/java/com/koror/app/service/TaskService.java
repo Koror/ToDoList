@@ -1,74 +1,86 @@
 package com.koror.app.service;
 
 import com.koror.app.api.repository.ITaskRepository;
+import com.koror.app.api.service.ITaskService;
 import com.koror.app.entity.AssigneeTask;
 import com.koror.app.entity.Task;
 import com.koror.app.entity.User;
 import com.koror.app.enumerated.Access;
 import com.koror.app.error.WrongInputException;
-import com.koror.app.repository.TaskRepository;
+import com.koror.app.util.Transaction;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class TaskService implements ITaskRepository {
+public class TaskService implements ITaskService {
 
-    private final TaskRepository repository;
+    private final ITaskRepository repository;
 
     private final AssigneeTaskService assigneeTaskService;
 
-
-    public TaskService(TaskRepository taskRepository, AssigneeTaskService assigneeTaskService) {
+    public TaskService(ITaskRepository taskRepository, AssigneeTaskService assigneeTaskService) {
         this.repository = taskRepository;
         this.assigneeTaskService = assigneeTaskService;
     }
 
+    @Override
     public void add(Task entity) {
         if (entity == null) throw new WrongInputException("Wrong Input");
         repository.add(entity);
+        Transaction.commit();
     }
 
+    @Override
     public void delete(String id) {
         if (id == null || id.isEmpty()) throw new WrongInputException("Wrong Input");
         repository.delete(id);
+        Transaction.commit();
     }
 
+    @Override
     public Task getById(String id) {
         if (id == null || id.isEmpty()) throw new WrongInputException("Wrong Input");
         return repository.getById(id);
     }
 
+    @Override
     public List<Task> getList() {
         return repository.getList();
     }
 
+    @Override
     public void update(final Task entity) {
         if (entity == null) throw new WrongInputException("Wrong input");
         repository.update(entity);
+        Transaction.commit();
     }
 
     @Override
     public void completeTask(final Task task) throws WrongInputException {
         if (task == null) throw new WrongInputException("Wrong input");
-        repository.completeTask(task);
+        task.setComplete(true);
+        repository.update(task);
+        Transaction.commit();
     }
 
     @Override
     public void clearTask(List<Task> taskList) {
-        repository.clearTask(taskList);
+        for (Task task : taskList) {
+            if (task.isComplete())
+                repository.delete(task.getId());
+        }
+        Transaction.commit();
     }
 
     @Override
     public void setGroupId(final Task task, String groupId) throws WrongInputException {
         if (task == null) throw new WrongInputException("Wrong input");
-        repository.setGroupId(task, groupId);
+        task.setGroupId(groupId);
+        repository.update(task);
+        Transaction.commit();
     }
 
     @Override
-    public Task getTaskByIndex(Integer index) {
-        return repository.getTaskByIndex(index);
-    }
-
     public List<Task> getListTaskByUser(User user) {
         if (user.getAccess() == Access.ADMIN) return getList();
         final List<Task> taskList = new ArrayList<>();

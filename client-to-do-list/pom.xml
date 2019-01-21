@@ -35,6 +35,13 @@
             <version>4.11</version>
             <scope>test</scope>
         </dependency>
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <version>1.18.2</version>
+            <scope>provided</scope>
+        </dependency>
+
     </dependencies>
 
     <build>
@@ -120,6 +127,9 @@
                                 </wsdlOption>
                                 <wsdlOption>
                                     <wsdl>http://localhost:8080/UserEndpoint?WSDL</wsdl>
+                                </wsdlOption>
+                                <wsdlOption>
+                                    <wsdl>http://localhost:8080/SessionEndpoint?WSDL</wsdl>
                                 </wsdlOption>
                             </wsdlOptions>
                         </configuration>

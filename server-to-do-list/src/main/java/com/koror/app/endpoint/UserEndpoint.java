@@ -1,6 +1,7 @@
 package com.koror.app.endpoint;
 
 import com.koror.app.controller.Bootstrap;
+import com.koror.app.database.DatabaseConnection;
 import com.koror.app.entity.AssigneeTask;
 import com.koror.app.entity.Session;
 import com.koror.app.entity.User;
@@ -39,23 +40,23 @@ public class UserEndpoint {
     @WebMethod
     public Session loginUser(
             @WebParam(name = "login", partName = "login") String login,
-            @WebParam(name = "password", partName = "password") String password) {
+            @WebParam(name = "password", partName = "password") String password,
+            @WebParam(name = "ip", partName = "ip") String ip) {
         final User user = bootstrap.getUserService().login(login, password);
         Session session = null;
         for (Session sessionTemp : bootstrap.getSessionService().getList()) {
-            if (user.equals(sessionTemp.getUserId()))
+            if ((user.getId().equals(sessionTemp.getUserId())) && (ip.equals(sessionTemp.getIp())))
                 session = sessionTemp;
         }
-        if (session == null)
-            session = new Session(user.getId());
-        bootstrap.getSessionService().add(session);
+        if (session == null){
+            session = new Session(user.getId(), ip);
+            bootstrap.getSessionService().add(session);
+        }
         return session;
     }
 
     @WebMethod
     public Result logoutUser(@WebParam(name = "session", partName = "session") Session session) {
-        final boolean validateSession = bootstrap.getSessionService().validate(session);
-        if (!validateSession) throw new SessionNotValidateException();
         bootstrap.getSessionService().delete(session.getId());
         final Result result = new Result();
         result.success();

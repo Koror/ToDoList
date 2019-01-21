@@ -7,29 +7,31 @@ import java.util.List;
 
 public interface ISessionRepository {
 
-    @Insert("insert into session (`ID`, `USERID`, `SIGNATURE`) values(#{id}, #{userId}, #{signature})")
+    @Insert("insert into `session` (`ID`, `USERID`, `SIGNATURE`, `IP`) values(#{id}, #{userId}, #{signature}, #{ip})")
     void add(Session session);
 
-    @Delete("delete from session where `ID` = #{id}")
+    @Delete("delete from `session` where `ID` = #{id}")
     void delete(String id);
 
-    @Select("select * from session where `ID` = #{id}")
+    @Select("select * from `session` where `ID` = #{id}")
     @Results(value = {
             @Result(property = "id", column = "ID"),
             @Result(property = "userId", column = "USERID"),
             @Result(property = "signature", column = "SIGNATURE"),
+            @Result(property = "ip", column = "IP")
     })
     Session getById(String id);
 
-    @Select("select * from session")
+    @Select("select * from `session`")
     @Results(value = {
             @Result(property = "id", column = "ID"),
             @Result(property = "userId", column = "USERID"),
             @Result(property = "signature", column = "SIGNATURE"),
+            @Result(property = "ip", column = "IP")
     })
     List<Session> getList();
 
-    @Update("update session set `USERID` = #{userId}, `SIGNATURE` = #{signature} where `ID` = #{id}")
+    @Update("update `session` set `USERID` = #{userId}, `SIGNATURE` = #{signature} where `ID` = #{id}")
     void update(Session session);
 
 }

@@ -18,7 +18,7 @@ public interface IAssigneeTaskRepository {
     @Results(value = {
             @Result(property = "id", column = "ID"),
             @Result(property = "userId", column = "USERID"),
-            @Result(property = "taskId", column = "TASKID"),
+            @Result(property = "taskId", column = "TASKID")
     })
     AssigneeTask getById(String id);
 
@@ -26,7 +26,7 @@ public interface IAssigneeTaskRepository {
     @Results(value = {
             @Result(property = "id", column = "ID"),
             @Result(property = "userId", column = "USERID"),
-            @Result(property = "taskId", column = "TASKID"),
+            @Result(property = "taskId", column = "TASKID")
     })
     List<AssigneeTask> getList();
 
@@ -40,7 +40,7 @@ public interface IAssigneeTaskRepository {
     @Results(value = {
             @Result(property = "id", column = "ID"),
             @Result(property = "userId", column = "USERID"),
-            @Result(property = "taskId", column = "TASKID"),
+            @Result(property = "taskId", column = "TASKID")
     })
     AssigneeTask getAssigneeByUserId(String userId);
 

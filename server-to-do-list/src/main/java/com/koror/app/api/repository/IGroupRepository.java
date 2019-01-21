@@ -18,7 +18,7 @@ public interface IGroupRepository {
     @Results(value = {
             @Result(property = "id", column = "ID"),
             @Result(property = "name", column = "NAME"),
-            @Result(property = "creator", column = "CREATOR"),
+            @Result(property = "creator", column = "CREATOR")
     })
     Group getById(String id);
 
@@ -26,7 +26,7 @@ public interface IGroupRepository {
     @Results(value = {
             @Result(property = "id", column = "ID"),
             @Result(property = "name", column = "NAME"),
-            @Result(property = "creator", column = "CREATOR"),
+            @Result(property = "creator", column = "CREATOR")
     })
     List<Group> getList();
 

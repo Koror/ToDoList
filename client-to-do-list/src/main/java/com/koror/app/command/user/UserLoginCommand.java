@@ -3,6 +3,8 @@ package com.koror.app.command.user;
 import com.koror.app.command.AbstractCommand;
 import com.koror.app.endpoint.Session;
 
+import java.net.InetAddress;
+
 public class UserLoginCommand extends AbstractCommand {
 
     @Override
@@ -10,7 +12,7 @@ public class UserLoginCommand extends AbstractCommand {
         System.out.println("Input login and password");
         final String login = bootstrap.nextLine();
         final String password = bootstrap.nextLine();
-        final Session session = bootstrap.getUserService().loginUser(login, password);
+        final Session session = bootstrap.getUserService().loginUser(login, password, bootstrap.getIp());
         bootstrap.setSession(session);
         System.out.println("Login complete");
     }
