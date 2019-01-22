@@ -1,19 +1,25 @@
 package com.koror.app.repository;
 
 import com.koror.app.entity.Group;
+import com.koror.app.entity.Task;
+import com.koror.app.util.DatabaseConnection;
+import com.koror.app.util.HibernateFactory;
 import org.junit.Test;
 
 import static org.junit.Assert.*;
 
 public class GroupRepositoryTest {
 
-//    @Test
-//    public void testPositiveAddGroup() {
-//        final GroupRepository groupRepository = new GroupRepository();
-//        final Group group = new Group("Test group");
-//        groupRepository.add(group);
-//        assertNotNull(groupRepository.getGroupByIndex(0).getId());
-//    }
+    @Test
+    public void testPositiveAddGroup() {
+        DatabaseConnection.setConnection();
+        HibernateFactory.buildFactory();
+        GroupRepository groupRepository = new GroupRepository();
+        Group group = new Group();
+        group.setName("TestGroup");
+        groupRepository.add(group);
+        DatabaseConnection.closeConnection();
+    }
 //
 //    @Test(expected = IndexOutOfBoundsException.class)
 //    public void testNegativeAddGroup() {

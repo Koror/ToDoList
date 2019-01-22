@@ -3,30 +3,46 @@ package com.koror.app.entity;
 import com.koror.app.enumerated.Priority;
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.annotations.GenericGenerator;
 
+import javax.persistence.*;
 import java.io.Serializable;
 import java.util.UUID;
 
+@Entity
+@Table(name = "tm_task")
 public class Task extends AbstractEntity implements Serializable {
 
     @Setter
     @Getter
+    @Id
+    @GeneratedValue(generator = "uuid")
+    @GenericGenerator(name = "uuid", strategy = "uuid")
+    private String id;
+
+    @Setter
+    @Getter
+    @Basic
     private String groupId;
 
     @Setter
     @Getter
+    @Basic
     private Priority priority;
 
     @Setter
     @Getter
+    @Basic
     private String name;
 
     @Setter
     @Getter
+    @Basic
     private boolean complete;
 
     @Setter
     @Getter
+    @Basic
     private String creator;
 
     public Task(){
@@ -35,11 +51,6 @@ public class Task extends AbstractEntity implements Serializable {
 
     public Task(final String name) {
         this.name = name;
-    }
-
-    public Task(final String name, final Priority priority) {
-        setName(name);
-        this.priority = priority;
     }
 
     public Task(final String name, final Priority priority, final String groupId) {

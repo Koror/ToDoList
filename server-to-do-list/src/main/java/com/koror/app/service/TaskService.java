@@ -7,7 +7,6 @@ import com.koror.app.entity.Task;
 import com.koror.app.entity.User;
 import com.koror.app.enumerated.Access;
 import com.koror.app.error.WrongInputException;
-import com.koror.app.util.Transaction;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -27,14 +26,12 @@ public class TaskService implements ITaskService {
     public void add(Task entity) {
         if (entity == null) throw new WrongInputException("Wrong Input");
         repository.add(entity);
-        Transaction.commit();
     }
 
     @Override
     public void delete(String id) {
         if (id == null || id.isEmpty()) throw new WrongInputException("Wrong Input");
         repository.delete(id);
-        Transaction.commit();
     }
 
     @Override
@@ -52,7 +49,6 @@ public class TaskService implements ITaskService {
     public void update(final Task entity) {
         if (entity == null) throw new WrongInputException("Wrong input");
         repository.update(entity);
-        Transaction.commit();
     }
 
     @Override
@@ -60,7 +56,6 @@ public class TaskService implements ITaskService {
         if (task == null) throw new WrongInputException("Wrong input");
         task.setComplete(true);
         repository.update(task);
-        Transaction.commit();
     }
 
     @Override
@@ -69,7 +64,6 @@ public class TaskService implements ITaskService {
             if (task.isComplete())
                 repository.delete(task.getId());
         }
-        Transaction.commit();
     }
 
     @Override
@@ -77,12 +71,11 @@ public class TaskService implements ITaskService {
         if (task == null) throw new WrongInputException("Wrong input");
         task.setGroupId(groupId);
         repository.update(task);
-        Transaction.commit();
     }
 
     @Override
     public List<Task> getListTaskByUser(User user) {
-        if (user.getAccess() == Access.ADMIN) return getList();
+        if (user.getAccess() == Access.ADMIN_ACCESS) return getList();
         final List<Task> taskList = new ArrayList<>();
         for (final AssigneeTask assigneeTask : assigneeTaskService.getList()) {
             if (user.getId().equals(assigneeTask.getUserId())) {

@@ -1,4 +1,6 @@
-package com.koror.app.database;
+package com.koror.app.util;
+
+import com.koror.app.util.DatabaseConfig;
 
 import java.io.IOException;
 import java.sql.Connection;

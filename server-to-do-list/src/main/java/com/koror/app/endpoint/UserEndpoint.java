@@ -1,7 +1,6 @@
 package com.koror.app.endpoint;
 
 import com.koror.app.controller.Bootstrap;
-import com.koror.app.database.DatabaseConnection;
 import com.koror.app.entity.AssigneeTask;
 import com.koror.app.entity.Session;
 import com.koror.app.entity.User;

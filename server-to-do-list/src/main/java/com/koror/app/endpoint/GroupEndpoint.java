@@ -39,7 +39,7 @@ public class GroupEndpoint {
         final boolean validateSession = bootstrap.getSessionService().validate(session);
         if (!validateSession) throw new SessionNotValidateException();
         final User user = bootstrap.getUserService().getById(session.getId());
-        //delete all and assignee task in project
+        //delete all task and assignee in project
         for (AssigneeTask assigneeTask : bootstrap.getAssigneeTaskService().getList()) {
             Task taskTemp = bootstrap.getTaskService().getById(assigneeTask.getTaskId());
             if (groupId.equals(taskTemp.getGroupId())) {

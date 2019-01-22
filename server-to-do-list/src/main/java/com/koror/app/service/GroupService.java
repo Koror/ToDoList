@@ -7,7 +7,6 @@ import com.koror.app.entity.Group;
 import com.koror.app.entity.User;
 import com.koror.app.enumerated.Access;
 import com.koror.app.error.WrongInputException;
-import com.koror.app.util.Transaction;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -27,14 +26,12 @@ public class GroupService implements IGroupService {
     public void add(Group entity) {
         if (entity == null) throw new WrongInputException("Wrong Input");
         repository.add(entity);
-        Transaction.commit();
     }
 
     @Override
     public void delete(String id) {
         if (id == null || id.isEmpty()) throw new WrongInputException("Wrong Input");
         repository.delete(id);
-        Transaction.commit();
     }
 
     @Override
@@ -52,12 +49,11 @@ public class GroupService implements IGroupService {
     public void update(final Group entity) {
         if (entity == null) throw new WrongInputException("Wrong input");
         repository.update(entity);
-        Transaction.commit();
     }
 
     @Override
     public List<Group> getListGroupByUser(User user) {
-        if (user.getAccess() == Access.ADMIN) return getList();
+        if (user.getAccess() == Access.ADMIN_ACCESS) return getList();
 
         final List<Group> groupList = new ArrayList<>();
         for (final AssigneeGroup assigneeGroups : assigneeGroupService.getList()) {

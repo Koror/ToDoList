@@ -3,7 +3,8 @@ package com.koror.app.controller;
 import com.koror.app.api.controller.IBootstrap;
 import com.koror.app.api.repository.*;
 import com.koror.app.command.AbstractCommand;
-import com.koror.app.database.DatabaseConnection;
+import com.koror.app.repository.*;
+import com.koror.app.util.DatabaseConnection;
 import com.koror.app.endpoint.GroupEndpoint;
 import com.koror.app.endpoint.SessionEndpoint;
 import com.koror.app.endpoint.TaskEndpoint;
@@ -13,12 +14,11 @@ import com.koror.app.enumerated.Access;
 import com.koror.app.error.MissingCommandException;
 import com.koror.app.error.WrongInputException;
 import com.koror.app.service.*;
-import com.koror.app.util.Transaction;
+import com.koror.app.util.HibernateFactory;
 import lombok.Getter;
 import org.reflections.Reflections;
 
 import javax.xml.ws.Endpoint;
-import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Scanner;
@@ -26,58 +26,40 @@ import java.util.Set;
 
 public final class Bootstrap implements IBootstrap {
 
-    private IUserRepository userRepository;
+    private final IUserRepository userRepository = new UserRepository();
 
-    private ITaskRepository taskRepository;
+    private final ITaskRepository taskRepository = new TaskRepository();
 
-    private IGroupRepository groupRepository;
+    private final IGroupRepository groupRepository = new GroupRepository();
 
-    private ISessionRepository sessionRepository;
+    private final ISessionRepository sessionRepository = new SessionRepository();
 
-    private IAssigneeGroupRepository assigneeGroupRepository;
+    private final IAssigneeGroupRepository assigneeGroupRepository = new AssigneeGroupRepository();
 
-    private IAssigneeTaskRepository assigneeTaskRepository;
-
-    @Getter
-    private AssigneeTaskService assigneeTaskService;
+    private final IAssigneeTaskRepository assigneeTaskRepository = new AssigneeTaskRepository();
 
     @Getter
-    private AssigneeGroupService assigneeGroupService;
+    private final AssigneeTaskService assigneeTaskService = new AssigneeTaskService(assigneeTaskRepository);
 
     @Getter
-    private GroupService groupService;
+    private final AssigneeGroupService assigneeGroupService = new AssigneeGroupService(assigneeGroupRepository);
 
     @Getter
-    private TaskService taskService;
+    private final GroupService groupService = new GroupService(groupRepository, assigneeGroupService);
 
     @Getter
-    private UserService userService;
+    private final TaskService taskService = new TaskService(taskRepository, assigneeTaskService);
 
     @Getter
-    private SessionService sessionService;
+    private final UserService userService = new UserService(userRepository);
+
+    @Getter
+    private final SessionService sessionService = new SessionService(sessionRepository);
 
     private final Scanner scanner = new Scanner(System.in);
 
     @Getter
     private final Map<String, AbstractCommand> serverCommands = new HashMap<>();
-
-    public Bootstrap() throws IOException {
-        DatabaseConnection.setConnection();
-        Transaction.openSqlSession();
-        userRepository = Transaction.getSqlSession().getMapper(IUserRepository.class);
-        taskRepository = Transaction.getSqlSession().getMapper(ITaskRepository.class);
-        groupRepository = Transaction.getSqlSession().getMapper(IGroupRepository.class);
-        sessionRepository = Transaction.getSqlSession().getMapper(ISessionRepository.class);
-        assigneeGroupRepository = Transaction.getSqlSession().getMapper(IAssigneeGroupRepository.class);
-        assigneeTaskRepository = Transaction.getSqlSession().getMapper(IAssigneeTaskRepository.class);
-
-        userService = new UserService(userRepository);
-        sessionService = new SessionService(sessionRepository);
-        assigneeTaskService = new AssigneeTaskService(assigneeTaskRepository);
-        assigneeGroupService = new AssigneeGroupService(assigneeGroupRepository);
-        taskService = new TaskService(taskRepository, assigneeTaskService);
-        groupService = new GroupService(groupRepository, assigneeGroupService);
-    }
 
     private void registerCommand(Map<String, AbstractCommand> commandMap, final AbstractCommand command) {
         commandMap.put(command.command(), command);
@@ -123,7 +105,7 @@ public final class Bootstrap implements IBootstrap {
 
     private void defaultUserInit() {
         final User userAdmin = new User("admin", "admin");
-        userAdmin.setAccess(Access.ADMIN);
+        userAdmin.setAccess(Access.ADMIN_ACCESS);
         getUserService().add(userAdmin);
         final User userTest = new User("test", "test");
         getUserService().add(userTest);
@@ -140,6 +122,7 @@ public final class Bootstrap implements IBootstrap {
         do {
             action = startCommand(serverCommands);
         } while (!action.equals("Exit"));
+        HibernateFactory.sessionFactory.close();
         DatabaseConnection.closeConnection();
     }
 

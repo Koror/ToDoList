@@ -2,10 +2,9 @@ package com.koror.app.service;
 
 import com.koror.app.api.repository.ISessionRepository;
 import com.koror.app.api.service.ISessionService;
-import com.koror.app.endpoint.Result;
 import com.koror.app.entity.Session;
 import com.koror.app.error.WrongInputException;
-import com.koror.app.util.Transaction;
+import com.koror.app.util.HibernateFactory;
 
 import java.util.List;
 
@@ -21,14 +20,12 @@ public class SessionService implements ISessionService {
     public void add(Session entity) {
         if (entity == null) throw new WrongInputException("Wrong Input");
         repository.add(entity);
-        Transaction.commit();
     }
 
     @Override
     public void delete(String id) {
         if (id == null || id.isEmpty()) throw new WrongInputException("Wrong Input");
         repository.delete(id);
-        Transaction.commit();
     }
 
     @Override
@@ -53,7 +50,6 @@ public class SessionService implements ISessionService {
     public void update(final Session entity) {
         if (entity == null) throw new WrongInputException("Wrong input");
         repository.update(entity);
-        Transaction.commit();
     }
 
     @Override

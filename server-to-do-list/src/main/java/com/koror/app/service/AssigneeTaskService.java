@@ -4,7 +4,7 @@ import com.koror.app.api.repository.IAssigneeTaskRepository;
 import com.koror.app.api.service.IAssigneeTaskService;
 import com.koror.app.entity.AssigneeTask;
 import com.koror.app.error.WrongInputException;
-import com.koror.app.util.Transaction;
+import com.koror.app.util.HibernateFactory;
 
 import java.util.List;
 
@@ -20,14 +20,12 @@ public class AssigneeTaskService implements IAssigneeTaskService {
     public void add(AssigneeTask entity) {
         if (entity == null) throw new WrongInputException("Wrong Input");
         repository.add(entity);
-        Transaction.commit();
     }
 
     @Override
     public void delete(String id) {
         if (id == null || id.isEmpty()) throw new WrongInputException("Wrong Input");
         repository.delete(id);
-        Transaction.commit();
     }
 
     @Override
@@ -45,15 +43,16 @@ public class AssigneeTaskService implements IAssigneeTaskService {
     public void update(final AssigneeTask entity) {
         if (entity == null) throw new WrongInputException("Wrong input");
         repository.update(entity);
-        Transaction.commit();
     }
 
     @Override
     public void deleteAssigneeByParam(String userId, String taskId) {
         if (userId == null || userId.isEmpty()) throw new WrongInputException("Wrong Input");
         if (taskId == null || taskId.isEmpty()) throw new WrongInputException("Wrong Input");
-        repository.deleteAssigneeByParam(userId, taskId);
-        Transaction.commit();
+        for(AssigneeTask assigneeTaskTemp : repository.getList()){
+            if(userId.equals(assigneeTaskTemp.getUserId()) && taskId.equals(assigneeTaskTemp.getTaskId()))
+                repository.delete(assigneeTaskTemp.getId());
+        }
     }
 
 

@@ -1,4 +1,4 @@
-package com.koror.app.database;
+package com.koror.app.util;
 
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -14,6 +14,14 @@ public class DatabaseConfig {
 
     public static String PASSWORD;
 
+    public static String HIBERNATE_DIALECT;
+
+    public static String HBM2DDL_AUTO;
+
+    public static String HIBERNATE_SHOW_SQL;
+
+    public static String PREFIXDB;
+
     public static void init() throws IOException{
         FileInputStream fis;
         Properties property = new Properties();
@@ -23,6 +31,10 @@ public class DatabaseConfig {
         URL = property.getProperty("db.url");
         USER = property.getProperty("db.user");
         PASSWORD = property.getProperty("db.password");
+        HIBERNATE_DIALECT = "org.hibernate.dialect.MySQLInnoDBDialect";
+        HBM2DDL_AUTO = "update";
+        HIBERNATE_SHOW_SQL = "true";
+        PREFIXDB = "tm_";
     }
 
 }

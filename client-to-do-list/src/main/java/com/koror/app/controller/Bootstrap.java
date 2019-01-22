@@ -10,7 +10,6 @@ import com.koror.app.error.WrongInputException;
 import lombok.Getter;
 import org.reflections.Reflections;
 
-import java.io.IOException;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.util.*;

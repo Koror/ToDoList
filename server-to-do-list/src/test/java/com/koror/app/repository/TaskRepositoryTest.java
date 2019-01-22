@@ -1,25 +1,23 @@
 package com.koror.app.repository;
 
-import com.koror.app.controller.Bootstrap;
-import com.koror.app.database.DatabaseConnection;
-import com.koror.app.entity.Group;
 import com.koror.app.entity.Task;
+import com.koror.app.util.DatabaseConnection;
+import com.koror.app.util.HibernateFactory;
 import org.junit.Test;
-
-import static org.junit.Assert.*;
 
 public class TaskRepositoryTest {
 
-//    @Test
-//    public void testPositiveAddTask() throws ReflectiveOperationException {
-//        DatabaseConnection.setConnection();
-//        final TaskRepository taskRepository = new TaskRepository();
-//        final Task task = new Task("test task");
-//        taskRepository.add(task);
-//        assertNotNull(taskRepository.getTaskByIndex(0).getId());
-//        taskRepository.delete(task.getId());
-//        DatabaseConnection.closeConnection();
-//    }
+    @Test
+    public void testPositiveAddTask() throws ReflectiveOperationException {
+        DatabaseConnection.setConnection();
+        HibernateFactory.buildFactory();
+        TaskRepository taskRepository = new TaskRepository();
+        Task task = new Task();
+        task.setName("TestTask");
+        //taskRepository.add(task);
+        taskRepository.delete("2c9200bb6876172a016876172cab0000");
+        DatabaseConnection.closeConnection();
+    }
 //
 //    @Test
 //    public void testNegativeAddTask() {
