@@ -14,13 +14,6 @@ public class Group extends AbstractEntity implements Serializable {
 
     @Setter
     @Getter
-    @Id
-    @GeneratedValue(generator = "uuid")
-    @GenericGenerator(name = "uuid", strategy = "uuid")
-    private String id;
-
-    @Setter
-    @Getter
     @Basic
     private String creator;
 

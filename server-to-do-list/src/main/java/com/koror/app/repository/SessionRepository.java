@@ -2,8 +2,10 @@ package com.koror.app.repository;
 
 import com.koror.app.api.repository.ISessionRepository;
 import com.koror.app.entity.Session;
-import com.koror.app.util.DatabaseConfig;
+import com.koror.app.util.AppConfig;
 
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
 import java.util.List;
 
 public class SessionRepository extends AbstractRepository<Session> implements ISessionRepository {
@@ -26,8 +28,10 @@ public class SessionRepository extends AbstractRepository<Session> implements IS
 
     @Override
     public List<Session> getList() {
-        String query = "select p from " + DatabaseConfig.PREFIXDB + Session.class.getSimpleName() + " p";
-        return (List<Session>) hibernateSession.createQuery(query).list();
+        CriteriaBuilder builder = hibernateSession.getCriteriaBuilder();
+        CriteriaQuery<Session> criteria = builder.createQuery(Session.class);
+        criteria.from(Session.class);
+        return hibernateSession.createQuery(criteria).getResultList();
     }
 
 }

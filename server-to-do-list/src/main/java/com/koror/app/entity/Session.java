@@ -6,21 +6,13 @@ import lombok.Setter;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
-import java.net.InetAddress;
 import java.util.Objects;
-import java.util.UUID;
 
 @Entity
 @Table(name = "tm_session")
-public class Session extends AbstractEntity{
+public class Session extends AbstractEntity {
 
     @Setter
-    @Getter
-    @Id
-    @GeneratedValue(generator = "uuid")
-    @GenericGenerator(name = "uuid", strategy = "uuid")
-    private String id;
-
     @Getter
     @Basic
     private String userId;
@@ -35,24 +27,19 @@ public class Session extends AbstractEntity{
     @Basic
     private String ip;
 
-    public Session(){
-
+    public Session() {
+        hashSignature();
     }
 
-    public Session(String userId){
+    public Session(String id, String userId, String signature, String ip) {
+        this.id = id;
         this.userId = userId;
-        this.signature = Hash.getHashString(getId() + userId);
-    }
-
-    public Session(String userId, String ip){
-        this.userId = userId;
-        this.signature = Hash.getHashString(getId() + userId);
+        this.signature = signature;
         this.ip = ip;
     }
 
-    public void setUserId(String userId){
-        this.userId = userId;
-        this.signature = Hash.getHashString(getId() + userId);
+    public void hashSignature() {
+        this.signature = Hash.createHashString(getId() + userId);
     }
 
     @Override

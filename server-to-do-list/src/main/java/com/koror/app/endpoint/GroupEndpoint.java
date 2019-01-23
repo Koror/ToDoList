@@ -38,7 +38,10 @@ public class GroupEndpoint {
             @WebParam(name = "session", partName = "session") Session session) {
         final boolean validateSession = bootstrap.getSessionService().validate(session);
         if (!validateSession) throw new SessionNotValidateException();
-        final User user = bootstrap.getUserService().getById(session.getId());
+        final User user = bootstrap.getUserService().getById(session.getUserId());
+        //delete project and assignee
+        bootstrap.getAssigneeGroupService().deleteAssigneeByParam(user.getId(), groupId);
+        bootstrap.getGroupService().delete(groupId);
         //delete all task and assignee in project
         for (AssigneeTask assigneeTask : bootstrap.getAssigneeTaskService().getList()) {
             Task taskTemp = bootstrap.getTaskService().getById(assigneeTask.getTaskId());
@@ -47,9 +50,6 @@ public class GroupEndpoint {
                 bootstrap.getAssigneeTaskService().delete(assigneeTask.getId());
             }
         }
-        //delete project and assignee
-        bootstrap.getAssigneeGroupService().deleteAssigneeByParam(user.getId(), groupId);
-        bootstrap.getGroupService().delete(groupId);
         final Result result = new Result();
         result.success();
         return result;

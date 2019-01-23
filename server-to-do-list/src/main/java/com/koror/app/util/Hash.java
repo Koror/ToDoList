@@ -6,7 +6,7 @@ import java.security.NoSuchAlgorithmException;
 
 public class Hash {
 
-    public static String getHashString(String value) {
+    public static String createHashString(String value) {
         String hashValue = null;
         try {
             MessageDigest md = MessageDigest.getInstance("MD5");

@@ -17,13 +17,13 @@ public class HibernateFactory {
 
     public static void buildFactory() {
         final Map<String, String> settings = new HashMap<>();
-        settings.put(Environment.DRIVER, DatabaseConfig.JDBC_DRIVER);
-        settings.put(Environment.URL, DatabaseConfig.URL);
-        settings.put(Environment.USER, DatabaseConfig.USER);
-        settings.put(Environment.PASS, DatabaseConfig.PASSWORD);
-        settings.put(Environment.DIALECT, DatabaseConfig.HIBERNATE_DIALECT);
-        settings.put(Environment.HBM2DDL_AUTO, DatabaseConfig.HBM2DDL_AUTO);
-        settings.put(Environment.SHOW_SQL, DatabaseConfig.HIBERNATE_SHOW_SQL);
+        settings.put(Environment.DRIVER, AppConfig.JDBC_DRIVER);
+        settings.put(Environment.URL, AppConfig.URL);
+        settings.put(Environment.USER, AppConfig.USER);
+        settings.put(Environment.PASS, AppConfig.PASSWORD);
+        settings.put(Environment.DIALECT, AppConfig.HIBERNATE_DIALECT);
+        settings.put(Environment.HBM2DDL_AUTO, AppConfig.HBM2DDL_AUTO);
+        settings.put(Environment.SHOW_SQL, AppConfig.HIBERNATE_SHOW_SQL);
 
         final StandardServiceRegistryBuilder registryBuilder = new StandardServiceRegistryBuilder();
         registryBuilder.applySettings(settings);

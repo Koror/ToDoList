@@ -2,8 +2,9 @@ package com.koror.app.repository;
 
 import com.koror.app.api.repository.IAssigneeGroupRepository;
 import com.koror.app.entity.AssigneeGroup;
-import com.koror.app.util.DatabaseConfig;
 
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
 import java.util.List;
 
 public class AssigneeGroupRepository extends AbstractRepository<AssigneeGroup> implements IAssigneeGroupRepository {
@@ -26,8 +27,10 @@ public class AssigneeGroupRepository extends AbstractRepository<AssigneeGroup> i
 
     @Override
     public List<AssigneeGroup> getList() {
-        String query = "select p from " + DatabaseConfig.PREFIXDB + AssigneeGroup.class.getSimpleName() + " p";
-        return (List<AssigneeGroup>) hibernateSession.createQuery(query).list();
+        CriteriaBuilder builder = hibernateSession.getCriteriaBuilder();
+        CriteriaQuery<AssigneeGroup> criteria = builder.createQuery(AssigneeGroup.class);
+        criteria.from(AssigneeGroup.class);
+        return hibernateSession.createQuery(criteria).getResultList();
     }
 
     @Override

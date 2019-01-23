@@ -6,7 +6,6 @@ import com.koror.app.entity.User;
 import com.koror.app.error.UserNotExistsException;
 import com.koror.app.error.WrongInputException;
 import com.koror.app.util.Hash;
-import com.koror.app.util.HibernateFactory;
 
 import java.util.List;
 
@@ -19,9 +18,9 @@ public class UserService implements IUserService {
     }
 
     @Override
-    public void add(User entity) {
-        if(entity==null) throw new WrongInputException("Wrong Input");
-        repository.add(entity);
+    public void add(User user) {
+        if(user==null) throw new WrongInputException("Wrong Input");
+        repository.add(user);
     }
 
     @Override
@@ -55,7 +54,7 @@ public class UserService implements IUserService {
 
     @Override
     public User login(String login, String password){
-        final String hashPassword = Hash.getHashString(password);
+        final String hashPassword = Hash.createHashString(password);
         User user = null;
         for(User userTemp : repository.getList()){
             if(login.equals(userTemp.getLogin()) && hashPassword.equals(userTemp.getPassword()))

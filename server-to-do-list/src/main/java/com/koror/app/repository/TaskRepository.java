@@ -2,8 +2,10 @@ package com.koror.app.repository;
 
 import com.koror.app.api.repository.ITaskRepository;
 import com.koror.app.entity.Task;
-import com.koror.app.util.DatabaseConfig;
+import com.koror.app.util.AppConfig;
 
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
 import java.util.List;
 
 public class TaskRepository extends AbstractRepository<Task> implements ITaskRepository {
@@ -26,8 +28,10 @@ public class TaskRepository extends AbstractRepository<Task> implements ITaskRep
 
     @Override
     public List<Task> getList() {
-        String query = "select p from " + DatabaseConfig.PREFIXDB + Task.class.getSimpleName() + " p";
-        return (List<Task>) hibernateSession.createQuery(query).list();
+        CriteriaBuilder builder = hibernateSession.getCriteriaBuilder();
+        CriteriaQuery<Task> criteria = builder.createQuery(Task.class);
+        criteria.from(Task.class);
+        return hibernateSession.createQuery(criteria).getResultList();
     }
 
 }

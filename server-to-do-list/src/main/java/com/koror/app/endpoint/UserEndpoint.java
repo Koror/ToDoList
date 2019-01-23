@@ -47,8 +47,10 @@ public class UserEndpoint {
             if ((user.getId().equals(sessionTemp.getUserId())) && (ip.equals(sessionTemp.getIp())))
                 session = sessionTemp;
         }
-        if (session == null){
-            session = new Session(user.getId(), ip);
+        if (session == null) {
+            session = new Session();
+            session.setUserId(user.getId());
+            session.setIp(ip);
             bootstrap.getSessionService().add(session);
         }
         return session;
@@ -81,9 +83,13 @@ public class UserEndpoint {
     }
 
     @WebMethod
-    public Session registerUser(@WebParam(name = "user", partName = "user") User user) {
+    public Session registerUser(
+            @WebParam(name = "user", partName = "user") User user,
+            @WebParam(name = "ip", partName = "ip") String ip) {
         bootstrap.getUserService().add(user);
-        Session session = new Session(user.getId());
+        Session session = new Session();
+        session.setIp(ip);
+        session.setUserId(user.getId());
         bootstrap.getSessionService().add(session);
         return session;
     }

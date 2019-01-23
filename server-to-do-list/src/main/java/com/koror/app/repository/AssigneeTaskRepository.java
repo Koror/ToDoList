@@ -1,10 +1,10 @@
 package com.koror.app.repository;
 
 import com.koror.app.api.repository.IAssigneeTaskRepository;
-import com.koror.app.entity.AssigneeGroup;
 import com.koror.app.entity.AssigneeTask;
-import com.koror.app.util.DatabaseConfig;
 
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
 import java.util.List;
 
 public class AssigneeTaskRepository extends AbstractRepository<AssigneeTask> implements IAssigneeTaskRepository {
@@ -27,8 +27,10 @@ public class AssigneeTaskRepository extends AbstractRepository<AssigneeTask> imp
 
     @Override
     public List<AssigneeTask> getList() {
-        String query = "select p from " + DatabaseConfig.PREFIXDB + AssigneeTask.class.getSimpleName() + " p";
-        return (List<AssigneeTask>) hibernateSession.createQuery(query).list();
+        CriteriaBuilder builder = hibernateSession.getCriteriaBuilder();
+        CriteriaQuery<AssigneeTask> criteria = builder.createQuery(AssigneeTask.class);
+        criteria.from(AssigneeTask.class);
+        return hibernateSession.createQuery(criteria).getResultList();
     }
 
     @Override

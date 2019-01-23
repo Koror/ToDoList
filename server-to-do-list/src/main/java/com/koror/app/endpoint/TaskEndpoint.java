@@ -74,7 +74,7 @@ public class TaskEndpoint {
     }
 
     @WebMethod
-    public List<Task> getTaskList(@WebParam( name = "session", partName = "session") Session session){
+    public List<Task> getTaskList(@WebParam( name = "session", partName = "session") Session session) throws SessionNotValidateException{
         final boolean validateSession = bootstrap.getSessionService().validate(session);
         if(!validateSession) throw new SessionNotValidateException();
         String userId = session.getUserId();

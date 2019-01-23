@@ -15,13 +15,6 @@ public class User extends AbstractEntity implements Serializable {
 
     @Setter
     @Getter
-    @Id
-    @GeneratedValue(generator = "uuid")
-    @GenericGenerator(name = "uuid", strategy = "uuid")
-    private String id;
-
-    @Setter
-    @Getter
     @Basic
     private String login;
 
@@ -51,7 +44,7 @@ public class User extends AbstractEntity implements Serializable {
 
     public User(String login, String password) {
         this.login = login;
-        this.password = Hash.getHashString(password);;
+        this.password = Hash.createHashString(password);
     }
 
     @Override

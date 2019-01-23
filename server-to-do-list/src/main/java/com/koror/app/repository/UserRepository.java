@@ -2,14 +2,22 @@ package com.koror.app.repository;
 
 import com.koror.app.api.repository.IUserRepository;
 import com.koror.app.entity.User;
-import com.koror.app.util.DatabaseConfig;
+import com.koror.app.util.Hash;
 
-import java.util.ArrayList;
-import java.util.LinkedList;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
 import java.util.List;
 
 public class UserRepository extends AbstractRepository<User> implements IUserRepository {
 
+    @Override
+    public void add(User user){
+        hibernateSession.beginTransaction();
+        user.setPassword(Hash.createHashString(user.getPassword()));
+        hibernateSession.persist(user);
+        hibernateSession.getTransaction().commit();
+
+    }
     @Override
     public void delete(String id) {
         hibernateSession.beginTransaction();
@@ -28,8 +36,10 @@ public class UserRepository extends AbstractRepository<User> implements IUserRep
 
     @Override
     public List<User> getList() {
-        String query = "FROM " + User.class.getSimpleName() + "";
-        return hibernateSession.createQuery(query).list();
+        CriteriaBuilder builder = hibernateSession.getCriteriaBuilder();
+        CriteriaQuery<User> criteria = builder.createQuery(User.class);
+        criteria.from(User.class);
+        return hibernateSession.createQuery(criteria).getResultList();
     }
 
     @Override
