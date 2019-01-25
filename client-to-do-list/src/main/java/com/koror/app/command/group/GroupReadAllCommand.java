@@ -10,7 +10,6 @@ public class GroupReadAllCommand extends AbstractCommand {
     @Override
     public void execute() {
         int indexGroup = 0;
-        String userId = bootstrap.getSession().getUserId();
         final List<Group> groupList = bootstrap.getGroupService().getGroupList(bootstrap.getSession());
         for (Group group : groupList) {
             System.out.println(indexGroup + ": " + group.getName() + " Creator " + group.getCreator());

@@ -2,25 +2,29 @@ package com.koror.app.entity;
 
 import lombok.Getter;
 import lombok.Setter;
-import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
 import java.io.Serializable;
-import java.util.UUID;
+import java.util.List;
 
+@Setter
+@Getter
 @Entity
 @Table(name = "tm_group")
 public class Group extends AbstractEntity implements Serializable {
 
-    @Setter
-    @Getter
     @Basic
     private String creator;
 
-    @Setter
-    @Getter
     @Basic
+    @Column(nullable = false)
     private String name;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    private User user;
+
+    @OneToMany(mappedBy = "group", fetch = FetchType.LAZY)
+    private List<Task> taskList;
 
     public Group(){
 

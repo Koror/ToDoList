@@ -2,33 +2,29 @@ package com.koror.app.entity;
 
 import lombok.Getter;
 import lombok.Setter;
-import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
 import java.io.Serializable;
-import java.util.UUID;
 
+@Setter
+@Getter
 @Entity
 @Table(name = "tm_assigneegroup")
 public class AssigneeGroup extends AbstractEntity implements Serializable {
 
-    @Setter
-    @Getter
-    @Basic
-    private String userId;
+    @ManyToOne(fetch = FetchType.LAZY)
+    private User user;
 
-    @Setter
-    @Getter
-    @Basic
-    private String groupId;
+    @ManyToOne(fetch = FetchType.LAZY)
+    private Group group;
 
     public AssigneeGroup(){
 
     }
 
-    public AssigneeGroup(String userId, String groupId) {
-        this.userId = userId;
-        this.groupId = groupId;
+    public AssigneeGroup(User user, Group group) {
+        this.user = user;
+        this.group = group;
     }
 
 }

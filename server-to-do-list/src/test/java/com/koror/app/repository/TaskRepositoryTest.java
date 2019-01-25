@@ -9,14 +9,14 @@ public class TaskRepositoryTest {
 
     @Test
     public void testPositiveAddTask() throws ReflectiveOperationException {
-        DatabaseConnection.setConnection();
-        HibernateFactory.buildFactory();
-        TaskRepository taskRepository = new TaskRepository();
-        Task task = new Task();
-        task.setName("TestTask");
-        //taskRepository.add(task);
-        taskRepository.delete("2c9200bb6876172a016876172cab0000");
-        DatabaseConnection.closeConnection();
+//        DatabaseConnection.setConnection();
+//        HibernateFactory.buildFactory();
+//        TaskRepository taskRepository = new TaskRepository();
+//        Task task = new Task();
+//        task.setName("TestTask");
+//        //taskRepository.add(task);
+//        taskRepository.delete("2c9200bb6876172a016876172cab0000");
+//        DatabaseConnection.closeConnection();
     }
 //
 //    @Test
@@ -119,11 +119,11 @@ public class TaskRepositoryTest {
 //        Task task = new Task("test task");
 //        taskRepository.add(task);
 //        final Group group = new Group("test group");
-//        final String groupId = group.getId();
-//        task.setGroupId(group.getId());
+//        final String group = group.getId();
+//        task.setGroup(group.getId());
 //        taskRepository.add(task);
 //        task = taskRepository.getById(task.getId());
-//        assertEquals(groupId, task.getGroupId());
+//        assertEquals(group, task.getGroup());
 //        DatabaseConnection.closeConnection();
 //    }
 //
@@ -135,7 +135,7 @@ public class TaskRepositoryTest {
 //        taskRepository.add(task);
 //        taskRepository.add(task);
 //        task = taskRepository.getById(task.getId());
-//        assertNull(task.getGroupId());
+//        assertNull(task.getGroup());
 //        DatabaseConnection.closeConnection();
 //    }
 //

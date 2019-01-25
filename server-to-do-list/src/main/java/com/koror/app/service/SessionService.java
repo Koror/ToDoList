@@ -4,11 +4,10 @@ import com.koror.app.api.repository.ISessionRepository;
 import com.koror.app.api.service.ISessionService;
 import com.koror.app.entity.Session;
 import com.koror.app.error.WrongInputException;
-import com.koror.app.util.HibernateFactory;
 
 import java.util.List;
 
-public class SessionService implements ISessionService {
+public class SessionService extends AbstractService implements ISessionService {
 
     private final ISessionRepository repository;
 
@@ -31,7 +30,7 @@ public class SessionService implements ISessionService {
     @Override
     public void deleteByUserSession(String userId){
         for (Session sessionTemp : repository.getList())
-            if (userId.equals(sessionTemp.getUserId()))
+            if (userId.equals(sessionTemp.getUser().getId()))
                 repository.delete(sessionTemp.getId());
     }
 
@@ -54,7 +53,7 @@ public class SessionService implements ISessionService {
 
     @Override
     public boolean validate(Session session) {
-        for (Session sessionTemp : repository.getList()) {
+        for (Session sessionTemp : getList()) {
             if (session.equals(sessionTemp))
                 return true;
         }

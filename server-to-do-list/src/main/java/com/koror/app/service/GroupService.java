@@ -11,7 +11,7 @@ import com.koror.app.error.WrongInputException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class GroupService implements IGroupService {
+public class GroupService extends AbstractService implements IGroupService {
 
     private final IGroupRepository repository;
 
@@ -54,13 +54,7 @@ public class GroupService implements IGroupService {
     @Override
     public List<Group> getListGroupByUser(User user) {
         if (user.getAccess() == Access.ADMIN_ACCESS) return getList();
-
-        final List<Group> groupList = new ArrayList<>();
-        for (final AssigneeGroup assigneeGroups : assigneeGroupService.getList()) {
-            if (user.getId().equals(assigneeGroups.getUserId()))
-                groupList.add(getById(assigneeGroups.getGroupId()));
-        }
-        return groupList;
+        return user.getGroupList();
     }
 
 }

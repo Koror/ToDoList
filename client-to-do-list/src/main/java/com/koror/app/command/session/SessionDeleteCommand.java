@@ -13,7 +13,7 @@ public class SessionDeleteCommand extends AbstractCommand {
         int indexSession = 0;
         for (Session session : list) {
             System.out.println(indexSession + " Id: " + session.getId() +
-                    "user id: " + session.getUserId() +
+                    "user id: " + session.getUser().getId() +
                     "signature: " + session.getSignature() +
                     "ip: " + session.getIp());
             indexSession++;

@@ -12,26 +12,19 @@ public class UserRepository extends AbstractRepository<User> implements IUserRep
 
     @Override
     public void add(User user){
-        hibernateSession.beginTransaction();
         user.setPassword(Hash.createHashString(user.getPassword()));
         hibernateSession.persist(user);
-        hibernateSession.getTransaction().commit();
-
     }
+
     @Override
     public void delete(String id) {
-        hibernateSession.beginTransaction();
-        User user = hibernateSession.get(User.class, id);
-        hibernateSession.delete(user);
-        hibernateSession.getTransaction().commit();
+        User user = hibernateSession.find(User.class, id);
+        hibernateSession.remove(user);
     }
 
     @Override
     public User getById(String id) {
-        hibernateSession.beginTransaction();
-        User user = hibernateSession.get(User.class, id);
-        hibernateSession.getTransaction().commit();
-        return user;
+        return hibernateSession.find(User.class, id);
     }
 
     @Override
@@ -44,9 +37,9 @@ public class UserRepository extends AbstractRepository<User> implements IUserRep
 
     @Override
     public User getByLogin(String login) {
-        hibernateSession.beginTransaction();
-        User user = hibernateSession.get(User.class, login);
-        hibernateSession.getTransaction().commit();
+        User user = hibernateSession.createQuery("FROM User e WHERE e.login = :login", User.class)
+                .setParameter("login", login)
+                .getSingleResult();
         return user;
     }
 

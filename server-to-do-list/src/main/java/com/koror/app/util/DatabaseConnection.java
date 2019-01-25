@@ -11,10 +11,9 @@ public class DatabaseConnection {
 
     public static void setConnection() {
         try {
-            AppConfig.init();
             Class.forName(AppConfig.JDBC_DRIVER);
             connection = DriverManager.getConnection(AppConfig.URL, AppConfig.USER, AppConfig.PASSWORD);
-        } catch (SQLException | ClassNotFoundException | IOException e) {
+        } catch (ClassNotFoundException | SQLException e) {
             e.printStackTrace();
         }
     }

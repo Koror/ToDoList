@@ -2,6 +2,7 @@ package com.koror.app.repository;
 
 import com.koror.app.api.repository.ITaskRepository;
 import com.koror.app.entity.Task;
+import com.koror.app.entity.User;
 import com.koror.app.util.AppConfig;
 
 import javax.persistence.criteria.CriteriaBuilder;
@@ -12,16 +13,14 @@ public class TaskRepository extends AbstractRepository<Task> implements ITaskRep
 
     @Override
     public void delete(String id) {
-        hibernateSession.beginTransaction();
-        Task entity = hibernateSession.get(Task.class, id);
-        hibernateSession.delete(entity);
+        Task entity = hibernateSession.find(Task.class, id);
+        hibernateSession.remove(entity);
         hibernateSession.getTransaction().commit();
     }
 
     @Override
     public Task getById(String id) {
-        hibernateSession.beginTransaction();
-        Task entity = hibernateSession.get(Task.class, id);
+        Task entity = hibernateSession.find(Task.class, id);
         hibernateSession.getTransaction().commit();
         return entity;
     }
@@ -34,4 +33,9 @@ public class TaskRepository extends AbstractRepository<Task> implements ITaskRep
         return hibernateSession.createQuery(criteria).getResultList();
     }
 
+    @Override
+    public List<Task> getListTaskByUserId(final String userId) {
+        final User user = hibernateSession.find(User.class, userId);
+        return user.getTaskList();
+    }
 }

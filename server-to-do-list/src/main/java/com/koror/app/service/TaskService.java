@@ -1,88 +1,111 @@
 package com.koror.app.service;
 
 import com.koror.app.api.repository.ITaskRepository;
+import com.koror.app.api.repository.IUserRepository;
 import com.koror.app.api.service.ITaskService;
-import com.koror.app.entity.AssigneeTask;
+import com.koror.app.entity.Group;
 import com.koror.app.entity.Task;
 import com.koror.app.entity.User;
 import com.koror.app.enumerated.Access;
 import com.koror.app.error.WrongInputException;
 
-import java.util.ArrayList;
 import java.util.List;
 
-public class TaskService implements ITaskService {
+public class TaskService extends AbstractService implements ITaskService {
 
-    private final ITaskRepository repository;
+    private final ITaskRepository taskRepository;
+
+    private final IUserRepository userRepository;
 
     private final AssigneeTaskService assigneeTaskService;
 
-    public TaskService(ITaskRepository taskRepository, AssigneeTaskService assigneeTaskService) {
-        this.repository = taskRepository;
+    public TaskService(ITaskRepository taskRepository, IUserRepository userRepository, AssigneeTaskService assigneeTaskService) {
+        this.taskRepository = taskRepository;
         this.assigneeTaskService = assigneeTaskService;
+        this.userRepository = userRepository;
     }
 
     @Override
     public void add(Task entity) {
         if (entity == null) throw new WrongInputException("Wrong Input");
-        repository.add(entity);
+        hibernateSession.getTransaction().begin();
+        taskRepository.add(entity);
+        hibernateSession.getTransaction().commit();
     }
 
     @Override
     public void delete(String id) {
         if (id == null || id.isEmpty()) throw new WrongInputException("Wrong Input");
-        repository.delete(id);
+        hibernateSession.getTransaction().begin();
+        taskRepository.delete(id);
+        hibernateSession.getTransaction().commit();
     }
 
     @Override
     public Task getById(String id) {
         if (id == null || id.isEmpty()) throw new WrongInputException("Wrong Input");
-        return repository.getById(id);
+        hibernateSession.getTransaction().begin();
+        Task task = taskRepository.getById(id);
+        hibernateSession.getTransaction().commit();
+        return task;
     }
 
     @Override
     public List<Task> getList() {
-        return repository.getList();
+        hibernateSession.getTransaction().begin();
+        List<Task> taskList = taskRepository.getList();
+        hibernateSession.getTransaction().commit();
+        return taskList;
     }
 
     @Override
     public void update(final Task entity) {
         if (entity == null) throw new WrongInputException("Wrong input");
-        repository.update(entity);
+        hibernateSession.getTransaction().begin();
+        taskRepository.update(entity);
+        hibernateSession.getTransaction().commit();
     }
 
     @Override
     public void completeTask(final Task task) throws WrongInputException {
         if (task == null) throw new WrongInputException("Wrong input");
+        hibernateSession.getTransaction().begin();
         task.setComplete(true);
-        repository.update(task);
+        taskRepository.update(task);
+        hibernateSession.getTransaction().commit();
     }
 
     @Override
     public void clearTask(List<Task> taskList) {
+        hibernateSession.getTransaction().begin();
         for (Task task : taskList) {
             if (task.isComplete())
-                repository.delete(task.getId());
+                taskRepository.delete(task.getId());
         }
+        hibernateSession.getTransaction().commit();
     }
 
     @Override
-    public void setGroupId(final Task task, String groupId) throws WrongInputException {
+    public void setGroup(final Task task, Group group) throws WrongInputException {
         if (task == null) throw new WrongInputException("Wrong input");
-        task.setGroupId(groupId);
-        repository.update(task);
+        hibernateSession.getTransaction().begin();
+        task.setGroup(group);
+        taskRepository.update(task);
+        hibernateSession.getTransaction().commit();
     }
 
     @Override
     public List<Task> getListTaskByUser(User user) {
-        if (user.getAccess() == Access.ADMIN_ACCESS) return getList();
-        final List<Task> taskList = new ArrayList<>();
-        for (final AssigneeTask assigneeTask : assigneeTaskService.getList()) {
-            if (user.getId().equals(assigneeTask.getUserId())) {
-                taskList.add(getById(assigneeTask.getTaskId()));
-            }
-        }
+        return null;
+    }
+
+    @Override
+    public List<Task> getListTaskByUserId(String userId) {
+        hibernateSession.getTransaction().begin();
+        List<Task> taskList = taskRepository.getListTaskByUserId(userId);
+        hibernateSession.getTransaction().commit();
         return taskList;
     }
+
 
 }

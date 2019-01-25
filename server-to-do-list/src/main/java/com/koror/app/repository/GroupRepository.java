@@ -11,16 +11,16 @@ public class GroupRepository extends AbstractRepository<Group> implements IGroup
 
     @Override
     public void delete(String id) {
-        hibernateSession.beginTransaction();
-        Group entity = hibernateSession.get(Group.class, id);
-        hibernateSession.delete(entity);
+        hibernateSession.getTransaction().begin();
+        Group entity = hibernateSession.find(Group.class, id);
+        hibernateSession.remove(entity);
         hibernateSession.getTransaction().commit();
     }
 
     @Override
     public Group getById(String id) {
-        hibernateSession.beginTransaction();
-        Group entity = hibernateSession.get(Group.class, id);
+        hibernateSession.getTransaction().begin();
+        Group entity = hibernateSession.find(Group.class, id);
         hibernateSession.getTransaction().commit();
         return entity;
     }

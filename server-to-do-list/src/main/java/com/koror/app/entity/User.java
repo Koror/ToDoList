@@ -8,37 +8,42 @@ import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
+@Setter
+@Getter
 @Entity
 @Table(name = "tm_user")
 public class User extends AbstractEntity implements Serializable {
 
-    @Setter
-    @Getter
     @Basic
+    @Column(nullable = false)
     private String login;
 
-    @Setter
-    @Getter
     @Basic
+    @Column(nullable = false)
     private String password;
 
-    @Setter
-    @Getter
     @Basic
     private String name;
 
-    @Setter
-    @Getter
     @Basic
     private String email;
 
-    @Setter
-    @Getter
     @Basic
     private Access access = Access.USER_ACCESS;
 
-    public User(){
+    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
+    private List<Session> sessionList;
+
+    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
+    private List<Group> groupList;
+
+    @OneToMany(mappedBy = "user", fetch = FetchType.EAGER)
+    private List<Task> taskList;
+
+    public User() {
 
     }
 

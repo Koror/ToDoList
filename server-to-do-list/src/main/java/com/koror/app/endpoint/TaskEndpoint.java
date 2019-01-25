@@ -22,9 +22,8 @@ public class TaskEndpoint {
     public Result addTask(@WebParam( name = "name", partName = "name")Task task, @WebParam( name = "session", partName = "session") Session session){
         final boolean validateSession = bootstrap.getSessionService().validate(session);
         if(!validateSession) throw new SessionNotValidateException();
-        final String userId = session.getUserId();
         bootstrap.getTaskService().add(task);
-        final AssigneeTask assigneeTask = new AssigneeTask(userId, task.getId());
+        final AssigneeTask assigneeTask = new AssigneeTask(session.getUser(), task);
         bootstrap.getAssigneeTaskService().add(assigneeTask);
         final Result result = new Result();
         result.success();
@@ -35,7 +34,7 @@ public class TaskEndpoint {
     public Result clearTask(@WebParam( name = "session", partName = "session") Session session){
         final boolean validateSession = bootstrap.getSessionService().validate(session);
         if(!validateSession) throw new SessionNotValidateException();
-        final String userId = session.getUserId();
+        final String userId = session.getUser().getId();
         final User user = bootstrap.getUserService().getById(userId);
         List<Task> taskList = bootstrap.getTaskService().getListTaskByUser(user);
         bootstrap.getTaskService().clearTask(taskList);
@@ -64,7 +63,7 @@ public class TaskEndpoint {
             @WebParam( name = "session", partName = "session") Session session){
         final boolean validateSession = bootstrap.getSessionService().validate(session);
         if(!validateSession) throw new SessionNotValidateException();
-        final String userId = session.getUserId();
+        final String userId = session.getUser().getId();
         final User user = bootstrap.getUserService().getById(userId);
         bootstrap.getAssigneeTaskService().deleteAssigneeByParam(user.getId(), taskId);
         bootstrap.getTaskService().delete(taskId);
@@ -77,10 +76,8 @@ public class TaskEndpoint {
     public List<Task> getTaskList(@WebParam( name = "session", partName = "session") Session session) throws SessionNotValidateException{
         final boolean validateSession = bootstrap.getSessionService().validate(session);
         if(!validateSession) throw new SessionNotValidateException();
-        String userId = session.getUserId();
-        final User user = bootstrap.getUserService().getById(userId);
-        bootstrap.getTaskService().getListTaskByUser(user);
-        return bootstrap.getTaskService().getListTaskByUser(user);
+        User user = session.getUser();
+        return bootstrap.getTaskService().getListTaskByUserId(user.getId());
     }
 
     @WebMethod
@@ -92,7 +89,7 @@ public class TaskEndpoint {
         if(!validateSession) throw new SessionNotValidateException();
         final Task task = bootstrap.getTaskService().getById(idTask);
         final Group group = bootstrap.getGroupService().getById(idGroup);
-        bootstrap.getTaskService().setGroupId(task, group.getId());
+        bootstrap.getTaskService().setGroup(task, group);
         final Result result = new Result();
         result.success();
         return result;

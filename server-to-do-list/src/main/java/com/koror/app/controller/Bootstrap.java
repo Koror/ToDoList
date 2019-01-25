@@ -18,6 +18,7 @@ import com.koror.app.util.HibernateFactory;
 import lombok.Getter;
 import org.reflections.Reflections;
 
+import javax.persistence.EntityManager;
 import javax.xml.ws.Endpoint;
 import java.util.HashMap;
 import java.util.Map;
@@ -48,7 +49,7 @@ public final class Bootstrap implements IBootstrap {
     private final GroupService groupService = new GroupService(groupRepository, assigneeGroupService);
 
     @Getter
-    private final TaskService taskService = new TaskService(taskRepository, assigneeTaskService);
+    private final TaskService taskService = new TaskService(taskRepository, userRepository, assigneeTaskService);
 
     @Getter
     private final UserService userService = new UserService(userRepository);
@@ -60,6 +61,8 @@ public final class Bootstrap implements IBootstrap {
 
     @Getter
     private final Map<String, AbstractCommand> serverCommands = new HashMap<>();
+
+    final private EntityManager hibernateSession = HibernateFactory.sessionFactory.createEntityManager();
 
     private void registerCommand(Map<String, AbstractCommand> commandMap, final AbstractCommand command) {
         commandMap.put(command.command(), command);
@@ -103,7 +106,7 @@ public final class Bootstrap implements IBootstrap {
         return "";
     }
 
-    private void defaultUserInit() {
+    public void defaultUserInit() {
         final User userAdmin = new User("admin", "admin");
         userAdmin.setAccess(Access.ADMIN_ACCESS);
         getUserService().add(userAdmin);

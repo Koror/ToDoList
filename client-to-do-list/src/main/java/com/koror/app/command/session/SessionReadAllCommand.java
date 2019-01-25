@@ -13,7 +13,7 @@ public class SessionReadAllCommand extends AbstractCommand {
         List<Session> list = bootstrap.getSessionService().getListSession(bootstrap.getSession());
         for(Session session : list){
             System.out.println("Id: " + session.getId() +
-                    " userId: " + session.getUserId() +
+                    " user: " + session.getUser().getId() +
                     " signature: " + session.getSignature() +
                     " ip: " + session.getIp());
         }

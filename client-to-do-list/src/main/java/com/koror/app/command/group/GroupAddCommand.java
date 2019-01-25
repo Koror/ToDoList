@@ -11,7 +11,7 @@ public final class GroupAddCommand extends AbstractCommand {
         System.out.println("Input name group");
         final Group group = new Group();
         group.setName(bootstrap.nextLine());
-        final String userId = bootstrap.getSession().getUserId();
+        final String userId = bootstrap.getSession().getUser().getId();
         group.setCreator(userId);
         Result result = bootstrap.getGroupService().addGroup(group, bootstrap.getSession());
         System.out.println(result.getResult());

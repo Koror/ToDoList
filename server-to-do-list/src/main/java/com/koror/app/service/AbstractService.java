@@ -1,10 +1,13 @@
 package com.koror.app.service;
 
 import com.koror.app.entity.AbstractEntity;
+import com.koror.app.util.HibernateFactory;
 
-public abstract class AbstractService< E extends AbstractEntity> {
+import javax.persistence.EntityManager;
 
-//    protected R repository;
+public abstract class AbstractService {
+
+    protected EntityManager hibernateSession = HibernateFactory.sessionFactory.createEntityManager();
 //
 //    public AbstractService(){
 //

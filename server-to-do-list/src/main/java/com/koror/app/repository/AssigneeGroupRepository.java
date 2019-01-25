@@ -3,6 +3,7 @@ package com.koror.app.repository;
 import com.koror.app.api.repository.IAssigneeGroupRepository;
 import com.koror.app.entity.AssigneeGroup;
 
+import javax.persistence.EntityManager;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import java.util.List;
@@ -11,16 +12,16 @@ public class AssigneeGroupRepository extends AbstractRepository<AssigneeGroup> i
 
     @Override
     public void delete(String id) {
-        hibernateSession.beginTransaction();
-        AssigneeGroup entity = hibernateSession.get(AssigneeGroup.class, id);
-        hibernateSession.delete(entity);
+        hibernateSession.getTransaction().begin();
+        AssigneeGroup entity = hibernateSession.find(AssigneeGroup.class, id);
+        hibernateSession.remove(entity);
         hibernateSession.getTransaction().commit();
     }
 
     @Override
     public AssigneeGroup getById(String id) {
-        hibernateSession.beginTransaction();
-        AssigneeGroup entity = hibernateSession.get(AssigneeGroup.class, id);
+        hibernateSession.getTransaction().begin();
+        AssigneeGroup entity = hibernateSession.find(AssigneeGroup.class, id);
         hibernateSession.getTransaction().commit();
         return entity;
     }
@@ -35,8 +36,8 @@ public class AssigneeGroupRepository extends AbstractRepository<AssigneeGroup> i
 
     @Override
     public AssigneeGroup getAssigneeByUserId(String userId) {
-        hibernateSession.beginTransaction();
-        AssigneeGroup entity = hibernateSession.get(AssigneeGroup.class, userId);
+        hibernateSession.getTransaction().begin();
+        AssigneeGroup entity = hibernateSession.find(AssigneeGroup.class, userId);
         hibernateSession.getTransaction().commit();
         return entity;
     }

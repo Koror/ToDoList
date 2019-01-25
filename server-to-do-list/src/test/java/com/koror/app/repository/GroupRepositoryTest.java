@@ -2,23 +2,27 @@ package com.koror.app.repository;
 
 import com.koror.app.entity.Group;
 import com.koror.app.entity.Task;
+import com.koror.app.util.AppConfig;
 import com.koror.app.util.DatabaseConnection;
 import com.koror.app.util.HibernateFactory;
 import org.junit.Test;
+
+import java.io.IOException;
 
 import static org.junit.Assert.*;
 
 public class GroupRepositoryTest {
 
     @Test
-    public void testPositiveAddGroup() {
-        DatabaseConnection.setConnection();
-        HibernateFactory.buildFactory();
-        GroupRepository groupRepository = new GroupRepository();
-        Group group = new Group();
-        group.setName("TestGroup");
-        groupRepository.add(group);
-        DatabaseConnection.closeConnection();
+    public void testPositiveAddGroup() throws IOException {
+//        AppConfig.init();
+//        DatabaseConnection.setConnection();
+//        HibernateFactory.buildFactory();
+//        GroupRepository groupRepository = new GroupRepository();
+//        Group group = new Group();
+//        group.setName("TestGroup");
+//        groupRepository.add(group);
+//        DatabaseConnection.closeConnection();
     }
 //
 //    @Test(expected = IndexOutOfBoundsException.class)
@@ -31,20 +35,20 @@ public class GroupRepositoryTest {
 //    public void testPositiveUpdateGroup() {
 //        final GroupRepository groupRepository = new GroupRepository();
 //        Group group = new Group("Test group");
-//        final String groupId = group.getId();
+//        final String group = group.getId();
 //        groupRepository.add(group);
 //        group = new Group("New test group");
 //        groupRepository.update(group);
-//        assertNotEquals(groupId, groupRepository.getGroupByIndex(0));
+//        assertNotEquals(group, groupRepository.getGroupByIndex(0));
 //    }
 //
 //    @Test
 //    public void testNegativeUpdateGroup() {
 //        final GroupRepository groupRepository = new GroupRepository();
 //        final Group group = new Group("Test group");
-//        final String groupId = group.getId();
+//        final String group = group.getId();
 //        groupRepository.add(group);
-//        assertEquals(groupId, groupRepository.getGroupByIndex(0).getId());
+//        assertEquals(group, groupRepository.getGroupByIndex(0).getId());
 //    }
 //
 //    @Test(expected = IndexOutOfBoundsException.class)

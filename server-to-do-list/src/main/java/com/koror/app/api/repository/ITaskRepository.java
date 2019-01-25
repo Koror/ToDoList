@@ -12,4 +12,6 @@ public interface ITaskRepository extends IRepository<Task>{
 
     List<Task> getList();
 
+    List<Task> getListTaskByUserId(String userId);
+
 }

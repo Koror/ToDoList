@@ -8,7 +8,7 @@ import com.koror.app.error.WrongInputException;
 import java.util.List;
 
 
-public class AssigneeGroupService implements IAssigneeGroupService {
+public class AssigneeGroupService extends AbstractService implements IAssigneeGroupService {
 
     private final IAssigneeGroupRepository repository;
 
@@ -50,7 +50,7 @@ public class AssigneeGroupService implements IAssigneeGroupService {
         if (userId == null || userId.isEmpty()) throw new WrongInputException("Wrong Input");
         if (groupId == null || groupId.isEmpty()) throw new WrongInputException("Wrong Input");
         for(AssigneeGroup assigneeGroupTemp : repository.getList()){
-            if(userId.equals(assigneeGroupTemp.getUserId()) && groupId.equals(assigneeGroupTemp.getGroupId()))
+            if(userId.equals(assigneeGroupTemp.getUser()) && groupId.equals(assigneeGroupTemp.getGroup()))
                 repository.delete(assigneeGroupTemp.getId());
         }
     }

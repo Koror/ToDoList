@@ -11,7 +11,6 @@ public final class TaskReadAllCommand extends AbstractCommand {
     @Override
     public void execute() {
         int index = 0;
-        String userId = bootstrap.getSession().getUserId();
         List<Task> taskList = bootstrap.getTaskService().getTaskList(bootstrap.getSession());
         for (Task task : taskList) {
             User user = bootstrap.getUserService().getUserById(task.getCreator(),bootstrap.getSession());

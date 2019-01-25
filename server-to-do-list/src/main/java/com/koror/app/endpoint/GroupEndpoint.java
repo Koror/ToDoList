@@ -24,9 +24,8 @@ public class GroupEndpoint {
             @WebParam(name = "session", partName = "session") Session session) {
         final boolean validateSession = bootstrap.getSessionService().validate(session);
         if (!validateSession) throw new SessionNotValidateException();
-        final String userId = session.getUserId();
         bootstrap.getGroupService().add(group);
-        final AssigneeGroup assigneeGroup = new AssigneeGroup(userId, group.getId());
+        final AssigneeGroup assigneeGroup = new AssigneeGroup(session.getUser(), group);
         bootstrap.getAssigneeGroupService().add(assigneeGroup);
         final Result result = new Result();
         result.success();
@@ -34,18 +33,18 @@ public class GroupEndpoint {
     }
 
     public Result deleteGroup(
-            @WebParam(name = "id", partName = "id") String groupId,
+            @WebParam(name = "group", partName = "group") Group group,
             @WebParam(name = "session", partName = "session") Session session) {
         final boolean validateSession = bootstrap.getSessionService().validate(session);
         if (!validateSession) throw new SessionNotValidateException();
-        final User user = bootstrap.getUserService().getById(session.getUserId());
+        final User user = bootstrap.getUserService().getById(session.getUser().getId());
         //delete project and assignee
-        bootstrap.getAssigneeGroupService().deleteAssigneeByParam(user.getId(), groupId);
-        bootstrap.getGroupService().delete(groupId);
+        bootstrap.getAssigneeGroupService().deleteAssigneeByParam(user.getId(), group.getId());
+        bootstrap.getGroupService().delete(group.getId());
         //delete all task and assignee in project
         for (AssigneeTask assigneeTask : bootstrap.getAssigneeTaskService().getList()) {
-            Task taskTemp = bootstrap.getTaskService().getById(assigneeTask.getTaskId());
-            if (groupId.equals(taskTemp.getGroupId())) {
+            Task taskTemp = bootstrap.getTaskService().getById(assigneeTask.getTask().getId());
+            if (group.equals(taskTemp.getGroup())) {
                 bootstrap.getTaskService().delete(taskTemp.getId());
                 bootstrap.getAssigneeTaskService().delete(assigneeTask.getId());
             }
@@ -70,7 +69,7 @@ public class GroupEndpoint {
     public List<Group> getGroupList(@WebParam(name = "session", partName = "session") Session session) {
         final boolean validateSession = bootstrap.getSessionService().validate(session);
         if (!validateSession) throw new SessionNotValidateException();
-        String userId = session.getUserId();
+        String userId = session.getUser().getId();
         final User user = bootstrap.getUserService().getById(userId);
         return bootstrap.getGroupService().getListGroupByUser(user);
     }

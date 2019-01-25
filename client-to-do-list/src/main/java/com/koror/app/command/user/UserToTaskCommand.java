@@ -12,13 +12,11 @@ public class UserToTaskCommand extends AbstractCommand {
     public void execute() {
         final List<User> userList = bootstrap.getUserService().getUserList(bootstrap.getSession());
         User user = bootstrap.getUserByList(userList);
-        final String userId = user.getId();
 
         final List<Task> taskList = bootstrap.getTaskService().getTaskList(bootstrap.getSession());
         Task task = bootstrap.getTaskByList(taskList);
-        final String taskId = task.getId();
 
-        Result result = bootstrap.getUserService().linkToTaskUser(userId, taskId, bootstrap.getSession());
+        Result result = bootstrap.getUserService().linkToTaskUser(user, task, bootstrap.getSession());
         System.out.println(result.getResult());
         System.out.println("Link complete");
     }

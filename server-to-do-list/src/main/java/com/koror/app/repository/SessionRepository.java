@@ -12,16 +12,16 @@ public class SessionRepository extends AbstractRepository<Session> implements IS
 
     @Override
     public void delete(String id) {
-        hibernateSession.beginTransaction();
-        Session entity = hibernateSession.get(Session.class, id);
-        hibernateSession.delete(entity);
+        hibernateSession.getTransaction().begin();
+        Session entity = hibernateSession.find(Session.class, id);
+        hibernateSession.remove(entity);
         hibernateSession.getTransaction().commit();
     }
 
     @Override
     public Session getById(String id) {
-        hibernateSession.beginTransaction();
-        Session entity = hibernateSession.get(Session.class, id);
+        hibernateSession.getTransaction().begin();
+        Session entity = hibernateSession.find(Session.class, id);
         hibernateSession.getTransaction().commit();
         return entity;
     }

@@ -1,6 +1,7 @@
 package com.koror.app.api.service;
 
 import com.koror.app.api.repository.ITaskRepository;
+import com.koror.app.entity.Group;
 import com.koror.app.entity.Task;
 import com.koror.app.entity.User;
 import com.koror.app.error.WrongInputException;
@@ -13,7 +14,7 @@ public interface ITaskService extends ITaskRepository {
 
     void clearTask(List<Task> taskList);
 
-    void setGroupId(final Task task, String groupId) throws WrongInputException;
+    void setGroup(final Task task, Group group) throws WrongInputException;
 
     List<Task> getListTaskByUser(User user);
 }

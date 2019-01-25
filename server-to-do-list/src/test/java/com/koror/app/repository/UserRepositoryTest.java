@@ -19,10 +19,10 @@ public class UserRepositoryTest {
 
     @Test
     public void getList(){
-        DatabaseConnection.setConnection();
-        HibernateFactory.buildFactory();
-        UserRepository userRepository = new UserRepository();
-        userRepository.getList();
-        DatabaseConnection.closeConnection();
+//        DatabaseConnection.setConnection();
+//        HibernateFactory.buildFactory();
+//        UserRepository userRepository = new UserRepository();
+//        userRepository.getList();
+//        DatabaseConnection.closeConnection();
     }
 }

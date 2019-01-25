@@ -10,7 +10,7 @@ public class UserLogoutCommand extends AbstractCommand {
         final Session session = bootstrap.getSession();
         Session sessionCopy = new Session();
         sessionCopy.setId(session.getId());
-        sessionCopy.setUserId(session.getUserId());
+        sessionCopy.setUser(session.getUser());
         sessionCopy.setSignature(session.getSignature());
         sessionCopy.setIp(session.getIp());
         bootstrap.deleteSession();

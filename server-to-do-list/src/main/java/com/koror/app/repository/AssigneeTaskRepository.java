@@ -11,16 +11,16 @@ public class AssigneeTaskRepository extends AbstractRepository<AssigneeTask> imp
 
     @Override
     public void delete(String id) {
-        hibernateSession.beginTransaction();
-        AssigneeTask entity = hibernateSession.get(AssigneeTask.class, id);
-        hibernateSession.delete(entity);
+        hibernateSession.getTransaction().begin();
+        AssigneeTask entity = hibernateSession.find(AssigneeTask.class, id);
+        hibernateSession.remove(entity);
         hibernateSession.getTransaction().commit();
     }
 
     @Override
     public AssigneeTask getById(String id) {
-        hibernateSession.beginTransaction();
-        AssigneeTask entity = hibernateSession.get(AssigneeTask.class, id);
+        hibernateSession.getTransaction().begin();
+        AssigneeTask entity = hibernateSession.find(AssigneeTask.class, id);
         hibernateSession.getTransaction().commit();
         return entity;
     }
@@ -35,8 +35,8 @@ public class AssigneeTaskRepository extends AbstractRepository<AssigneeTask> imp
 
     @Override
     public AssigneeTask getAssigneeByUserId(String userId) {
-        hibernateSession.beginTransaction();
-        AssigneeTask entity = hibernateSession.get(AssigneeTask.class, userId);
+        hibernateSession.getTransaction().begin();
+        AssigneeTask entity = hibernateSession.find(AssigneeTask.class, userId);
         hibernateSession.getTransaction().commit();
         return entity;
     }

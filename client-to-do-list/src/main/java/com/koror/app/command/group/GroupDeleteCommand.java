@@ -12,7 +12,7 @@ public final class GroupDeleteCommand extends AbstractCommand {
     public void execute() {
         final List<Group> groupList = bootstrap.getGroupService().getGroupList(bootstrap.getSession());
         Group group = bootstrap.getGroupByList(groupList);
-        Result result = bootstrap.getGroupService().deleteGroup(group.getId(), bootstrap.getSession());
+        Result result = bootstrap.getGroupService().deleteGroup(group, bootstrap.getSession());
         System.out.println(result.getResult());
         System.out.println("Group deleted");
     }

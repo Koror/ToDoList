@@ -32,7 +32,7 @@ public class SessionEndpoint {
 
     @WebMethod
     public Result deleteByUserSession(
-            @WebParam(name = "userId", partName = "userId") String userId,
+            @WebParam(name = "user", partName = "user") String userId,
             @WebParam(name = "session", partName = "session") Session session) {
         final boolean validateSession = bootstrap.getSessionService().validate(session);
         if (!validateSession) throw new SessionNotValidateException();
