@@ -34,15 +34,6 @@ public class User extends AbstractEntity implements Serializable {
     @Basic
     private Access access = Access.USER_ACCESS;
 
-    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
-    private List<Session> sessionList;
-
-    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
-    private List<Group> groupList;
-
-    @OneToMany(mappedBy = "user", fetch = FetchType.EAGER)
-    private List<Task> taskList;
-
     public User() {
 
     }

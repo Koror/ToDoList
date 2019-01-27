@@ -6,6 +6,8 @@ import com.koror.app.entity.Session;
 import com.koror.app.entity.Task;
 import com.koror.app.entity.User;
 import com.koror.app.error.SessionNotValidateException;
+import com.koror.app.service.SessionService;
+import com.koror.app.service.UserService;
 
 import javax.jws.WebMethod;
 import javax.jws.WebParam;
@@ -15,22 +17,25 @@ import java.util.List;
 @WebService
 public class UserEndpoint {
 
-    private Bootstrap bootstrap;
+    private UserService userService;
 
-    public UserEndpoint(Bootstrap bootstrap) {
-        this.bootstrap = bootstrap;
+    private SessionService sessionService;
+
+    public UserEndpoint(UserService userService, SessionService sessionService) {
+        this.userService = userService;
+        this.sessionService = sessionService;
     }
 
     @WebMethod
     public Result deleteUser(
             @WebParam(name = "id", partName = "id") String userId,
             @WebParam(name = "session", partName = "session") Session session) {
-        final boolean validateSession = bootstrap.getSessionService().validate(session);
+        final boolean validateSession =sessionService.validate(session);
         if (!validateSession) throw new SessionNotValidateException();
-        bootstrap.getUserService().delete(userId);
-        for (Session sessionTemp : bootstrap.getSessionService().getList()) {
+        userService.delete(userId);
+        for (Session sessionTemp : sessionService.getList()) {
             if (userId.equals(sessionTemp.getUser()))
-                bootstrap.getSessionService().delete(sessionTemp.getId());
+                sessionService.delete(sessionTemp.getId());
         }
         final Result result = new Result();
         result.success();
@@ -42,9 +47,9 @@ public class UserEndpoint {
             @WebParam(name = "login", partName = "login") String login,
             @WebParam(name = "password", partName = "password") String password,
             @WebParam(name = "ip", partName = "ip") String ip) {
-        final User user = bootstrap.getUserService().login(login, password);
+        final User user = userService.login(login, password);
         Session session = null;
-        for (Session sessionTemp : bootstrap.getSessionService().getList()) {
+        for (Session sessionTemp : sessionService.getList()) {
             if ((user.getId().equals(sessionTemp.getUser())) && (ip.equals(sessionTemp.getIp())))
                 session = sessionTemp;
         }
@@ -52,14 +57,14 @@ public class UserEndpoint {
             session = new Session();
             session.setUser(user);
             session.setIp(ip);
-            bootstrap.getSessionService().add(session);
+            sessionService.add(session);
         }
         return session;
     }
 
     @WebMethod
     public Result logoutUser(@WebParam(name = "session", partName = "session") Session session) {
-        bootstrap.getSessionService().delete(session.getId());
+        sessionService.delete(session.getId());
         final Result result = new Result();
         result.success();
         return result;
@@ -67,31 +72,31 @@ public class UserEndpoint {
 
     @WebMethod
     public List<User> getUserList(@WebParam(name = "session", partName = "session") Session session) {
-        final boolean validateSession = bootstrap.getSessionService().validate(session);
+        final boolean validateSession = sessionService.validate(session);
         if (!validateSession) throw new SessionNotValidateException();
         final Result result = new Result();
         result.success();
-        return bootstrap.getUserService().getList();
+        return userService.getList();
     }
 
     @WebMethod
     public User getUserById(
             @WebParam(name = "user", partName = "user") String userId,
             @WebParam(name = "session", partName = "session") Session session) {
-        final boolean validateSession = bootstrap.getSessionService().validate(session);
+        final boolean validateSession = sessionService.validate(session);
         if (!validateSession) throw new SessionNotValidateException();
-        return bootstrap.getUserService().getById(userId);
+        return userService.getById(userId);
     }
 
     @WebMethod
     public Session registerUser(
             @WebParam(name = "user", partName = "user") User user,
             @WebParam(name = "ip", partName = "ip") String ip) {
-        bootstrap.getUserService().add(user);
+        userService.add(user);
         Session session = new Session();
         session.setIp(ip);
         session.setUser(user);
-        bootstrap.getSessionService().add(session);
+        sessionService.add(session);
         return session;
     }
 
@@ -100,11 +105,9 @@ public class UserEndpoint {
             @WebParam(name = "user", partName = "user") User user,
             @WebParam(name = "task", partName = "task") Task task,
             @WebParam(name = "session", partName = "session") Session session) {
-        final boolean validateSession = bootstrap.getSessionService().validate(session);
+        final boolean validateSession = sessionService.validate(session);
         if (!validateSession) throw new SessionNotValidateException();
-        task.setUser(user);
-        final AssigneeTask assigneeTask = new AssigneeTask(user, task);
-        bootstrap.getAssigneeTaskService().add(assigneeTask);
+        userService.linkToTask(user, task);
         final Result result = new Result();
         result.success();
         return result;

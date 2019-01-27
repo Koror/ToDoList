@@ -1,13 +1,20 @@
 package com.koror.app.api.service;
 
-import com.koror.app.api.repository.IGroupRepository;
 import com.koror.app.entity.Group;
 import com.koror.app.entity.User;
 
 import java.util.List;
 
-public interface IGroupService extends IGroupRepository {
+public interface IGroupService {
 
-    List<Group> getListGroupByUser(User user);
+    void add(Group entity, User user);
+
+    void delete(Group group, User user) ;
+
+    Group getById(String id);
+
+    List<Group> getList();
+
+    List<Group> getListGroupByUserId(User user);
 
 }

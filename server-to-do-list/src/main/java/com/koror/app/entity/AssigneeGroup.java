@@ -12,10 +12,10 @@ import java.io.Serializable;
 @Table(name = "tm_assigneegroup")
 public class AssigneeGroup extends AbstractEntity implements Serializable {
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
     private User user;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
     private Group group;
 
     public AssigneeGroup(){

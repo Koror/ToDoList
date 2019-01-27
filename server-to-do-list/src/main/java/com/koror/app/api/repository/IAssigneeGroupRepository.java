@@ -2,16 +2,19 @@ package com.koror.app.api.repository;
 
 import com.koror.app.entity.AssigneeGroup;
 
+import javax.persistence.EntityManager;
 import java.util.List;
 
 public interface IAssigneeGroupRepository extends IRepository<AssigneeGroup>{
 
-    AssigneeGroup getAssigneeByUserId(String userId);
+    AssigneeGroup getAssigneeByUserId(String userId, EntityManager entityManager);
 
-    void delete(String id);
+    void delete(String id, EntityManager entityManager);
 
-    AssigneeGroup getById(String id);
+    void deleteAssigneeByParam(String userId, String groupId, EntityManager entityManager);
 
-    List<AssigneeGroup> getList();
+    AssigneeGroup getById(String id, EntityManager entityManager);
+
+    List<AssigneeGroup> getList(EntityManager entityManager);
 
 }

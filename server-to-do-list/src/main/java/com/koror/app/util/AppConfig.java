@@ -20,8 +20,6 @@ public class AppConfig {
 
     public static String HIBERNATE_SHOW_SQL;
 
-    public static String PREFIXDB;
-
     public static void init() throws IOException{
         FileInputStream fis;
         Properties property = new Properties();
@@ -34,7 +32,6 @@ public class AppConfig {
         HIBERNATE_DIALECT = "org.hibernate.dialect.MySQL5Dialect";
         HBM2DDL_AUTO = "create-drop";
         HIBERNATE_SHOW_SQL = "true";
-        PREFIXDB = "tm_";
     }
 
 }

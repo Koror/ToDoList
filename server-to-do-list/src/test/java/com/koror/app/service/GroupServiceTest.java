@@ -1,16 +1,5 @@
 package com.koror.app.service;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.dataformat.xml.XmlMapper;
-import com.koror.app.entity.Group;
-import com.koror.app.error.WrongInputException;
-import org.junit.Test;
-
-import java.io.*;
-import java.util.List;
-
-import static org.junit.Assert.*;
-
 public class GroupServiceTest {
 
 //    @Test(expected = WrongInputException.class)

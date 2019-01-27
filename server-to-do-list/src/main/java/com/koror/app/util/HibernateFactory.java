@@ -1,21 +1,21 @@
 package com.koror.app.util;
 
 import com.koror.app.entity.*;
-import org.hibernate.SessionFactory;
 import org.hibernate.boot.Metadata;
 import org.hibernate.boot.MetadataSources;
 import org.hibernate.boot.registry.StandardServiceRegistry;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import org.hibernate.cfg.Environment;
 
+import javax.persistence.EntityManagerFactory;
 import java.util.HashMap;
 import java.util.Map;
 
 public class HibernateFactory {
 
-    public static SessionFactory sessionFactory;
+    private EntityManagerFactory entityManagerFactory;
 
-    public static void buildFactory() {
+    public HibernateFactory(){
         final Map<String, String> settings = new HashMap<>();
         settings.put(Environment.DRIVER, AppConfig.JDBC_DRIVER);
         settings.put(Environment.URL, AppConfig.URL);
@@ -36,7 +36,14 @@ public class HibernateFactory {
         sources.addAnnotatedClass(AssigneeTask.class);
         sources.addAnnotatedClass(AssigneeGroup.class);
         final Metadata metadata = sources.getMetadataBuilder().build();
-        sessionFactory = metadata.getSessionFactoryBuilder().build();
+        entityManagerFactory = metadata.getSessionFactoryBuilder().build();
     }
 
+    public void close(){
+        entityManagerFactory.close();
+    }
+
+    public EntityManagerFactory getEntityManagerFactory() {
+        return entityManagerFactory;
+    }
 }

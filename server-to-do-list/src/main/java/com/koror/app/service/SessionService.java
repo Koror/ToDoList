@@ -4,51 +4,57 @@ import com.koror.app.api.repository.ISessionRepository;
 import com.koror.app.api.service.ISessionService;
 import com.koror.app.entity.Session;
 import com.koror.app.error.WrongInputException;
+import com.koror.app.repository.SessionRepository;
 
+import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
 import java.util.List;
 
-public class SessionService extends AbstractService implements ISessionService {
+public class SessionService extends AbstractService<ISessionRepository, Session> implements ISessionService {
 
-    private final ISessionRepository repository;
-
-    public SessionService(ISessionRepository repository) {
+    public SessionService(ISessionRepository repository, EntityManagerFactory entityManagerFactory) {
         this.repository = repository;
-    }
-
-    @Override
-    public void add(Session entity) {
-        if (entity == null) throw new WrongInputException("Wrong Input");
-        repository.add(entity);
+        this.entityManagerFactory = entityManagerFactory;
     }
 
     @Override
     public void delete(String id) {
         if (id == null || id.isEmpty()) throw new WrongInputException("Wrong Input");
-        repository.delete(id);
+        EntityManager entityManager = entityManagerFactory.createEntityManager();
+        entityManager.getTransaction().begin();
+        repository.delete(id, entityManager);
+        entityManager.getTransaction().commit();
+        entityManager.close();
     }
 
     @Override
     public void deleteByUserSession(String userId){
-        for (Session sessionTemp : repository.getList())
+        EntityManager entityManager = entityManagerFactory.createEntityManager();
+        entityManager.getTransaction().begin();
+        for (Session sessionTemp : repository.getList(entityManager))
             if (userId.equals(sessionTemp.getUser().getId()))
-                repository.delete(sessionTemp.getId());
+                repository.delete(sessionTemp.getId(), entityManager);
+        entityManager.getTransaction().commit();
+        entityManager.close();
     }
 
     @Override
     public Session getById(String id) {
         if (id == null || id.isEmpty()) throw new WrongInputException("Wrong Input");
-        return repository.getById(id);
+        EntityManager entityManager = entityManagerFactory.createEntityManager();
+        entityManager.getTransaction().begin();
+        Session session = repository.getById(id, entityManager);
+        entityManager.close();
+        return session;
     }
 
     @Override
     public List<Session> getList() {
-        return repository.getList();
-    }
-
-    @Override
-    public void update(final Session entity) {
-        if (entity == null) throw new WrongInputException("Wrong input");
-        repository.update(entity);
+        EntityManager entityManager = entityManagerFactory.createEntityManager();
+        entityManager.getTransaction().begin();
+        List<Session> list = repository.getList(entityManager);
+        entityManager.close();
+        return list;
     }
 
     @Override

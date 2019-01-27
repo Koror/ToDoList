@@ -3,6 +3,7 @@ package com.koror.app.command.task;
 import com.koror.app.command.AbstractCommand;
 import com.koror.app.endpoint.Result;
 import com.koror.app.endpoint.Task;
+import com.koror.app.endpoint.User;
 
 public final class TaskAddCommand extends AbstractCommand {
 
@@ -12,9 +13,9 @@ public final class TaskAddCommand extends AbstractCommand {
         final String name = bootstrap.nextLine();
         final Task task = new Task();
         task.setName(name);
-        final String userId = bootstrap.getSession().getUser().getId();
-        task.setCreator(userId);
-        task.setUser(bootstrap.getSession().getUser());
+        final User user = bootstrap.getSession().getUser();
+        task.setCreator(user.getId());
+        task.setUser(user);
         Result result = bootstrap.getTaskService().addTask(task, bootstrap.getSession());
         System.out.println(result.getResult());
         System.out.println("Task created");

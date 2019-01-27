@@ -11,9 +11,6 @@ import java.io.IOException;
 public class App {
 
     public static void main(String[] args) throws ReflectiveOperationException, IOException {
-        AppConfig.init();
-        DatabaseConnection.setConnection();
-        HibernateFactory.buildFactory();
         final Bootstrap bootstrap = new Bootstrap();
         bootstrap.startServer();
     }

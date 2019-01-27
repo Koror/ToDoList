@@ -12,10 +12,10 @@ import java.io.Serializable;
 @Table(name = "tm_assigneetask")
 public class AssigneeTask extends AbstractEntity implements Serializable {
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
     private User user;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
     private Task task;
 
     public AssigneeTask(){

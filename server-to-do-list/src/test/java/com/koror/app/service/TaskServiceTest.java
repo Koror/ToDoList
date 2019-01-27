@@ -1,46 +1,33 @@
 package com.koror.app.service;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.dataformat.xml.XmlMapper;
-import com.koror.app.api.repository.ITaskRepository;
 import com.koror.app.controller.Bootstrap;
-import com.koror.app.entity.Group;
 import com.koror.app.entity.Task;
 import com.koror.app.entity.User;
-import com.koror.app.error.WrongInputException;
-
-import com.koror.app.repository.TaskRepository;
 import com.koror.app.util.AppConfig;
 import com.koror.app.util.DatabaseConnection;
-import com.koror.app.util.HibernateFactory;
 import org.junit.Test;
 
-import java.io.*;
+import java.io.IOException;
 import java.util.List;
-
-import static org.junit.Assert.*;
 
 public class TaskServiceTest {
 
     @Test
     public void test() throws IOException {
-        AppConfig.init();
-        DatabaseConnection.setConnection();
-        HibernateFactory.buildFactory();
-
         Bootstrap bootstrap = new Bootstrap();
         bootstrap.defaultUserInit();
 
-        bootstrap.getUserService().getList();
+        List<User> list = bootstrap.getUserService().getList();
+        list.get(0);
         final User user=bootstrap.getUserService().getByLogin("admin");
 
         final Task task = new Task();
-
         task.setUser(user);
         task.setName("345234");
         bootstrap.getTaskService().add(task);
 
-        bootstrap.getTaskService().getListTaskByUserId(user.getId());
+        List<Task> taskList2 = bootstrap.getTaskService().getListTaskByUserId(user.getId());
+        taskList2.get(0);
 
     }
 

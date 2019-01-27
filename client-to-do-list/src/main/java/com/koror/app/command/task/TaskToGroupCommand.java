@@ -15,7 +15,7 @@ public final class TaskToGroupCommand extends AbstractCommand {
         final Task task = bootstrap.getTaskByList(taskList);
         final List<Group> groupList = bootstrap.getGroupService().getGroupList(bootstrap.getSession());
         final Group group = bootstrap.getGroupByList(groupList);
-        Result result = bootstrap.getTaskService().taskToGroupTask(task.getId(), group.getId(), bootstrap.getSession());
+        Result result = bootstrap.getTaskService().taskToGroupTask(task, group, bootstrap.getSession());
         System.out.println(result.getResult());
         System.out.println("Link complete");
     }

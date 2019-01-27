@@ -4,6 +4,7 @@ import com.koror.app.api.repository.IAssigneeGroupRepository;
 import com.koror.app.entity.AssigneeGroup;
 
 import javax.persistence.EntityManager;
+import javax.persistence.Query;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import java.util.List;
@@ -11,35 +12,35 @@ import java.util.List;
 public class AssigneeGroupRepository extends AbstractRepository<AssigneeGroup> implements IAssigneeGroupRepository {
 
     @Override
-    public void delete(String id) {
-        hibernateSession.getTransaction().begin();
-        AssigneeGroup entity = hibernateSession.find(AssigneeGroup.class, id);
-        hibernateSession.remove(entity);
-        hibernateSession.getTransaction().commit();
+    public void delete(String id, EntityManager entityManager) {
+        AssigneeGroup entity = entityManager.find(AssigneeGroup.class, id);
+        entityManager.remove(entity);
     }
 
     @Override
-    public AssigneeGroup getById(String id) {
-        hibernateSession.getTransaction().begin();
-        AssigneeGroup entity = hibernateSession.find(AssigneeGroup.class, id);
-        hibernateSession.getTransaction().commit();
-        return entity;
+    public void deleteAssigneeByParam(String userId, String groupId, EntityManager entityManager) {
+        Query deleteItemsQuery = entityManager.createQuery("DELETE AssigneeGroup ag WHERE ag.user.id =:inpUserId and at.group.id =:inpGroupId");
+        deleteItemsQuery.setParameter("inpUserId", userId);
+        deleteItemsQuery.setParameter("inpGroupId", groupId);
+        deleteItemsQuery.executeUpdate();
     }
 
     @Override
-    public List<AssigneeGroup> getList() {
-        CriteriaBuilder builder = hibernateSession.getCriteriaBuilder();
+    public AssigneeGroup getById(String id, EntityManager entityManager) {
+        return entityManager.find(AssigneeGroup.class, id);
+    }
+
+    @Override
+    public List<AssigneeGroup> getList(EntityManager entityManager) {
+        CriteriaBuilder builder = entityManager.getCriteriaBuilder();
         CriteriaQuery<AssigneeGroup> criteria = builder.createQuery(AssigneeGroup.class);
         criteria.from(AssigneeGroup.class);
-        return hibernateSession.createQuery(criteria).getResultList();
+        return entityManager.createQuery(criteria).getResultList();
     }
 
     @Override
-    public AssigneeGroup getAssigneeByUserId(String userId) {
-        hibernateSession.getTransaction().begin();
-        AssigneeGroup entity = hibernateSession.find(AssigneeGroup.class, userId);
-        hibernateSession.getTransaction().commit();
-        return entity;
+    public AssigneeGroup getAssigneeByUserId(String userId, EntityManager entityManager) {
+        return entityManager.find(AssigneeGroup.class, userId);
     }
 
 }

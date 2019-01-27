@@ -1,8 +1,10 @@
 package com.koror.app.endpoint;
 
-import com.koror.app.controller.Bootstrap;
-import com.koror.app.entity.*;
+import com.koror.app.entity.Group;
+import com.koror.app.entity.Session;
 import com.koror.app.error.SessionNotValidateException;
+import com.koror.app.service.GroupService;
+import com.koror.app.service.SessionService;
 
 import javax.jws.WebMethod;
 import javax.jws.WebParam;
@@ -12,21 +14,22 @@ import java.util.List;
 @WebService
 public class GroupEndpoint {
 
-    private Bootstrap bootstrap;
+    private GroupService groupService;
 
-    public GroupEndpoint(Bootstrap bootstrap) {
-        this.bootstrap = bootstrap;
+    private SessionService sessionService;
+
+    public GroupEndpoint(GroupService groupService, SessionService sessionService) {
+        this.groupService = groupService;
+        this.sessionService = sessionService;
     }
 
     @WebMethod
     public Result addGroup(
             @WebParam(name = "name", partName = "name") Group group,
             @WebParam(name = "session", partName = "session") Session session) {
-        final boolean validateSession = bootstrap.getSessionService().validate(session);
+        final boolean validateSession = sessionService.validate(session);
         if (!validateSession) throw new SessionNotValidateException();
-        bootstrap.getGroupService().add(group);
-        final AssigneeGroup assigneeGroup = new AssigneeGroup(session.getUser(), group);
-        bootstrap.getAssigneeGroupService().add(assigneeGroup);
+        groupService.add(group);
         final Result result = new Result();
         result.success();
         return result;
@@ -35,20 +38,9 @@ public class GroupEndpoint {
     public Result deleteGroup(
             @WebParam(name = "group", partName = "group") Group group,
             @WebParam(name = "session", partName = "session") Session session) {
-        final boolean validateSession = bootstrap.getSessionService().validate(session);
+        final boolean validateSession = sessionService.validate(session);
         if (!validateSession) throw new SessionNotValidateException();
-        final User user = bootstrap.getUserService().getById(session.getUser().getId());
-        //delete project and assignee
-        bootstrap.getAssigneeGroupService().deleteAssigneeByParam(user.getId(), group.getId());
-        bootstrap.getGroupService().delete(group.getId());
-        //delete all task and assignee in project
-        for (AssigneeTask assigneeTask : bootstrap.getAssigneeTaskService().getList()) {
-            Task taskTemp = bootstrap.getTaskService().getById(assigneeTask.getTask().getId());
-            if (group.equals(taskTemp.getGroup())) {
-                bootstrap.getTaskService().delete(taskTemp.getId());
-                bootstrap.getAssigneeTaskService().delete(assigneeTask.getId());
-            }
-        }
+        groupService.delete(group, session.getUser());
         final Result result = new Result();
         result.success();
         return result;
@@ -57,9 +49,9 @@ public class GroupEndpoint {
     public Result updateGroup(
             @WebParam(name = "group", partName = "group") Group group,
             @WebParam(name = "session", partName = "session") Session session) {
-        final boolean validateSession = bootstrap.getSessionService().validate(session);
+        final boolean validateSession = sessionService.validate(session);
         if (!validateSession) throw new SessionNotValidateException();
-        bootstrap.getGroupService().update(group);
+        groupService.update(group);
         final Result result = new Result();
         result.success();
         return result;
@@ -67,11 +59,9 @@ public class GroupEndpoint {
 
     @WebMethod
     public List<Group> getGroupList(@WebParam(name = "session", partName = "session") Session session) {
-        final boolean validateSession = bootstrap.getSessionService().validate(session);
+        final boolean validateSession = sessionService.validate(session);
         if (!validateSession) throw new SessionNotValidateException();
-        String userId = session.getUser().getId();
-        final User user = bootstrap.getUserService().getById(userId);
-        return bootstrap.getGroupService().getListGroupByUser(user);
+        return groupService.getListGroupByUserId(session.getUser());
     }
 
 }

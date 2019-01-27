@@ -20,11 +20,8 @@ public class Group extends AbstractEntity implements Serializable {
     @Column(nullable = false)
     private String name;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
     private User user;
-
-    @OneToMany(mappedBy = "group", fetch = FetchType.LAZY)
-    private List<Task> taskList;
 
     public Group(){
 

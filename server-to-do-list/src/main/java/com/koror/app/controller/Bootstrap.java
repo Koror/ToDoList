@@ -3,8 +3,6 @@ package com.koror.app.controller;
 import com.koror.app.api.controller.IBootstrap;
 import com.koror.app.api.repository.*;
 import com.koror.app.command.AbstractCommand;
-import com.koror.app.repository.*;
-import com.koror.app.util.DatabaseConnection;
 import com.koror.app.endpoint.GroupEndpoint;
 import com.koror.app.endpoint.SessionEndpoint;
 import com.koror.app.endpoint.TaskEndpoint;
@@ -13,13 +11,16 @@ import com.koror.app.entity.User;
 import com.koror.app.enumerated.Access;
 import com.koror.app.error.MissingCommandException;
 import com.koror.app.error.WrongInputException;
+import com.koror.app.repository.*;
 import com.koror.app.service.*;
+import com.koror.app.util.AppConfig;
+import com.koror.app.util.DatabaseConnection;
 import com.koror.app.util.HibernateFactory;
 import lombok.Getter;
 import org.reflections.Reflections;
 
-import javax.persistence.EntityManager;
 import javax.xml.ws.Endpoint;
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Scanner;
@@ -40,29 +41,41 @@ public final class Bootstrap implements IBootstrap {
     private final IAssigneeTaskRepository assigneeTaskRepository = new AssigneeTaskRepository();
 
     @Getter
-    private final AssigneeTaskService assigneeTaskService = new AssigneeTaskService(assigneeTaskRepository);
+    private final AssigneeTaskService assigneeTaskService;
 
     @Getter
-    private final AssigneeGroupService assigneeGroupService = new AssigneeGroupService(assigneeGroupRepository);
+    private final AssigneeGroupService assigneeGroupService;
 
     @Getter
-    private final GroupService groupService = new GroupService(groupRepository, assigneeGroupService);
+    private final GroupService groupService;
 
     @Getter
-    private final TaskService taskService = new TaskService(taskRepository, userRepository, assigneeTaskService);
+    private final TaskService taskService ;
 
     @Getter
-    private final UserService userService = new UserService(userRepository);
+    private final UserService userService;
 
     @Getter
-    private final SessionService sessionService = new SessionService(sessionRepository);
+    private final SessionService sessionService;
 
     private final Scanner scanner = new Scanner(System.in);
 
     @Getter
     private final Map<String, AbstractCommand> serverCommands = new HashMap<>();
 
-    final private EntityManager hibernateSession = HibernateFactory.sessionFactory.createEntityManager();
+    private HibernateFactory hibernateFactory;
+
+    public Bootstrap() throws IOException {
+        AppConfig.init();
+        DatabaseConnection.setConnection();
+        hibernateFactory = new HibernateFactory();
+        assigneeTaskService = new AssigneeTaskService(assigneeTaskRepository, hibernateFactory.getEntityManagerFactory());
+        assigneeGroupService = new AssigneeGroupService(assigneeGroupRepository, hibernateFactory.getEntityManagerFactory());
+        groupService = new GroupService(groupRepository, assigneeGroupRepository, taskRepository,assigneeTaskRepository, hibernateFactory.getEntityManagerFactory());
+        taskService = new TaskService(taskRepository, assigneeTaskRepository, hibernateFactory.getEntityManagerFactory());
+        userService = new UserService(userRepository, assigneeTaskRepository, hibernateFactory.getEntityManagerFactory());
+        sessionService = new SessionService(sessionRepository, hibernateFactory.getEntityManagerFactory());
+    }
 
     private void registerCommand(Map<String, AbstractCommand> commandMap, final AbstractCommand command) {
         commandMap.put(command.command(), command);
@@ -83,7 +96,7 @@ public final class Bootstrap implements IBootstrap {
         }
     }
 
-    private boolean commandNotAssignable(final Class c) throws ReflectiveOperationException {
+    private boolean commandNotAssignable(final Class c) {
         if (!AbstractCommand.class.isAssignableFrom(c)) {
             System.out.println("Class is not command: " + c.getName());
             return true;
@@ -115,17 +128,17 @@ public final class Bootstrap implements IBootstrap {
     }
 
     public void startServer() throws ReflectiveOperationException {
-        Endpoint.publish("http://localhost:8080/TaskEndpoint?WSDL", new TaskEndpoint(this));
-        Endpoint.publish("http://localhost:8080/UserEndpoint?WSDL", new UserEndpoint(this));
-        Endpoint.publish("http://localhost:8080/GroupEndpoint?WSDL", new GroupEndpoint(this));
-        Endpoint.publish("http://localhost:8080/SessionEndpoint?WSDL", new SessionEndpoint(this));
+        Endpoint.publish("http://localhost:8080/TaskEndpoint?WSDL", new TaskEndpoint(getTaskService(), getSessionService()));
+        Endpoint.publish("http://localhost:8080/UserEndpoint?WSDL", new UserEndpoint(getUserService(), getSessionService()));
+        Endpoint.publish("http://localhost:8080/GroupEndpoint?WSDL", new GroupEndpoint(getGroupService(), getSessionService()));
+        Endpoint.publish("http://localhost:8080/SessionEndpoint?WSDL", new SessionEndpoint(getSessionService()));
         initCommand(userCommands());
         String action = "";
         System.out.println("Action: Help, Exit");
         do {
             action = startCommand(serverCommands);
         } while (!action.equals("Exit"));
-        HibernateFactory.sessionFactory.close();
+        hibernateFactory.close();
         DatabaseConnection.closeConnection();
     }
 

@@ -1,109 +1,115 @@
 package com.koror.app.service;
 
+import com.koror.app.api.repository.IAssigneeTaskRepository;
 import com.koror.app.api.repository.ITaskRepository;
 import com.koror.app.api.repository.IUserRepository;
 import com.koror.app.api.service.ITaskService;
+import com.koror.app.entity.AssigneeTask;
 import com.koror.app.entity.Group;
 import com.koror.app.entity.Task;
 import com.koror.app.entity.User;
-import com.koror.app.enumerated.Access;
 import com.koror.app.error.WrongInputException;
+import com.koror.app.repository.AssigneeTaskRepository;
+import com.koror.app.repository.TaskRepository;
 
+import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
+import java.util.ArrayList;
 import java.util.List;
 
-public class TaskService extends AbstractService implements ITaskService {
+public class TaskService extends AbstractService<ITaskRepository, Task> implements ITaskService {
 
-    private final ITaskRepository taskRepository;
 
-    private final IUserRepository userRepository;
+    private IAssigneeTaskRepository assigneeTaskRepository;
 
-    private final AssigneeTaskService assigneeTaskService;
-
-    public TaskService(ITaskRepository taskRepository, IUserRepository userRepository, AssigneeTaskService assigneeTaskService) {
-        this.taskRepository = taskRepository;
-        this.assigneeTaskService = assigneeTaskService;
-        this.userRepository = userRepository;
+    public TaskService(ITaskRepository repository, IAssigneeTaskRepository assigneeTaskRepository, EntityManagerFactory entityManagerFactory) {
+        this.repository = repository;
+        this.assigneeTaskRepository = assigneeTaskRepository;
+        this.entityManagerFactory = entityManagerFactory;
     }
 
     @Override
-    public void add(Task entity) {
-        if (entity == null) throw new WrongInputException("Wrong Input");
-        hibernateSession.getTransaction().begin();
-        taskRepository.add(entity);
-        hibernateSession.getTransaction().commit();
+    public void add(Task entity, User user) {
+        if(entity==null) throw new WrongInputException("Wrong Input");
+        EntityManager entityManager = entityManagerFactory.createEntityManager();
+        entityManager.getTransaction().begin();
+        repository.add(entity, entityManager);
+        final AssigneeTask assigneeTask = new AssigneeTask(user, entity);
+        assigneeTaskRepository.add(assigneeTask, entityManager);
+        entityManager.getTransaction().commit();
+        entityManager.close();
     }
 
     @Override
-    public void delete(String id) {
-        if (id == null || id.isEmpty()) throw new WrongInputException("Wrong Input");
-        hibernateSession.getTransaction().begin();
-        taskRepository.delete(id);
-        hibernateSession.getTransaction().commit();
+    public void delete(String taskId, String userId) {
+        if (taskId == null || taskId.isEmpty()) throw new WrongInputException("Wrong Input");
+        EntityManager entityManager = entityManagerFactory.createEntityManager();
+        entityManager.getTransaction().begin();
+        assigneeTaskRepository.deleteAssigneeByParam(userId, taskId, entityManager);
+        repository.delete(taskId, entityManager);
+        entityManager.getTransaction().commit();
+        entityManager.close();
     }
 
     @Override
     public Task getById(String id) {
         if (id == null || id.isEmpty()) throw new WrongInputException("Wrong Input");
-        hibernateSession.getTransaction().begin();
-        Task task = taskRepository.getById(id);
-        hibernateSession.getTransaction().commit();
+        EntityManager entityManager = entityManagerFactory.createEntityManager();
+        entityManager.getTransaction().begin();
+        Task task = repository.getById(id, entityManager);
+        entityManager.close();
         return task;
     }
 
     @Override
     public List<Task> getList() {
-        hibernateSession.getTransaction().begin();
-        List<Task> taskList = taskRepository.getList();
-        hibernateSession.getTransaction().commit();
+        EntityManager entityManager = entityManagerFactory.createEntityManager();
+        entityManager.getTransaction().begin();
+        List<Task> taskList = repository.getList(entityManager);
+        entityManager.close();
         return taskList;
-    }
-
-    @Override
-    public void update(final Task entity) {
-        if (entity == null) throw new WrongInputException("Wrong input");
-        hibernateSession.getTransaction().begin();
-        taskRepository.update(entity);
-        hibernateSession.getTransaction().commit();
     }
 
     @Override
     public void completeTask(final Task task) throws WrongInputException {
         if (task == null) throw new WrongInputException("Wrong input");
-        hibernateSession.getTransaction().begin();
+        EntityManager entityManager = entityManagerFactory.createEntityManager();
+        entityManager.getTransaction().begin();
         task.setComplete(true);
-        taskRepository.update(task);
-        hibernateSession.getTransaction().commit();
+        repository.update(task, entityManager);
+        entityManager.getTransaction().commit();
+        entityManager.close();
     }
 
     @Override
     public void clearTask(List<Task> taskList) {
-        hibernateSession.getTransaction().begin();
+        EntityManager entityManager = entityManagerFactory.createEntityManager();
+        entityManager.getTransaction().begin();
         for (Task task : taskList) {
             if (task.isComplete())
-                taskRepository.delete(task.getId());
+                repository.delete(task.getId(), entityManager);
         }
-        hibernateSession.getTransaction().commit();
+        entityManager.getTransaction().commit();
+        entityManager.close();
     }
 
     @Override
     public void setGroup(final Task task, Group group) throws WrongInputException {
         if (task == null) throw new WrongInputException("Wrong input");
-        hibernateSession.getTransaction().begin();
+        EntityManager entityManager = entityManagerFactory.createEntityManager();
+        entityManager.getTransaction().begin();
         task.setGroup(group);
-        taskRepository.update(task);
-        hibernateSession.getTransaction().commit();
-    }
-
-    @Override
-    public List<Task> getListTaskByUser(User user) {
-        return null;
+        repository.update(task, entityManager);
+        entityManager.getTransaction().commit();
+        entityManager.close();
     }
 
     @Override
     public List<Task> getListTaskByUserId(String userId) {
-        hibernateSession.getTransaction().begin();
-        List<Task> taskList = taskRepository.getListTaskByUserId(userId);
-        hibernateSession.getTransaction().commit();
+        EntityManager entityManager = entityManagerFactory.createEntityManager();
+        entityManager.getTransaction().begin();
+        List<Task> taskList = repository.getListTaskByUserId(userId, entityManager);
+        entityManager.close();
         return taskList;
     }
 

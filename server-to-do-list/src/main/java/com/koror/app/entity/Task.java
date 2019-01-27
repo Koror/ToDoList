@@ -28,10 +28,10 @@ public class Task extends AbstractEntity implements Serializable {
     @Basic
     private String creator;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
     private Group group;
 
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne
     private User user;
 
     public Task() {
