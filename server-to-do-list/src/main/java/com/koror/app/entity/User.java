@@ -5,6 +5,7 @@ import com.koror.app.util.Hash;
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.annotations.GenericGenerator;
+import org.jetbrains.annotations.NotNull;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -17,10 +18,12 @@ import java.util.List;
 @Table(name = "tm_user")
 public class User extends AbstractEntity implements Serializable {
 
+    @NotNull
     @Basic
     @Column(nullable = false)
     private String login;
 
+    @NotNull
     @Basic
     @Column(nullable = false)
     private String password;
@@ -38,7 +41,7 @@ public class User extends AbstractEntity implements Serializable {
 
     }
 
-    public User(String login, String password) {
+    public User(@NotNull String login,@NotNull String password) {
         this.login = login;
         this.password = Hash.createHashString(password);
     }

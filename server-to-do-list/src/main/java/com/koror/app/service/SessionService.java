@@ -4,7 +4,7 @@ import com.koror.app.api.repository.ISessionRepository;
 import com.koror.app.api.service.ISessionService;
 import com.koror.app.entity.Session;
 import com.koror.app.error.WrongInputException;
-import com.koror.app.repository.SessionRepository;
+import org.jetbrains.annotations.Nullable;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
@@ -18,7 +18,7 @@ public class SessionService extends AbstractService<ISessionRepository, Session>
     }
 
     @Override
-    public void delete(String id) {
+    public void delete(@Nullable String id) {
         if (id == null || id.isEmpty()) throw new WrongInputException("Wrong Input");
         EntityManager entityManager = entityManagerFactory.createEntityManager();
         entityManager.getTransaction().begin();
@@ -28,7 +28,8 @@ public class SessionService extends AbstractService<ISessionRepository, Session>
     }
 
     @Override
-    public void deleteByUserSession(String userId){
+    public void deleteByUserSession(@Nullable String userId){
+        if (userId == null) throw new WrongInputException("Wrong Input");
         EntityManager entityManager = entityManagerFactory.createEntityManager();
         entityManager.getTransaction().begin();
         for (Session sessionTemp : repository.getList(entityManager))
@@ -39,7 +40,7 @@ public class SessionService extends AbstractService<ISessionRepository, Session>
     }
 
     @Override
-    public Session getById(String id) {
+    public Session getById(@Nullable String id) {
         if (id == null || id.isEmpty()) throw new WrongInputException("Wrong Input");
         EntityManager entityManager = entityManagerFactory.createEntityManager();
         entityManager.getTransaction().begin();
@@ -58,7 +59,8 @@ public class SessionService extends AbstractService<ISessionRepository, Session>
     }
 
     @Override
-    public boolean validate(Session session) {
+    public boolean validate(@Nullable Session session) {
+        if (session == null) throw new WrongInputException("Wrong Input");
         for (Session sessionTemp : getList()) {
             if (session.equals(sessionTemp))
                 return true;

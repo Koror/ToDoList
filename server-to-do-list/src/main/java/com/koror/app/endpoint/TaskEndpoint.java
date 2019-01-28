@@ -28,7 +28,7 @@ public class TaskEndpoint {
     public Result addTask(@WebParam( name = "name", partName = "name")Task task, @WebParam( name = "session", partName = "session") Session session){
         final boolean validateSession = sessionService.validate(session);
         if(!validateSession) throw new SessionNotValidateException();
-        taskService.add(task);
+        taskService.add(task,session.getUser());
         final Result result = new Result();
         result.success();
         return result;

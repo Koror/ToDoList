@@ -3,11 +3,10 @@ package com.koror.app.entity;
 import com.koror.app.enumerated.Priority;
 import lombok.Getter;
 import lombok.Setter;
+import org.jetbrains.annotations.NotNull;
 
 import javax.persistence.*;
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
 
 @Setter
 @Getter
@@ -18,6 +17,7 @@ public class Task extends AbstractEntity implements Serializable {
     @Basic
     private Priority priority;
 
+    @NotNull
     @Basic
     @Column(nullable = false)
     private String name;
@@ -25,7 +25,9 @@ public class Task extends AbstractEntity implements Serializable {
     @Basic
     private boolean complete;
 
+    @NotNull
     @Basic
+    @Column(nullable = false)
     private String creator;
 
     @ManyToOne
@@ -38,11 +40,11 @@ public class Task extends AbstractEntity implements Serializable {
 
     }
 
-    public Task(final String name) {
+    public Task(@NotNull final String name) {
         this.name = name;
     }
 
-    public Task(final String name, final Priority priority, final Group group) {
+    public Task(@NotNull final String name, final Priority priority, final Group group) {
         setName(name);
         this.priority = priority;
         this.group = group;

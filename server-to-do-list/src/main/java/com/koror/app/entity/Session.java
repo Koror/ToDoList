@@ -3,6 +3,7 @@ package com.koror.app.entity;
 import com.koror.app.util.Hash;
 import lombok.Getter;
 import lombok.Setter;
+import org.jetbrains.annotations.NotNull;
 
 import javax.persistence.*;
 import java.util.Objects;
@@ -13,9 +14,12 @@ import java.util.Objects;
 @Table(name = "tm_session")
 public class Session extends AbstractEntity {
 
+    @NotNull
     @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(nullable = false)
     private User user;
 
+    @NotNull
     @Basic
     @Column(nullable = false)
     private String signature;
@@ -27,7 +31,7 @@ public class Session extends AbstractEntity {
         hashSignature();
     }
 
-    public Session(String id, User user, String signature, String ip) {
+    public Session(@NotNull String id,@NotNull User user,@NotNull String signature, String ip) {
         this.id = id;
         this.user = user;
         this.signature = signature;

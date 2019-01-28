@@ -1,11 +1,9 @@
 package com.koror.app.service;
 
-import com.koror.app.api.repository.IAssigneeGroupRepository;
 import com.koror.app.api.repository.IRepository;
 import com.koror.app.entity.AbstractEntity;
 import com.koror.app.error.WrongInputException;
-import com.koror.app.repository.AbstractRepository;
-import com.koror.app.util.HibernateFactory;
+import org.jetbrains.annotations.Nullable;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
@@ -20,7 +18,7 @@ public abstract class AbstractService<R extends IRepository,E extends AbstractEn
 
     }
 
-    public void add(E entity) {
+    public void add(@Nullable final E entity) {
         if(entity==null) throw new WrongInputException("Wrong Input");
         EntityManager entityManager = entityManagerFactory.createEntityManager();
         entityManager.getTransaction().begin();
@@ -29,7 +27,7 @@ public abstract class AbstractService<R extends IRepository,E extends AbstractEn
         entityManager.close();
     }
 
-    public void update(final E entity) {
+    public void update(@Nullable final E entity) {
         if (entity == null) throw new WrongInputException("Wrong input");
         EntityManager entityManager = entityManagerFactory.createEntityManager();
         entityManager.getTransaction().begin();

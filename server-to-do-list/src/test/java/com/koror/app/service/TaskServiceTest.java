@@ -3,8 +3,6 @@ package com.koror.app.service;
 import com.koror.app.controller.Bootstrap;
 import com.koror.app.entity.Task;
 import com.koror.app.entity.User;
-import com.koror.app.util.AppConfig;
-import com.koror.app.util.DatabaseConnection;
 import org.junit.Test;
 
 import java.io.IOException;

@@ -1,8 +1,5 @@
 package com.koror.app.repository;
 
-import com.koror.app.entity.Task;
-import com.koror.app.util.DatabaseConnection;
-import com.koror.app.util.HibernateFactory;
 import org.junit.Test;
 
 public class TaskRepositoryTest {

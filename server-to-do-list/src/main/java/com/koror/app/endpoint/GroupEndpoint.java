@@ -29,7 +29,7 @@ public class GroupEndpoint {
             @WebParam(name = "session", partName = "session") Session session) {
         final boolean validateSession = sessionService.validate(session);
         if (!validateSession) throw new SessionNotValidateException();
-        groupService.add(group);
+        groupService.add(group, session.getUser());
         final Result result = new Result();
         result.success();
         return result;

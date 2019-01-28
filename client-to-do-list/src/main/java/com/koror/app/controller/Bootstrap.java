@@ -95,7 +95,7 @@ public class Bootstrap {
         return "";
     }
 
-    public void start() throws ReflectiveOperationException {
+    public void clientStart() throws ReflectiveOperationException {
         initUserCommand(userCommands());
         initLoginCommand(loginCommands);
         String action = "";

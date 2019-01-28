@@ -11,6 +11,8 @@ import com.koror.app.entity.User;
 import com.koror.app.error.WrongInputException;
 import com.koror.app.repository.AssigneeTaskRepository;
 import com.koror.app.repository.TaskRepository;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
@@ -29,19 +31,19 @@ public class TaskService extends AbstractService<ITaskRepository, Task> implemen
     }
 
     @Override
-    public void add(Task entity, User user) {
-        if(entity==null) throw new WrongInputException("Wrong Input");
+    public void add(@Nullable Task task, @Nullable User user) {
+        if(task==null) throw new WrongInputException("Wrong Input");
         EntityManager entityManager = entityManagerFactory.createEntityManager();
         entityManager.getTransaction().begin();
-        repository.add(entity, entityManager);
-        final AssigneeTask assigneeTask = new AssigneeTask(user, entity);
+        repository.add(task, entityManager);
+        final AssigneeTask assigneeTask = new AssigneeTask(user, task);
         assigneeTaskRepository.add(assigneeTask, entityManager);
         entityManager.getTransaction().commit();
         entityManager.close();
     }
 
     @Override
-    public void delete(String taskId, String userId) {
+    public void delete(@Nullable String taskId,@Nullable String userId) {
         if (taskId == null || taskId.isEmpty()) throw new WrongInputException("Wrong Input");
         EntityManager entityManager = entityManagerFactory.createEntityManager();
         entityManager.getTransaction().begin();
@@ -52,7 +54,7 @@ public class TaskService extends AbstractService<ITaskRepository, Task> implemen
     }
 
     @Override
-    public Task getById(String id) {
+    public Task getById(@Nullable String id) {
         if (id == null || id.isEmpty()) throw new WrongInputException("Wrong Input");
         EntityManager entityManager = entityManagerFactory.createEntityManager();
         entityManager.getTransaction().begin();
@@ -71,7 +73,7 @@ public class TaskService extends AbstractService<ITaskRepository, Task> implemen
     }
 
     @Override
-    public void completeTask(final Task task) throws WrongInputException {
+    public void completeTask(@Nullable final Task task) throws WrongInputException {
         if (task == null) throw new WrongInputException("Wrong input");
         EntityManager entityManager = entityManagerFactory.createEntityManager();
         entityManager.getTransaction().begin();
@@ -82,7 +84,8 @@ public class TaskService extends AbstractService<ITaskRepository, Task> implemen
     }
 
     @Override
-    public void clearTask(List<Task> taskList) {
+    public void clearTask(@Nullable List<Task> taskList) {
+        if (taskList == null) throw new WrongInputException("Wrong input");
         EntityManager entityManager = entityManagerFactory.createEntityManager();
         entityManager.getTransaction().begin();
         for (Task task : taskList) {
@@ -94,7 +97,7 @@ public class TaskService extends AbstractService<ITaskRepository, Task> implemen
     }
 
     @Override
-    public void setGroup(final Task task, Group group) throws WrongInputException {
+    public void setGroup(@Nullable final Task task,@Nullable final Group group) throws WrongInputException {
         if (task == null) throw new WrongInputException("Wrong input");
         EntityManager entityManager = entityManagerFactory.createEntityManager();
         entityManager.getTransaction().begin();
@@ -105,7 +108,7 @@ public class TaskService extends AbstractService<ITaskRepository, Task> implemen
     }
 
     @Override
-    public List<Task> getListTaskByUserId(String userId) {
+    public List<Task> getListTaskByUserId(@Nullable String userId) {
         EntityManager entityManager = entityManagerFactory.createEntityManager();
         entityManager.getTransaction().begin();
         List<Task> taskList = repository.getListTaskByUserId(userId, entityManager);

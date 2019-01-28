@@ -1,11 +1,6 @@
 package com.koror.app.repository;
 
-import com.koror.app.entity.Task;
-import com.koror.app.util.DatabaseConnection;
-import com.koror.app.util.HibernateFactory;
 import org.junit.Test;
-
-import static org.junit.Assert.*;
 
 public class UserRepositoryTest {
 

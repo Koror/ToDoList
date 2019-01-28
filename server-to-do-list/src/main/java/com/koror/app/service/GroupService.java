@@ -8,14 +8,10 @@ import com.koror.app.api.service.IGroupService;
 import com.koror.app.entity.*;
 import com.koror.app.enumerated.Access;
 import com.koror.app.error.WrongInputException;
-import com.koror.app.repository.AssigneeGroupRepository;
-import com.koror.app.repository.AssigneeTaskRepository;
-import com.koror.app.repository.GroupRepository;
-import com.koror.app.repository.TaskRepository;
+import org.jetbrains.annotations.Nullable;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
-import java.util.ArrayList;
 import java.util.List;
 
 public class GroupService extends AbstractService<IGroupRepository, Group> implements IGroupService {
@@ -35,7 +31,7 @@ public class GroupService extends AbstractService<IGroupRepository, Group> imple
     }
 
     @Override
-    public void add(Group entity, User user) {
+    public void add(@Nullable Group entity,@Nullable User user) {
         if (entity == null) throw new WrongInputException("Wrong Input");
         EntityManager entityManager = entityManagerFactory.createEntityManager();
         entityManager.getTransaction().begin();
@@ -47,8 +43,8 @@ public class GroupService extends AbstractService<IGroupRepository, Group> imple
     }
 
     @Override
-    public void delete(Group group, User user) {
-        if (group == null) throw new WrongInputException("Wrong Input");
+    public void delete(@Nullable Group group,@Nullable User user) {
+        if (group == null || user == null) throw new WrongInputException("Wrong Input");
         EntityManager entityManager = entityManagerFactory.createEntityManager();
         entityManager.getTransaction().begin();
         //delete all task and assignee in project
@@ -67,7 +63,7 @@ public class GroupService extends AbstractService<IGroupRepository, Group> imple
     }
 
     @Override
-    public Group getById(String id) {
+    public Group getById(@Nullable String id) {
         if (id == null || id.isEmpty()) throw new WrongInputException("Wrong Input");
         EntityManager entityManager = entityManagerFactory.createEntityManager();
         entityManager.getTransaction().begin();
@@ -86,7 +82,8 @@ public class GroupService extends AbstractService<IGroupRepository, Group> imple
     }
 
     @Override
-    public List<Group> getListGroupByUserId(User user) {
+    public List<Group> getListGroupByUserId(@Nullable User user) {
+        if (user == null) throw new WrongInputException("Wrong Input");
         if (user.getAccess() == Access.ADMIN_ACCESS) return getList();
         EntityManager entityManager = entityManagerFactory.createEntityManager();
         entityManager.getTransaction().begin();

@@ -9,6 +9,8 @@ import com.koror.app.entity.User;
 import com.koror.app.error.UserNotExistsException;
 import com.koror.app.error.WrongInputException;
 import com.koror.app.util.Hash;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
@@ -25,7 +27,7 @@ public class UserService extends AbstractService<IUserRepository, User> implemen
     }
 
     @Override
-    public void delete(String id) {
+    public void delete(@Nullable String id) {
         if(id==null || id.isEmpty()) throw new WrongInputException("Wrong Input");
         EntityManager entityManager = entityManagerFactory.createEntityManager();
         entityManager.getTransaction().begin();
@@ -33,7 +35,7 @@ public class UserService extends AbstractService<IUserRepository, User> implemen
     }
 
     @Override
-    public User getById(String id) {
+    public User getById(@Nullable String id) {
         if(id==null || id.isEmpty()) return null;
         EntityManager entityManager = entityManagerFactory.createEntityManager();
         entityManager.getTransaction().begin();
@@ -54,7 +56,7 @@ public class UserService extends AbstractService<IUserRepository, User> implemen
     }
 
     @Override
-    public User getByLogin(String login) {
+    public User getByLogin(@Nullable String login) {
         if(login == null || login.isEmpty()) throw new WrongInputException("Wrong input");
         EntityManager entityManager = entityManagerFactory.createEntityManager();
         entityManager.getTransaction().begin();
@@ -65,7 +67,9 @@ public class UserService extends AbstractService<IUserRepository, User> implemen
     }
 
     @Override
-    public User login(String login, String password){
+    public User login(@Nullable String login, @Nullable String password){
+        if(login == null || login.isEmpty()) throw new WrongInputException("Wrong input");
+        if(password == null || password.isEmpty()) throw new WrongInputException("Wrong input");
         EntityManager entityManager = entityManagerFactory.createEntityManager();
         entityManager.getTransaction().begin();
         final String hashPassword = Hash.createHashString(password);
@@ -80,7 +84,8 @@ public class UserService extends AbstractService<IUserRepository, User> implemen
         return user;
     }
 
-    public void linkToTask(User user, Task task){
+    public void linkToTask(@Nullable User user, @Nullable Task task){
+        if(user == null || task == null) throw new WrongInputException("Wrong input");
         EntityManager entityManager = entityManagerFactory.createEntityManager();
         entityManager.getTransaction().begin();
         task.setUser(user);

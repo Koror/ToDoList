@@ -29,9 +29,9 @@ public class AppConfig {
         URL = property.getProperty("db.url");
         USER = property.getProperty("db.user");
         PASSWORD = property.getProperty("db.password");
-        HIBERNATE_DIALECT = "org.hibernate.dialect.MySQL5Dialect";
-        HBM2DDL_AUTO = "create-drop";
-        HIBERNATE_SHOW_SQL = "true";
+        HIBERNATE_DIALECT = property.getProperty("h.dialect");
+        HBM2DDL_AUTO = property.getProperty("h.auto");
+        HIBERNATE_SHOW_SQL = property.getProperty("h.show_sql");
     }
 
 }

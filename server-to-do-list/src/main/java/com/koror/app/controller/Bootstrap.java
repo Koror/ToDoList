@@ -14,7 +14,6 @@ import com.koror.app.error.WrongInputException;
 import com.koror.app.repository.*;
 import com.koror.app.service.*;
 import com.koror.app.util.AppConfig;
-import com.koror.app.util.DatabaseConnection;
 import com.koror.app.util.HibernateFactory;
 import lombok.Getter;
 import org.reflections.Reflections;
@@ -50,7 +49,7 @@ public final class Bootstrap implements IBootstrap {
     private final GroupService groupService;
 
     @Getter
-    private final TaskService taskService ;
+    private final TaskService taskService;
 
     @Getter
     private final UserService userService;
@@ -58,26 +57,25 @@ public final class Bootstrap implements IBootstrap {
     @Getter
     private final SessionService sessionService;
 
-    private final Scanner scanner = new Scanner(System.in);
-
     @Getter
     private final Map<String, AbstractCommand> serverCommands = new HashMap<>();
 
-    private HibernateFactory hibernateFactory;
+    private final Scanner scanner = new Scanner(System.in);
+
+    private final HibernateFactory hibernateFactory;
 
     public Bootstrap() throws IOException {
         AppConfig.init();
-        DatabaseConnection.setConnection();
         hibernateFactory = new HibernateFactory();
         assigneeTaskService = new AssigneeTaskService(assigneeTaskRepository, hibernateFactory.getEntityManagerFactory());
         assigneeGroupService = new AssigneeGroupService(assigneeGroupRepository, hibernateFactory.getEntityManagerFactory());
-        groupService = new GroupService(groupRepository, assigneeGroupRepository, taskRepository,assigneeTaskRepository, hibernateFactory.getEntityManagerFactory());
+        groupService = new GroupService(groupRepository, assigneeGroupRepository, taskRepository, assigneeTaskRepository, hibernateFactory.getEntityManagerFactory());
         taskService = new TaskService(taskRepository, assigneeTaskRepository, hibernateFactory.getEntityManagerFactory());
         userService = new UserService(userRepository, assigneeTaskRepository, hibernateFactory.getEntityManagerFactory());
         sessionService = new SessionService(sessionRepository, hibernateFactory.getEntityManagerFactory());
     }
 
-    private void registerCommand(Map<String, AbstractCommand> commandMap, final AbstractCommand command) {
+    private void registerCommand(final Map<String, AbstractCommand> commandMap, final AbstractCommand command) {
         commandMap.put(command.command(), command);
     }
 
@@ -104,7 +102,7 @@ public final class Bootstrap implements IBootstrap {
         return false;
     }
 
-    private String startCommand(Map<String, AbstractCommand> commandMap) {
+    private String startCommand(final Map<String, AbstractCommand> commandMap) {
         try {
             String action = nextLine();
             for (String str : commandMap.keySet()) {
@@ -138,8 +136,12 @@ public final class Bootstrap implements IBootstrap {
         do {
             action = startCommand(serverCommands);
         } while (!action.equals("Exit"));
+        close();
+    }
+
+    @Override
+    public void close(){
         hibernateFactory.close();
-        DatabaseConnection.closeConnection();
     }
 
     @Override

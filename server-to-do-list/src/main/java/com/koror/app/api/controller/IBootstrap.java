@@ -21,7 +21,11 @@ public interface IBootstrap {
 
     SessionService getSessionService();
 
+    void startServer();
+
     Map<String, AbstractCommand> getServerCommands();
+
+    void close();
 
     Integer nextInt();
 

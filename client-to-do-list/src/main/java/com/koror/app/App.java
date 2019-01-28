@@ -7,6 +7,6 @@ public class App
     public static void main( String[] args ) throws Exception
     {
         Bootstrap bootstrap = new Bootstrap();
-        bootstrap.start();
+        bootstrap.clientStart();
     }
 }

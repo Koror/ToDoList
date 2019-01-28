@@ -2,6 +2,7 @@ package com.koror.app.entity;
 
 import lombok.Getter;
 import lombok.Setter;
+import org.jetbrains.annotations.NotNull;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -12,17 +13,21 @@ import java.io.Serializable;
 @Table(name = "tm_assigneetask")
 public class AssigneeTask extends AbstractEntity implements Serializable {
 
+    @NotNull
     @ManyToOne
+    @JoinColumn(nullable = false)
     private User user;
 
+    @NotNull
     @ManyToOne
+    @JoinColumn(nullable = false)
     private Task task;
 
     public AssigneeTask(){
 
     }
 
-    public AssigneeTask(User user, Task task) {
+    public AssigneeTask(@NotNull User user,@NotNull Task task) {
         this.user = user;
         this.task = task;
     }

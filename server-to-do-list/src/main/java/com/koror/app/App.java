@@ -1,18 +1,15 @@
 package com.koror.app;
 
+import com.koror.app.api.controller.IBootstrap;
 import com.koror.app.controller.Bootstrap;
-import com.koror.app.error.WrongInputException;
-import com.koror.app.util.AppConfig;
-import com.koror.app.util.DatabaseConnection;
-import com.koror.app.util.HibernateFactory;
 
+import javax.enterprise.inject.se.SeContainerInitializer;
 import java.io.IOException;
 
 public class App {
 
-    public static void main(String[] args) throws ReflectiveOperationException, IOException {
-        final Bootstrap bootstrap = new Bootstrap();
-        bootstrap.startServer();
+    public static void main(String[] args) throws ReflectiveOperationException {
+        SeContainerInitializer.newInstance().addPackages(App.class).initialize().select(IBootstrap.class).get().startServer();
     }
 
 }
