@@ -5,25 +5,28 @@ import com.koror.app.entity.Group;
 import com.koror.app.entity.Task;
 import com.koror.app.entity.User;
 import com.koror.app.error.WrongInputException;
+import org.jetbrains.annotations.Nullable;
 
 import javax.persistence.EntityManager;
 import java.util.List;
 
 public interface ITaskService {
 
-    void add(Task entity, User user);
+    void add(@Nullable Task entity, @Nullable User user);
 
-    void delete(String id, String userId);
+    void delete(@Nullable String id, @Nullable String userId);
 
-    Task getById(String id);
+    void update(@Nullable final Task entity);
+
+    Task getById(@Nullable String id);
 
     List<Task> getList();
 
-    List<Task> getListTaskByUserId(String userId);
+    List<Task> getListTaskByUserId(@Nullable String userId);
 
-    void completeTask(final Task task) throws WrongInputException;
+    void completeTask(@Nullable final Task task) throws WrongInputException;
 
-    void clearTask(List<Task> taskList);
+    void clearTask(@Nullable List<Task> taskList);
 
-    void setGroup(final Task task, Group group) throws WrongInputException;
+    void setGroup(@Nullable final Task task,@Nullable  Group group) throws WrongInputException;
 }

@@ -10,74 +10,65 @@ import com.koror.app.enumerated.Access;
 import com.koror.app.error.WrongInputException;
 import org.jetbrains.annotations.Nullable;
 
-import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
+import javax.enterprise.context.ApplicationScoped;
+import javax.inject.Inject;
 import java.util.List;
 
+@ApplicationScoped
 public class GroupService extends AbstractService<IGroupRepository, Group> implements IGroupService {
 
+    @Inject
     private IAssigneeGroupRepository assigneeGroupRepository;
 
+    @Inject
     private IAssigneeTaskRepository assigneeTaskRepository;
 
+    @Inject
     private ITaskRepository taskRepository;
-
-    public GroupService(IGroupRepository repository, IAssigneeGroupRepository assigneeGroupRepository, ITaskRepository taskRepository, IAssigneeTaskRepository assigneeTaskRepository, EntityManagerFactory entityManagerFactory) {
-        this.repository = repository;
-        this.assigneeGroupRepository = assigneeGroupRepository;
-        this.taskRepository = taskRepository;
-        this.assigneeTaskRepository = assigneeTaskRepository;
-        this.entityManagerFactory = entityManagerFactory;
-    }
 
     @Override
     public void add(@Nullable Group entity,@Nullable User user) {
-        if (entity == null) throw new WrongInputException("Wrong Input");
-        EntityManager entityManager = entityManagerFactory.createEntityManager();
+        if (entity == null || user == null) throw new WrongInputException("Wrong Input");
         entityManager.getTransaction().begin();
-        repository.add(entity, entityManager);
+        repository.add(entity);
         final AssigneeGroup assigneeGroup = new AssigneeGroup(user, entity);
-        assigneeGroupRepository.add(assigneeGroup, entityManager);
+        assigneeGroupRepository.add(assigneeGroup);
         entityManager.getTransaction().commit();
-        entityManager.close();
+        entityManager.clear();
     }
 
     @Override
     public void delete(@Nullable Group group,@Nullable User user) {
         if (group == null || user == null) throw new WrongInputException("Wrong Input");
-        EntityManager entityManager = entityManagerFactory.createEntityManager();
         entityManager.getTransaction().begin();
         //delete all task and assignee in project
-        for (AssigneeTask assigneeTask : assigneeTaskRepository.getList(entityManager)) {
-            Task taskTemp = taskRepository.getById(assigneeTask.getTask().getId(), entityManager);
+        for (AssigneeTask assigneeTask : assigneeTaskRepository.getList()) {
+            Task taskTemp = taskRepository.getById(assigneeTask.getTask().getId());
             if (group.equals(taskTemp.getGroup())) {
-                assigneeTaskRepository.delete(assigneeTask.getId(), entityManager);
-                taskRepository.delete(taskTemp.getId(), entityManager);
+                assigneeTaskRepository.delete(assigneeTask.getId());
+                taskRepository.delete(taskTemp.getId());
             }
         }
         //delete project and assignee
-        assigneeGroupRepository.deleteAssigneeByParam(user.getId(), group.getId(), entityManager);
-        repository.delete(group.getId(), entityManager);
+        assigneeGroupRepository.deleteAssigneeByParam(user.getId(), group.getId());
+        repository.delete(group.getId());
         entityManager.getTransaction().commit();
-        entityManager.close();
+        entityManager.clear();
     }
 
     @Override
     public Group getById(@Nullable String id) {
         if (id == null || id.isEmpty()) throw new WrongInputException("Wrong Input");
-        EntityManager entityManager = entityManagerFactory.createEntityManager();
-        entityManager.getTransaction().begin();
-        Group group = repository.getById(id, entityManager);
-        entityManager.close();
+        Group group = repository.getById(id);
+        entityManager.clear();
         return group;
     }
 
+    @Nullable
     @Override
     public List<Group> getList() {
-        EntityManager entityManager = entityManagerFactory.createEntityManager();
-        entityManager.getTransaction().begin();
-        List<Group> list = repository.getList(entityManager);
-        entityManager.close();
+        List<Group> list = repository.getList();
+        entityManager.clear();
         return list;
     }
 
@@ -85,10 +76,8 @@ public class GroupService extends AbstractService<IGroupRepository, Group> imple
     public List<Group> getListGroupByUserId(@Nullable User user) {
         if (user == null) throw new WrongInputException("Wrong Input");
         if (user.getAccess() == Access.ADMIN_ACCESS) return getList();
-        EntityManager entityManager = entityManagerFactory.createEntityManager();
-        entityManager.getTransaction().begin();
-        List<Group> groupList = repository.getListGroupByUserId(user.getId(), entityManager);
-        entityManager.close();
+        List<Group> groupList = repository.getListGroupByUserId(user.getId());
+        entityManager.clear();
         return groupList;
     }
 

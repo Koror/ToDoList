@@ -9,23 +9,9 @@ import java.util.Map;
 
 public interface IBootstrap {
 
-    GroupService getGroupService();
-
-    TaskService getTaskService();
-
-    UserService getUserService();
-
-    AssigneeGroupService getAssigneeGroupService();
-
-    AssigneeTaskService getAssigneeTaskService();
-
-    SessionService getSessionService();
-
-    void startServer();
+    void startServer() throws ReflectiveOperationException;
 
     Map<String, AbstractCommand> getServerCommands();
-
-    void close();
 
     Integer nextInt();
 

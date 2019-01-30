@@ -8,12 +8,12 @@ import java.util.List;
 
 public interface IGroupRepository extends IRepository<Group>{
 
-    void delete(String id, EntityManager entityManager);
+    void delete(String id);
 
-    Group getById(String id, EntityManager entityManager);
+    Group getById(String id);
 
-    List<Group> getList(EntityManager entityManager);
+    List<Group> getList();
 
-    List<Group> getListGroupByUserId(final String userId, EntityManager entityManager);
+    List<Group> getListGroupByUserId(final String userId);
 
 }

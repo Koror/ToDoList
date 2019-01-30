@@ -7,10 +7,10 @@ import java.util.List;
 
 public interface ISessionRepository extends IRepository<Session>{
 
-    void delete(String id, EntityManager entityManager);
+    void delete(String id);
 
-    Session getById(String id, EntityManager entityManager);
+    Session getById(String id);
 
-    List<Session> getList(EntityManager entityManager);
+    List<Session> getList();
 
 }

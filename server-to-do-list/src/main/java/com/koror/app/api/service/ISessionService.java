@@ -2,20 +2,23 @@ package com.koror.app.api.service;
 
 import com.koror.app.api.repository.ISessionRepository;
 import com.koror.app.entity.Session;
+import org.jetbrains.annotations.Nullable;
 
 import javax.persistence.EntityManager;
 import java.util.List;
 
 public interface ISessionService {
 
-    void delete(String id);
+    void add(@Nullable final Session entity);
 
-    Session getById(String id);
+    void delete(@Nullable String id);
+
+    Session getById(@Nullable String id);
 
     List<Session> getList();
 
-    boolean validate(Session session);
+    boolean validate(@Nullable Session session);
 
-    void deleteByUserSession(String userId);
+    void deleteByUserSession(@Nullable String userId);
 
 }

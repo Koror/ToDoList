@@ -3,22 +3,25 @@ package com.koror.app.api.service;
 import com.koror.app.api.repository.IUserRepository;
 import com.koror.app.entity.Task;
 import com.koror.app.entity.User;
+import org.jetbrains.annotations.Nullable;
 
 import javax.persistence.EntityManager;
 import java.util.List;
 
 public interface IUserService{
 
-    User getByLogin(String login);
+    void add(@Nullable final User entity);
 
-    void delete(String id);
+    User getByLogin(@Nullable String login);
 
-    User getById(String id);
+    void delete(@Nullable String id);
+
+    User getById(@Nullable String id);
 
     List<User> getList();
 
-    User login(String login, String password);
+    User login(@Nullable String login, @Nullable String password);
 
-    void linkToTask(User user, Task task);
+    void linkToTask(@Nullable User user, @Nullable Task task);
 
 }

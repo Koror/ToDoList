@@ -7,12 +7,12 @@ import java.util.List;
 
 public interface ITaskRepository extends IRepository<Task>{
 
-    void delete(String id, EntityManager entityManager);
+    void delete(String id);
 
-    Task getById(String id, EntityManager entityManager);
+    Task getById(String id);
 
-    List<Task> getList(EntityManager entityManager);
+    List<Task> getList();
 
-    List<Task> getListTaskByUserId(String userId, EntityManager entityManager);
+    List<Task> getListTaskByUserId(String userId);
 
 }

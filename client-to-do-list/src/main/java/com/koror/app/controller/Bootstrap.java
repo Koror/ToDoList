@@ -10,23 +10,28 @@ import com.koror.app.error.WrongInputException;
 import lombok.Getter;
 import org.reflections.Reflections;
 
+import javax.inject.Inject;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.util.*;
 
 public class Bootstrap {
 
+    @Inject
     @Getter
-    private final UserEndpoint userService = new UserEndpointService().getUserEndpointPort();
+    private UserEndpoint userService;
 
+    @Inject
     @Getter
-    private final TaskEndpoint taskService = new TaskEndpointService().getTaskEndpointPort();
+    private TaskEndpoint taskService;
 
+    @Inject
     @Getter
-    private final GroupEndpoint groupService = new GroupEndpointService().getGroupEndpointPort();
+    private GroupEndpoint groupService;
 
+    @Inject
     @Getter
-    private final SessionEndpoint sessionService = new SessionEndpointService().getSessionEndpointPort();
+    private SessionEndpoint sessionService;
 
     @Getter
     private final Map<String, AbstractCommand> commandUserMap = new HashMap<>();
@@ -95,7 +100,7 @@ public class Bootstrap {
         return "";
     }
 
-    public void clientStart() throws ReflectiveOperationException {
+    public void startClient() throws ReflectiveOperationException {
         initUserCommand(userCommands());
         initLoginCommand(loginCommands);
         String action = "";

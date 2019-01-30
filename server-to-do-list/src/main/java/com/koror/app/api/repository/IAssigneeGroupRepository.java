@@ -7,14 +7,14 @@ import java.util.List;
 
 public interface IAssigneeGroupRepository extends IRepository<AssigneeGroup>{
 
-    AssigneeGroup getAssigneeByUserId(String userId, EntityManager entityManager);
+    AssigneeGroup getAssigneeByUserId(String userId);
 
-    void delete(String id, EntityManager entityManager);
+    void delete(String id);
 
-    void deleteAssigneeByParam(String userId, String groupId, EntityManager entityManager);
+    void deleteAssigneeByParam(String userId, String groupId);
 
-    AssigneeGroup getById(String id, EntityManager entityManager);
+    AssigneeGroup getById(String id);
 
-    List<AssigneeGroup> getList(EntityManager entityManager);
+    List<AssigneeGroup> getList();
 
 }

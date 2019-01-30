@@ -1,6 +1,7 @@
 package com.koror.app.entity;
 
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.jetbrains.annotations.NotNull;
 
@@ -9,6 +10,7 @@ import java.io.Serializable;
 
 @Setter
 @Getter
+@NoArgsConstructor
 @Entity
 @Table(name = "tm_assigneegroup")
 public class AssigneeGroup extends AbstractEntity implements Serializable {
@@ -22,10 +24,6 @@ public class AssigneeGroup extends AbstractEntity implements Serializable {
     @ManyToOne
     @JoinColumn(nullable = false)
     private Group group;
-
-    public AssigneeGroup(){
-
-    }
 
     public AssigneeGroup(@NotNull User user,@NotNull Group group) {
         this.user = user;

@@ -7,14 +7,14 @@ import java.util.List;
 
 public interface IAssigneeTaskRepository extends IRepository<AssigneeTask>{
 
-    AssigneeTask getAssigneeByUserId(String userId, EntityManager entityManager);
+    AssigneeTask getAssigneeByUserId(String userId);
 
-    void delete(String id, EntityManager entityManager);
+    void delete(String id);
 
-    void deleteAssigneeByParam(String userId, String taskId, EntityManager entityManager);
+    void deleteAssigneeByParam(String userId, String taskId);
 
-    AssigneeTask getById(String id, EntityManager entityManager);
+    AssigneeTask getById(String id);
 
-    List<AssigneeTask> getList(EntityManager entityManager);
+    List<AssigneeTask> getList();
 
 }

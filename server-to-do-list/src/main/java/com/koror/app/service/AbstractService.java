@@ -3,15 +3,19 @@ package com.koror.app.service;
 import com.koror.app.api.repository.IRepository;
 import com.koror.app.entity.AbstractEntity;
 import com.koror.app.error.WrongInputException;
+import lombok.Getter;
+import lombok.Setter;
 import org.jetbrains.annotations.Nullable;
 
+import javax.inject.Inject;
 import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
 
 public abstract class AbstractService<R extends IRepository,E extends AbstractEntity> {
 
-    protected EntityManagerFactory entityManagerFactory;
+    @Inject
+    protected EntityManager entityManager;
 
+    @Inject
     protected R repository;
 
     public AbstractService(){
@@ -20,19 +24,17 @@ public abstract class AbstractService<R extends IRepository,E extends AbstractEn
 
     public void add(@Nullable final E entity) {
         if(entity==null) throw new WrongInputException("Wrong Input");
-        EntityManager entityManager = entityManagerFactory.createEntityManager();
         entityManager.getTransaction().begin();
-        repository.add(entity, entityManager);
+        repository.add(entity);
         entityManager.getTransaction().commit();
-        entityManager.close();
+        entityManager.clear();
     }
 
     public void update(@Nullable final E entity) {
         if (entity == null) throw new WrongInputException("Wrong input");
-        EntityManager entityManager = entityManagerFactory.createEntityManager();
         entityManager.getTransaction().begin();
-        repository.update(entity, entityManager);
+        repository.update(entity);
         entityManager.getTransaction().commit();
-        entityManager.close();
+        entityManager.clear();
     }
 }

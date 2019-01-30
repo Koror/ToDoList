@@ -7,12 +7,12 @@ import java.util.List;
 
 public interface IUserRepository extends IRepository<User>{
 
-    User getByLogin(String login, EntityManager entityManager);
+    User getByLogin(String login);
 
-    void delete(String id, EntityManager entityManager);
+    void delete(String id);
 
-    User getById(String id, EntityManager entityManager);
+    User getById(String id);
 
-    List<User> getList(EntityManager entityManager);
+    List<User> getList();
 
 }

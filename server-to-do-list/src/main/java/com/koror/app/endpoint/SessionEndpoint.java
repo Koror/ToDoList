@@ -4,7 +4,9 @@ import com.koror.app.controller.Bootstrap;
 import com.koror.app.entity.Session;
 import com.koror.app.error.SessionNotValidateException;
 import com.koror.app.service.SessionService;
+import org.jetbrains.annotations.Nullable;
 
+import javax.inject.Inject;
 import javax.jws.WebMethod;
 import javax.jws.WebParam;
 import javax.jws.WebService;
@@ -13,16 +15,13 @@ import java.util.List;
 @WebService
 public class SessionEndpoint {
 
+    @Inject
     private SessionService sessionService;
-
-    public SessionEndpoint(SessionService sessionService) {
-        this.sessionService = sessionService;
-    }
 
     @WebMethod
     public Result deleteSession(
-            @WebParam(name = "id", partName = "id") String id,
-            @WebParam(name = "session", partName = "session") Session session) {
+            @WebParam(name = "id", partName = "id") @Nullable String id,
+            @WebParam(name = "session", partName = "session") @Nullable Session session) {
         final boolean validateSession = sessionService.validate(session);
         if (!validateSession) throw new SessionNotValidateException();
         sessionService.delete(id);
@@ -33,8 +32,8 @@ public class SessionEndpoint {
 
     @WebMethod
     public Result deleteByUserSession(
-            @WebParam(name = "user", partName = "user") String userId,
-            @WebParam(name = "session", partName = "session") Session session) {
+            @WebParam(name = "user", partName = "user") @Nullable String userId,
+            @WebParam(name = "session", partName = "session") @Nullable Session session) {
         final boolean validateSession = sessionService.validate(session);
         if (!validateSession) throw new SessionNotValidateException();
         sessionService.deleteByUserSession(userId);
@@ -45,22 +44,22 @@ public class SessionEndpoint {
 
     @WebMethod
     public Session getByIdSession(
-            @WebParam(name = "id", partName = "id") String id,
-            @WebParam(name = "session", partName = "session") Session session) {
+            @WebParam(name = "id", partName = "id") @Nullable String id,
+            @WebParam(name = "session", partName = "session") @Nullable Session session) {
         final boolean validateSession = sessionService.validate(session);
         if (!validateSession) throw new SessionNotValidateException();
         return sessionService.getById(id);
     }
 
     @WebMethod
-    public List<Session> getListSession(@WebParam(name = "session", partName = "session") Session session) {
+    public List<Session> getListSession(@WebParam(name = "session", partName = "session") @Nullable Session session) {
         final boolean validateSession = sessionService.validate(session);
         if (!validateSession) throw new SessionNotValidateException();
         return sessionService.getList();
     }
 
     @WebMethod
-    public Result updateSession(@WebParam(name = "session", partName = "session") Session session) {
+    public Result updateSession(@WebParam(name = "session", partName = "session") @Nullable Session session) {
         final boolean validateSession = sessionService.validate(session);
         if (!validateSession) throw new SessionNotValidateException();
         sessionService.update(session);

@@ -20,6 +20,10 @@ public class AppConfig {
 
     public static String HIBERNATE_SHOW_SQL;
 
+    public static String SALT = "SuGar";
+
+    public static int CYCLE = 55;
+
     public static void init() throws IOException{
         FileInputStream fis;
         Properties property = new Properties();

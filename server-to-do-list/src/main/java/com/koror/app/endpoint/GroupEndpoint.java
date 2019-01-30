@@ -5,7 +5,10 @@ import com.koror.app.entity.Session;
 import com.koror.app.error.SessionNotValidateException;
 import com.koror.app.service.GroupService;
 import com.koror.app.service.SessionService;
+import com.koror.app.service.TaskService;
+import org.jetbrains.annotations.Nullable;
 
+import javax.inject.Inject;
 import javax.jws.WebMethod;
 import javax.jws.WebParam;
 import javax.jws.WebService;
@@ -14,21 +17,18 @@ import java.util.List;
 @WebService
 public class GroupEndpoint {
 
+    @Inject
     private GroupService groupService;
 
+    @Inject
     private SessionService sessionService;
-
-    public GroupEndpoint(GroupService groupService, SessionService sessionService) {
-        this.groupService = groupService;
-        this.sessionService = sessionService;
-    }
 
     @WebMethod
     public Result addGroup(
-            @WebParam(name = "name", partName = "name") Group group,
-            @WebParam(name = "session", partName = "session") Session session) {
+            @WebParam(name = "name", partName = "name") @Nullable Group group,
+            @WebParam(name = "session", partName = "session") @Nullable Session session) {
         final boolean validateSession = sessionService.validate(session);
-        if (!validateSession) throw new SessionNotValidateException();
+        if (session == null || !validateSession) throw new SessionNotValidateException();
         groupService.add(group, session.getUser());
         final Result result = new Result();
         result.success();
@@ -36,7 +36,7 @@ public class GroupEndpoint {
     }
 
     public Result deleteGroup(
-            @WebParam(name = "group", partName = "group") Group group,
+            @WebParam(name = "group", partName = "group") @Nullable Group group,
             @WebParam(name = "session", partName = "session") Session session) {
         final boolean validateSession = sessionService.validate(session);
         if (!validateSession) throw new SessionNotValidateException();
@@ -47,7 +47,7 @@ public class GroupEndpoint {
     }
 
     public Result updateGroup(
-            @WebParam(name = "group", partName = "group") Group group,
+            @WebParam(name = "group", partName = "group") @Nullable Group group,
             @WebParam(name = "session", partName = "session") Session session) {
         final boolean validateSession = sessionService.validate(session);
         if (!validateSession) throw new SessionNotValidateException();
@@ -58,9 +58,9 @@ public class GroupEndpoint {
     }
 
     @WebMethod
-    public List<Group> getGroupList(@WebParam(name = "session", partName = "session") Session session) {
+    public List<Group> getGroupList(@WebParam(name = "session", partName = "session") @Nullable Session session) {
         final boolean validateSession = sessionService.validate(session);
-        if (!validateSession) throw new SessionNotValidateException();
+        if (session == null || !validateSession) throw new SessionNotValidateException();
         return groupService.getListGroupByUserId(session.getUser());
     }
 

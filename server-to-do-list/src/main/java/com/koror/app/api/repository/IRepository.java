@@ -7,8 +7,8 @@ import java.util.List;
 
 public interface IRepository<E extends AbstractEntity> {
 
-    void add(E entity, EntityManager entityManager);
+    void add(E entity);
 
-    void update(E entity, EntityManager entityManager);
+    void update(E entity);
 
 }

@@ -4,7 +4,6 @@ import com.koror.app.api.controller.IBootstrap;
 import com.koror.app.controller.Bootstrap;
 
 import javax.enterprise.inject.se.SeContainerInitializer;
-import java.io.IOException;
 
 public class App {
 

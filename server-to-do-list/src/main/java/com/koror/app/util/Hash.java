@@ -8,14 +8,17 @@ public class Hash {
 
     public static String createHashString(String value) {
         String hashValue = null;
-        try {
-            MessageDigest md = MessageDigest.getInstance("MD5");
-            md.update(value.getBytes());
-            byte[] digest = md.digest();
-            hashValue = DatatypeConverter
-                    .printHexBinary(digest).toUpperCase();
-        } catch (NoSuchAlgorithmException e) {
-            e.printStackTrace();
+        value = AppConfig.SALT + value + AppConfig.SALT;
+        for(int i = 0; i< AppConfig.CYCLE; i++) {
+            try {
+                MessageDigest md = MessageDigest.getInstance("MD5");
+                md.update(value.getBytes());
+                byte[] digest = md.digest();
+                hashValue = DatatypeConverter
+                        .printHexBinary(digest).toUpperCase();
+            } catch (NoSuchAlgorithmException e) {
+                e.printStackTrace();
+            }
         }
         return hashValue;
     }

@@ -12,20 +12,20 @@ public class TaskServiceTest {
 
     @Test
     public void test() throws IOException {
-        Bootstrap bootstrap = new Bootstrap();
-        bootstrap.defaultUserInit();
-
-        List<User> list = bootstrap.getUserService().getList();
-        list.get(0);
-        final User user=bootstrap.getUserService().getByLogin("admin");
-
-        final Task task = new Task();
-        task.setUser(user);
-        task.setName("345234");
-        bootstrap.getTaskService().add(task);
-
-        List<Task> taskList2 = bootstrap.getTaskService().getListTaskByUserId(user.getId());
-        taskList2.get(0);
+//        Bootstrap bootstrap = new Bootstrap();
+//        bootstrap.defaultUserInit();
+//
+//        List<User> list = bootstrap.getUserService().getList();
+//        list.get(0);
+//        final User user=bootstrap.getUserService().getByLogin("admin");
+//
+//        final Task task = new Task();
+//        task.setUser(user);
+//        task.setName("345234");
+//        bootstrap.getTaskService().add(task);
+//
+//        List<Task> taskList2 = bootstrap.getTaskService().getListTaskByUserId(user.getId());
+//        taskList2.get(0);
 
     }
 

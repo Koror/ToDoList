@@ -1,7 +1,10 @@
 package com.koror.app.controller;
 
 import com.koror.app.api.controller.IBootstrap;
-import com.koror.app.api.repository.*;
+import com.koror.app.api.service.IGroupService;
+import com.koror.app.api.service.ISessionService;
+import com.koror.app.api.service.ITaskService;
+import com.koror.app.api.service.IUserService;
 import com.koror.app.command.AbstractCommand;
 import com.koror.app.endpoint.GroupEndpoint;
 import com.koror.app.endpoint.SessionEndpoint;
@@ -11,13 +14,11 @@ import com.koror.app.entity.User;
 import com.koror.app.enumerated.Access;
 import com.koror.app.error.MissingCommandException;
 import com.koror.app.error.WrongInputException;
-import com.koror.app.repository.*;
-import com.koror.app.service.*;
 import com.koror.app.util.AppConfig;
-import com.koror.app.util.HibernateFactory;
 import lombok.Getter;
 import org.reflections.Reflections;
 
+import javax.inject.Inject;
 import javax.xml.ws.Endpoint;
 import java.io.IOException;
 import java.util.HashMap;
@@ -27,52 +28,37 @@ import java.util.Set;
 
 public final class Bootstrap implements IBootstrap {
 
-    private final IUserRepository userRepository = new UserRepository();
+    @Inject
+    private IGroupService groupService;
 
-    private final ITaskRepository taskRepository = new TaskRepository();
+    @Inject
+    private ITaskService taskService;
 
-    private final IGroupRepository groupRepository = new GroupRepository();
+    @Inject
+    private IUserService userService;
 
-    private final ISessionRepository sessionRepository = new SessionRepository();
+    @Inject
+    private ISessionService sessionService;
 
-    private final IAssigneeGroupRepository assigneeGroupRepository = new AssigneeGroupRepository();
+    @Inject
+    private TaskEndpoint taskEndpoint;
 
-    private final IAssigneeTaskRepository assigneeTaskRepository = new AssigneeTaskRepository();
+    @Inject
+    private UserEndpoint userEndpoint;
 
-    @Getter
-    private final AssigneeTaskService assigneeTaskService;
+    @Inject
+    private GroupEndpoint groupEndpoint;
 
-    @Getter
-    private final AssigneeGroupService assigneeGroupService;
-
-    @Getter
-    private final GroupService groupService;
-
-    @Getter
-    private final TaskService taskService;
-
-    @Getter
-    private final UserService userService;
-
-    @Getter
-    private final SessionService sessionService;
+    @Inject
+    private SessionEndpoint sessionEndpoint;
 
     @Getter
     private final Map<String, AbstractCommand> serverCommands = new HashMap<>();
 
     private final Scanner scanner = new Scanner(System.in);
 
-    private final HibernateFactory hibernateFactory;
-
     public Bootstrap() throws IOException {
         AppConfig.init();
-        hibernateFactory = new HibernateFactory();
-        assigneeTaskService = new AssigneeTaskService(assigneeTaskRepository, hibernateFactory.getEntityManagerFactory());
-        assigneeGroupService = new AssigneeGroupService(assigneeGroupRepository, hibernateFactory.getEntityManagerFactory());
-        groupService = new GroupService(groupRepository, assigneeGroupRepository, taskRepository, assigneeTaskRepository, hibernateFactory.getEntityManagerFactory());
-        taskService = new TaskService(taskRepository, assigneeTaskRepository, hibernateFactory.getEntityManagerFactory());
-        userService = new UserService(userRepository, assigneeTaskRepository, hibernateFactory.getEntityManagerFactory());
-        sessionService = new SessionService(sessionRepository, hibernateFactory.getEntityManagerFactory());
     }
 
     private void registerCommand(final Map<String, AbstractCommand> commandMap, final AbstractCommand command) {
@@ -118,31 +104,32 @@ public final class Bootstrap implements IBootstrap {
     }
 
     public void defaultUserInit() {
-        final User userAdmin = new User("admin", "admin");
-        userAdmin.setAccess(Access.ADMIN_ACCESS);
-        getUserService().add(userAdmin);
-        final User userTest = new User("test", "test");
-        getUserService().add(userTest);
+        if (userService.getByLogin("admin") == null) {
+            final User userAdmin = new User("admin", "admin");
+            userAdmin.setAccess(Access.ADMIN_ACCESS);
+            userService.add(userAdmin);
+        }
+        if (userService.getByLogin("test") == null) {
+            final User userTest = new User("test", "test");
+            userService.add(userTest);
+        }
     }
 
+    @Override
     public void startServer() throws ReflectiveOperationException {
-        Endpoint.publish("http://localhost:8080/TaskEndpoint?WSDL", new TaskEndpoint(getTaskService(), getSessionService()));
-        Endpoint.publish("http://localhost:8080/UserEndpoint?WSDL", new UserEndpoint(getUserService(), getSessionService()));
-        Endpoint.publish("http://localhost:8080/GroupEndpoint?WSDL", new GroupEndpoint(getGroupService(), getSessionService()));
-        Endpoint.publish("http://localhost:8080/SessionEndpoint?WSDL", new SessionEndpoint(getSessionService()));
+        Endpoint.publish("http://localhost:8080/TaskEndpoint?WSDL", taskEndpoint);
+        Endpoint.publish("http://localhost:8080/UserEndpoint?WSDL", userEndpoint);
+        Endpoint.publish("http://localhost:8080/GroupEndpoint?WSDL", groupEndpoint);
+        Endpoint.publish("http://localhost:8080/SessionEndpoint?WSDL", sessionEndpoint);
         initCommand(userCommands());
         String action = "";
+        defaultUserInit();
         System.out.println("Action: Help, Exit");
         do {
             action = startCommand(serverCommands);
         } while (!action.equals("Exit"));
-        close();
     }
 
-    @Override
-    public void close(){
-        hibernateFactory.close();
-    }
 
     @Override
     public Integer nextInt() {

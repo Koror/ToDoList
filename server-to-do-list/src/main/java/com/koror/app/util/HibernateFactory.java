@@ -1,21 +1,30 @@
 package com.koror.app.util;
 
 import com.koror.app.entity.*;
+import jdk.nashorn.internal.objects.annotations.Getter;
+import jdk.nashorn.internal.objects.annotations.Setter;
 import org.hibernate.boot.Metadata;
 import org.hibernate.boot.MetadataSources;
 import org.hibernate.boot.registry.StandardServiceRegistry;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import org.hibernate.cfg.Environment;
 
+import javax.enterprise.context.ApplicationScoped;
+import javax.enterprise.inject.Produces;
+import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import java.util.HashMap;
 import java.util.Map;
 
 public class HibernateFactory {
 
-    private EntityManagerFactory entityManagerFactory;
-
     public HibernateFactory(){
+
+    }
+
+    @Produces
+    @ApplicationScoped
+    public EntityManager getEntityManager() {
         final Map<String, String> settings = new HashMap<>();
         settings.put(Environment.DRIVER, AppConfig.JDBC_DRIVER);
         settings.put(Environment.URL, AppConfig.URL);
@@ -36,14 +45,9 @@ public class HibernateFactory {
         sources.addAnnotatedClass(AssigneeTask.class);
         sources.addAnnotatedClass(AssigneeGroup.class);
         final Metadata metadata = sources.getMetadataBuilder().build();
-        entityManagerFactory = metadata.getSessionFactoryBuilder().build();
+        EntityManagerFactory entityManagerFactory = metadata.getSessionFactoryBuilder().build();
+        EntityManager entityManager = entityManagerFactory.createEntityManager();
+        return entityManager;
     }
 
-    public void close(){
-        entityManagerFactory.close();
-    }
-
-    public EntityManagerFactory getEntityManagerFactory() {
-        return entityManagerFactory;
-    }
 }
