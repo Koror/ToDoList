@@ -2,8 +2,6 @@ package com.koror.app.command.user;
 
 import com.koror.app.command.AbstractCommand;
 
-import java.io.IOException;
-
 public class UserToGroupCommand extends AbstractCommand {
     @Override
     public void execute(){

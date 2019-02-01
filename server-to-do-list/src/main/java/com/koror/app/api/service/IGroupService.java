@@ -8,7 +8,11 @@ import java.util.List;
 
 public interface IGroupService {
 
+    void add(@Nullable Group entity);
+
     void add(@Nullable Group entity,@Nullable  User user);
+
+    void delete(@Nullable Group group);
 
     void delete(@Nullable Group group, @Nullable  User user) ;
 
@@ -18,5 +22,4 @@ public interface IGroupService {
 
     List<Group> getListGroupByUserId(@Nullable User user);
 
-    void add(@Nullable final Group entity);
 }

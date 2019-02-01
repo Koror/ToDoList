@@ -1,6 +1,7 @@
-package com.koror.app.util;
+package com.koror.app.producer;
 
 import com.koror.app.entity.*;
+import com.koror.app.util.AppConfig;
 import jdk.nashorn.internal.objects.annotations.Getter;
 import jdk.nashorn.internal.objects.annotations.Setter;
 import org.hibernate.boot.Metadata;
@@ -13,18 +14,19 @@ import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.inject.Produces;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
+import javax.transaction.TransactionScoped;
 import java.util.HashMap;
 import java.util.Map;
 
-public class HibernateFactory {
+public class EntityManagerFactoryProducer {
 
-    public HibernateFactory(){
+    public EntityManagerFactoryProducer(){
 
     }
 
     @Produces
     @ApplicationScoped
-    public EntityManager getEntityManager() {
+    public EntityManagerFactory getEntityManager() {
         final Map<String, String> settings = new HashMap<>();
         settings.put(Environment.DRIVER, AppConfig.JDBC_DRIVER);
         settings.put(Environment.URL, AppConfig.URL);
@@ -45,9 +47,7 @@ public class HibernateFactory {
         sources.addAnnotatedClass(AssigneeTask.class);
         sources.addAnnotatedClass(AssigneeGroup.class);
         final Metadata metadata = sources.getMetadataBuilder().build();
-        EntityManagerFactory entityManagerFactory = metadata.getSessionFactoryBuilder().build();
-        EntityManager entityManager = entityManagerFactory.createEntityManager();
-        return entityManager;
+        return  metadata.getSessionFactoryBuilder().build();
     }
 
 }

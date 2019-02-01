@@ -1,7 +1,7 @@
 package com.koror.app.command.group;
 
 import com.koror.app.command.AbstractCommand;
-import com.koror.app.endpoint.Group;
+import com.koror.app.endpoint.GroupDTO;
 import com.koror.app.endpoint.Result;
 
 import java.util.List;
@@ -10,11 +10,11 @@ public final class GroupUpdateCommand extends AbstractCommand {
 
     @Override
     public void execute() {
-        final List<Group> groupList = bootstrap.getGroupService().getGroupList(bootstrap.getSession());
-        final Group group = bootstrap.getGroupByList(groupList);
+        final List<GroupDTO> groupList = bootstrap.getGroupEndpoint().getGroupList(bootstrap.getSession());
+        final GroupDTO group = bootstrap.getGroupByList(groupList);
         System.out.println("Input name");
         group.setName(bootstrap.nextLine());
-        Result result = bootstrap.getGroupService().updateGroup(group, bootstrap.getSession());
+        Result result = bootstrap.getGroupEndpoint().updateGroup(group, bootstrap.getSession());
         System.out.println(result.getResult());
         System.out.println("Group update");
     }

@@ -1,40 +1,46 @@
 package com.koror.app.service;
 
-import com.koror.app.api.repository.IRepository;
 import com.koror.app.entity.AbstractEntity;
+import com.koror.app.entity.User;
 import com.koror.app.error.WrongInputException;
-import lombok.Getter;
-import lombok.Setter;
+import org.apache.deltaspike.data.api.EntityRepository;
+import org.apache.deltaspike.jpa.api.transaction.Transactional;
 import org.jetbrains.annotations.Nullable;
 
 import javax.inject.Inject;
-import javax.persistence.EntityManager;
+import java.util.List;
 
-public abstract class AbstractService<R extends IRepository,E extends AbstractEntity> {
-
-    @Inject
-    protected EntityManager entityManager;
+@Transactional
+public abstract class AbstractService<R extends EntityRepository, E extends AbstractEntity> {
 
     @Inject
     protected R repository;
 
-    public AbstractService(){
+    public AbstractService() {
 
     }
 
     public void add(@Nullable final E entity) {
-        if(entity==null) throw new WrongInputException("Wrong Input");
-        entityManager.getTransaction().begin();
-        repository.add(entity);
-        entityManager.getTransaction().commit();
-        entityManager.clear();
+        if (entity == null) throw new WrongInputException("Wrong Input");
+        repository.save(entity);
     }
 
     public void update(@Nullable final E entity) {
         if (entity == null) throw new WrongInputException("Wrong input");
-        entityManager.getTransaction().begin();
-        repository.update(entity);
-        entityManager.getTransaction().commit();
-        entityManager.clear();
+        repository.refresh(entity);
+    }
+
+    public void delete(@Nullable E entity) {
+        if (entity == null) throw new WrongInputException("Wrong Input");
+        repository.remove(entity);
+    }
+
+    public E getById(@Nullable String id) {
+        if (id == null || id.isEmpty()) throw new WrongInputException("Wrong Input");
+        return (E)repository.findBy(id);
+    }
+
+    public List<E> getList() {
+        return repository.findAll();
     }
 }

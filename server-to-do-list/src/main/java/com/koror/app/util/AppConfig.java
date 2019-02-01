@@ -2,6 +2,7 @@ package com.koror.app.util;
 
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.Properties;
 
 public class AppConfig {
@@ -24,11 +25,15 @@ public class AppConfig {
 
     public static int CYCLE = 55;
 
-    public static void init() throws IOException{
-        FileInputStream fis;
+    static {
+        InputStream fis;
         Properties property = new Properties();
-        fis = new FileInputStream(AppConfig.class.getClassLoader().getResource("config.properties").getPath());
-        property.load(fis);
+        fis = AppConfig.class.getClassLoader().getResourceAsStream("config.properties");
+        try {
+            property.load(fis);
+        }catch (IOException e){
+            e.printStackTrace();
+        }
         JDBC_DRIVER = property.getProperty("db.driver");
         URL = property.getProperty("db.url");
         USER = property.getProperty("db.user");

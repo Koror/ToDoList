@@ -14,7 +14,11 @@ public interface ITaskService {
 
     void add(@Nullable Task entity, @Nullable User user);
 
-    void delete(@Nullable String id, @Nullable String userId);
+    void add(@Nullable Task entity);
+
+    void delete(@Nullable Task task, @Nullable User user);
+
+    void delete(@Nullable Task task);
 
     void update(@Nullable final Task entity);
 
@@ -22,7 +26,7 @@ public interface ITaskService {
 
     List<Task> getList();
 
-    List<Task> getListTaskByUserId(@Nullable String userId);
+    List<Task> getListTaskByUserId(@Nullable User user);
 
     void completeTask(@Nullable final Task task) throws WrongInputException;
 

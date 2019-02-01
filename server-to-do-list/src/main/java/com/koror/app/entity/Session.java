@@ -18,12 +18,12 @@ import java.util.Objects;
 @Table(name = "tm_session")
 public class Session extends AbstractEntity {
 
-    @NotNull
-    @ManyToOne(fetch = FetchType.LAZY)
+    @Nullable
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(nullable = false)
     private User user;
 
-    @NotNull
+    @Nullable
     @Basic
     @Column(nullable = false)
     private String signature;

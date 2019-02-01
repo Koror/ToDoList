@@ -19,19 +19,19 @@ public class Bootstrap {
 
     @Inject
     @Getter
-    private UserEndpoint userService;
+    private UserEndpoint userEndpoint;
 
     @Inject
     @Getter
-    private TaskEndpoint taskService;
+    private TaskEndpoint taskEndpoint;
 
     @Inject
     @Getter
-    private GroupEndpoint groupService;
+    private GroupEndpoint groupEndpoint;
 
     @Inject
     @Getter
-    private SessionEndpoint sessionService;
+    private SessionEndpoint sessionEndpoint;
 
     @Getter
     private final Map<String, AbstractCommand> commandUserMap = new HashMap<>();
@@ -46,7 +46,7 @@ public class Bootstrap {
             new UserRegisterCommand(),
             new UserLoginCommand()};
 
-    private Session session;
+    private SessionDTO session;
 
     private void registerCommand(Map<String, AbstractCommand> commandMap, final AbstractCommand command) {
         commandMap.put(command.command(), command);
@@ -127,9 +127,9 @@ public class Bootstrap {
         return input;
     }
 
-    public Task getTaskByList(List<Task> taskList) {
+    public TaskDTO getTaskByList(List<TaskDTO> taskList) {
         int indexTask = 0;
-        for (Task task : taskList) {
+        for (TaskDTO task : taskList) {
             System.out.println(indexTask + ": " + task.getName());
             indexTask++;
         }
@@ -138,9 +138,9 @@ public class Bootstrap {
         return taskList.get(inputIndex);
     }
 
-    public User getUserByList(List<User> userList) {
+    public UserDTO getUserByList(List<UserDTO> userList) {
         int indexUser = 0;
-        for (User user : userList) {
+        for (UserDTO user : userList) {
             System.out.println(indexUser + ": " + user.getLogin());
             indexUser++;
         }
@@ -149,9 +149,9 @@ public class Bootstrap {
         return userList.get(inputIndex);
     }
 
-    public Group getGroupByList(List<Group> groupList) {
+    public GroupDTO getGroupByList(List<GroupDTO> groupList) {
         int indexUser = 0;
-        for (Group group : groupList) {
+        for (GroupDTO group : groupList) {
             System.out.println(indexUser + ": " + group.getName());
             indexUser++;
         }
@@ -160,11 +160,11 @@ public class Bootstrap {
         return groupList.get(inputIndex);
     }
 
-    public Session getSession() {
+    public SessionDTO getSession() {
         return session;
     }
 
-    public void setSession(Session session) {
+    public void setSession(SessionDTO session) {
         session.setIp(getIp());
         this.session = session;
     }
@@ -172,6 +172,7 @@ public class Bootstrap {
     public void deleteSession(){
         session = null;
     }
+
     public String getIp() {
         try {
             return InetAddress.getLocalHost().getHostAddress();

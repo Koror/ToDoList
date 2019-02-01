@@ -9,6 +9,7 @@ import org.jetbrains.annotations.NotNull;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.MappedSuperclass;
+import java.util.UUID;
 
 @MappedSuperclass
 public abstract class AbstractEntity{
@@ -17,8 +18,6 @@ public abstract class AbstractEntity{
     @Setter
     @Getter
     @Id
-    @GeneratedValue(generator = "uuid")
-    @GenericGenerator(name = "uuid", strategy = "uuid")
-    protected String id;
+    protected String id = UUID.randomUUID().toString();
 
 }

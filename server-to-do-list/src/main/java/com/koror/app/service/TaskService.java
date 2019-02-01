@@ -7,14 +7,17 @@ import com.koror.app.entity.AssigneeTask;
 import com.koror.app.entity.Group;
 import com.koror.app.entity.Task;
 import com.koror.app.entity.User;
+import com.koror.app.enumerated.Access;
 import com.koror.app.error.WrongInputException;
+import org.apache.deltaspike.jpa.api.transaction.Transactional;
 import org.jetbrains.annotations.Nullable;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
-import javax.persistence.EntityManager;
+import javax.persistence.NoResultException;
 import java.util.List;
 
+@Transactional
 @ApplicationScoped
 public class TaskService extends AbstractService<ITaskRepository, Task> implements ITaskService {
 
@@ -24,77 +27,52 @@ public class TaskService extends AbstractService<ITaskRepository, Task> implemen
     @Override
     public void add(@Nullable Task task, @Nullable User user) {
         if (task == null || user == null) throw new WrongInputException("Wrong Input");
-        entityManager.getTransaction().begin();
-        repository.add(task);
+        repository.save(task);
         final AssigneeTask assigneeTask = new AssigneeTask(user, task);
-        assigneeTaskRepository.add(assigneeTask);
-        entityManager.getTransaction().commit();
-        entityManager.clear();
+        assigneeTaskRepository.save(assigneeTask);
     }
 
     @Override
-    public void delete(@Nullable String taskId, @Nullable String userId) {
-        if (taskId == null || taskId.isEmpty()) throw new WrongInputException("Wrong Input");
-        entityManager.getTransaction().begin();
-        assigneeTaskRepository.deleteAssigneeByParam(userId, taskId);
-        repository.delete(taskId);
-        entityManager.getTransaction().commit();
-        entityManager.clear();
+    public void delete(@Nullable Task task, @Nullable User user) {
+        if (task == null || user == null) throw new WrongInputException("Wrong Input");
+        //assigneeTaskRepository.getAssigneeByParam(user.getId(), task.getId());
+        repository.remove(task);
     }
 
-    @Override
-    public Task getById(@Nullable String id) {
-        if (id == null || id.isEmpty()) throw new WrongInputException("Wrong Input");
-        Task task = repository.getById(id);
-        entityManager.clear();
-        return task;
-    }
-
-    @Override
-    public List<Task> getList() {
-        List<Task> taskList = repository.getList();
-        entityManager.clear();
-        return taskList;
-    }
 
     @Override
     public void completeTask(@Nullable final Task task) throws WrongInputException {
         if (task == null) throw new WrongInputException("Wrong input");
-        entityManager.getTransaction().begin();
         task.setComplete(true);
-        repository.update(task);
-        entityManager.getTransaction().commit();
-        entityManager.clear();
+        repository.refresh(task);
     }
 
     @Override
     public void clearTask(@Nullable List<Task> taskList) {
         if (taskList == null) throw new WrongInputException("Wrong input");
-        entityManager.getTransaction().begin();
         for (Task task : taskList) {
             if (task.isComplete())
-                repository.delete(task.getId());
+                repository.remove(task);
         }
-        entityManager.getTransaction().commit();
-        entityManager.clear();
     }
 
     @Override
     public void setGroup(@Nullable final Task task, @Nullable final Group group) throws WrongInputException {
         if (task == null) throw new WrongInputException("Wrong input");
-        entityManager.getTransaction().begin();
         task.setGroup(group);
-        repository.update(task);
-        entityManager.getTransaction().commit();
-        entityManager.clear();
+        repository.refresh(task);
     }
 
     @Override
-    public List<Task> getListTaskByUserId(@Nullable String userId) {
-        List<Task> taskList = repository.getListTaskByUserId(userId);
-        entityManager.clear();
-        return taskList;
+    public List<Task> getListTaskByUserId(@Nullable User user) {
+        if (user == null) throw new WrongInputException("Wrong Input");
+        if (user.getAccess() == Access.ADMIN_ACCESS) return getList();
+        try {
+            return repository.getListTaskByUserId(user.getId());
+        }catch (NoResultException e){
+            System.out.println(e.getMessage());
+        }
+        return null;
     }
-
 
 }

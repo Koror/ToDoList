@@ -1,8 +1,8 @@
 package com.koror.app.command.user;
 
 import com.koror.app.command.AbstractCommand;
-import com.koror.app.endpoint.Session;
-import com.koror.app.endpoint.User;
+import com.koror.app.endpoint.SessionDTO;
+import com.koror.app.endpoint.UserDTO;
 
 public class UserRegisterCommand extends AbstractCommand {
     @Override
@@ -11,10 +11,7 @@ public class UserRegisterCommand extends AbstractCommand {
         final String login = bootstrap.nextLine();
         System.out.println("Input password");
         final String password = bootstrap.nextLine();
-        final User user = new User();
-        user.setLogin(login);
-        user.setPassword(password);
-        final Session session = bootstrap.getUserService().registerUser(user, bootstrap.getIp());
+        final SessionDTO session = bootstrap.getUserEndpoint().registerUser(login, password, bootstrap.getIp());
         bootstrap.setSession(session);
         System.out.println("User created and login");
     }

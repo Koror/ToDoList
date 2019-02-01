@@ -7,8 +7,7 @@ public class SessionDeleteByUserCommand extends AbstractCommand {
 
     @Override
     public void execute() {
-        final String userId = bootstrap.getSession().getUser().getId();
-        Result result = bootstrap.getSessionService().deleteByUserSession(userId, bootstrap.getSession());
+        Result result = bootstrap.getSessionEndpoint().deleteByUserSession(bootstrap.getSession());
         System.out.println(result.getResult());
         System.out.println("Delete sessions complete");
     }

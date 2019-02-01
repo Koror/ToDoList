@@ -11,7 +11,7 @@ public interface ISessionService {
 
     void add(@Nullable final Session entity);
 
-    void delete(@Nullable String id);
+    void delete(@Nullable Session session);
 
     Session getById(@Nullable String id);
 
@@ -21,4 +21,5 @@ public interface ISessionService {
 
     void deleteByUserSession(@Nullable String userId);
 
+    Session getBySignature(@Nullable String signature);
 }

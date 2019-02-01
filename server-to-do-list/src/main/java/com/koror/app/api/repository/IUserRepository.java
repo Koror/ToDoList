@@ -1,18 +1,14 @@
 package com.koror.app.api.repository;
 
 import com.koror.app.entity.User;
+import org.apache.deltaspike.data.api.EntityRepository;
+import org.apache.deltaspike.data.api.Query;
+import org.apache.deltaspike.data.api.Repository;
 
-import javax.persistence.EntityManager;
-import java.util.List;
+@Repository
+public interface IUserRepository extends EntityRepository<User, String> {
 
-public interface IUserRepository extends IRepository<User>{
-
-    User getByLogin(String login);
-
-    void delete(String id);
-
-    User getById(String id);
-
-    List<User> getList();
+    @Query(value = "FROM User a where a.login = ?1")
+    User findByLogin(String login);
 
 }

@@ -1,7 +1,6 @@
 package com.koror.app;
 
 import com.koror.app.api.controller.IBootstrap;
-import com.koror.app.controller.Bootstrap;
 
 import javax.enterprise.inject.se.SeContainerInitializer;
 

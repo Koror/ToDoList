@@ -1,7 +1,7 @@
 package com.koror.app.command.group;
 
 import com.koror.app.command.AbstractCommand;
-import com.koror.app.endpoint.Group;
+import com.koror.app.endpoint.GroupDTO;
 
 import java.util.List;
 
@@ -10,8 +10,8 @@ public class GroupReadAllCommand extends AbstractCommand {
     @Override
     public void execute() {
         int indexGroup = 0;
-        final List<Group> groupList = bootstrap.getGroupService().getGroupList(bootstrap.getSession());
-        for (Group group : groupList) {
+        final List<GroupDTO> groupList = bootstrap.getGroupEndpoint().getGroupList(bootstrap.getSession());
+        for (GroupDTO group : groupList) {
             System.out.println(indexGroup + ": " + group.getName() + " Creator " + group.getCreator());
             indexGroup++;
         }

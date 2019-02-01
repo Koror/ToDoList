@@ -1,8 +1,7 @@
 package com.koror.app.command.task;
 
 import com.koror.app.command.AbstractCommand;
-import com.koror.app.endpoint.Task;
-import com.koror.app.endpoint.User;
+import com.koror.app.endpoint.TaskDTO;
 
 import java.util.List;
 
@@ -11,14 +10,11 @@ public final class TaskReadAllCommand extends AbstractCommand {
     @Override
     public void execute() {
         int index = 0;
-        List<Task> taskList = bootstrap.getTaskService().getTaskList(bootstrap.getSession());
-        for (Task task : taskList) {
-            User user = bootstrap.getUserService().getUserById(task.getCreator(),bootstrap.getSession());
-            final String creatorLogin =user.getLogin();
-            final String groupName ="null";// bootstrap.getGroupService().getById(task.getGroupId()).getName();
+        List<TaskDTO> taskList = bootstrap.getTaskEndpoint().getTaskList(bootstrap.getSession());
+        for (TaskDTO task : taskList) {
+            final String groupName ="null";// bootstrap.getGroupEndpoint().getById(task.getGroupId()).getName();
             System.out.println(index + " [" + "Name:" + task.getName() + " Priority: "
-                    + task.getPriority() + " Complete:" + task.isComplete() + " Creator:"
-                    + creatorLogin + " Group:" + groupName + "]");
+                    + task.getPriority() + " Complete:" + task.isComplete() + " Group:" + groupName + "]");
             index++;
         }
     }

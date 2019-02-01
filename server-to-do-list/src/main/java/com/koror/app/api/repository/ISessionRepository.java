@@ -1,16 +1,16 @@
 package com.koror.app.api.repository;
 
 import com.koror.app.entity.Session;
+import org.apache.deltaspike.data.api.EntityRepository;
+import org.apache.deltaspike.data.api.Query;
+import org.apache.deltaspike.data.api.Repository;
 
 import javax.persistence.EntityManager;
 import java.util.List;
 
-public interface ISessionRepository extends IRepository<Session>{
+@Repository
+public interface ISessionRepository extends EntityRepository<Session, String> {
 
-    void delete(String id);
-
-    Session getById(String id);
-
-    List<Session> getList();
-
+    @Query(value = "FROM Session a where a.signature = ?1")
+    Session findBySignature(String signature);
 }

@@ -9,14 +9,18 @@ import com.koror.app.entity.User;
 import com.koror.app.error.UserNotExistsException;
 import com.koror.app.error.WrongInputException;
 import com.koror.app.util.Hash;
+import org.apache.deltaspike.data.api.QueryInvocationException;
+import org.apache.deltaspike.jpa.api.transaction.Transactional;
 import org.jetbrains.annotations.Nullable;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
+import javax.persistence.NoResultException;
 import java.util.List;
 
+@Transactional
 @ApplicationScoped
 public class UserService extends AbstractService<IUserRepository, User> implements IUserService {
 
@@ -24,38 +28,14 @@ public class UserService extends AbstractService<IUserRepository, User> implemen
     private IAssigneeTaskRepository assigneeTaskRepository;
 
     @Override
-    public void delete(@Nullable String id) {
-        if(id==null || id.isEmpty()) throw new WrongInputException("Wrong Input");
-        entityManager.getTransaction().begin();
-        repository.delete(id);
-        entityManager.getTransaction().commit();
-        entityManager.clear();
-    }
-
-    @Override
-    public User getById(@Nullable String id) {
-        if(id==null || id.isEmpty()) return null;
-        entityManager.getTransaction().begin();
-        User user = repository.getById(id);
-        entityManager.getTransaction().commit();
-        entityManager.clear();
-        return user;
-    }
-
-    @Override
-    public List<User> getList() {
-        entityManager.getTransaction().begin();
-        List<User> userList = repository.getList();
-        entityManager.getTransaction().commit();
-        entityManager.clear();
-        return userList;
-    }
-
-    @Override
-    public User getByLogin(@Nullable String login) {
+    public User getByLogin(@Nullable String login){
         if(login == null || login.isEmpty()) throw new WrongInputException("Wrong input");
-        User user = repository.getByLogin(login);
-        entityManager.clear();
+        User user = null;
+        try {
+            user = repository.findByLogin(login);
+        }catch (Throwable e){
+           System.out.println(e.getMessage());
+        }
         return user;
     }
 
@@ -63,27 +43,21 @@ public class UserService extends AbstractService<IUserRepository, User> implemen
     public User login(@Nullable String login, @Nullable String password){
         if(login == null || login.isEmpty()) throw new WrongInputException("Wrong input");
         if(password == null || password.isEmpty()) throw new WrongInputException("Wrong input");
-        entityManager.getTransaction().begin();
         final String hashPassword = Hash.createHashString(password);
         User user = null;
-        for(User userTemp : repository.getList()){
+        for(User userTemp : repository.findAll()){
             if(login.equals(userTemp.getLogin()) && hashPassword.equals(userTemp.getPassword()))
-                user = repository.getById(userTemp.getId());
+                user = userTemp;
         }
         if(user == null) throw new UserNotExistsException();
-        entityManager.getTransaction().commit();
-        entityManager.clear();
         return user;
     }
 
     public void linkToTask(@Nullable User user, @Nullable Task task){
         if(user == null || task == null) throw new WrongInputException("Wrong input");
-        entityManager.getTransaction().begin();
         task.setUser(user);
         final AssigneeTask assigneeTask = new AssigneeTask(user, task);
-        assigneeTaskRepository.add(assigneeTask);
-        entityManager.getTransaction().commit();
-        entityManager.clear();
+        assigneeTaskRepository.save(assigneeTask);
     }
 
 }

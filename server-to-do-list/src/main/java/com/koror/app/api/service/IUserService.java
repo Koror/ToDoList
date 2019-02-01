@@ -14,7 +14,7 @@ public interface IUserService{
 
     User getByLogin(@Nullable String login);
 
-    void delete(@Nullable String id);
+    void delete(@Nullable User user);
 
     User getById(@Nullable String id);
 

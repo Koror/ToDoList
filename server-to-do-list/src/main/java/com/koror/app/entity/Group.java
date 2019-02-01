@@ -1,5 +1,6 @@
 package com.koror.app.entity;
 
+import com.koror.app.dto.GroupDTO;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -17,12 +18,12 @@ import java.util.List;
 @Table(name = "tm_group")
 public class Group extends AbstractEntity implements Serializable {
 
-    @NotNull
+    @Nullable
     @Basic
     @Column(nullable = false)
     private String creator;
 
-    @NotNull
+    @Nullable
     @Basic
     @Column(nullable = false)
     private String name;
@@ -35,6 +36,12 @@ public class Group extends AbstractEntity implements Serializable {
         this.name = name;
     }
 
+    public Group(GroupDTO groupDTO, User user){
+        id = groupDTO.getId();
+        creator = groupDTO.getCreator();
+        name = groupDTO.getName();
+        this.user = user;
+    }
 
     @Override
     public String toString() {

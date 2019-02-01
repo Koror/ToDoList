@@ -1,9 +1,9 @@
 package com.koror.app.command.task;
 
 import com.koror.app.command.AbstractCommand;
-import com.koror.app.endpoint.Group;
+import com.koror.app.endpoint.GroupDTO;
 import com.koror.app.endpoint.Result;
-import com.koror.app.endpoint.Task;
+import com.koror.app.endpoint.TaskDTO;
 
 import java.util.List;
 
@@ -11,11 +11,11 @@ public final class TaskToGroupCommand extends AbstractCommand {
 
     @Override
     public void execute() {
-        final List<Task> taskList = bootstrap.getTaskService().getTaskList(bootstrap.getSession());
-        final Task task = bootstrap.getTaskByList(taskList);
-        final List<Group> groupList = bootstrap.getGroupService().getGroupList(bootstrap.getSession());
-        final Group group = bootstrap.getGroupByList(groupList);
-        Result result = bootstrap.getTaskService().taskToGroupTask(task, group, bootstrap.getSession());
+        final List<TaskDTO> taskList = bootstrap.getTaskEndpoint().getTaskList(bootstrap.getSession());
+        final TaskDTO task = bootstrap.getTaskByList(taskList);
+        final List<GroupDTO> groupList = bootstrap.getGroupEndpoint().getGroupList(bootstrap.getSession());
+        final GroupDTO group = bootstrap.getGroupByList(groupList);
+        Result result = bootstrap.getTaskEndpoint().taskToGroupTask(task, group, bootstrap.getSession());
         System.out.println(result.getResult());
         System.out.println("Link complete");
     }

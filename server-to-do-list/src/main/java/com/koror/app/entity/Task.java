@@ -9,6 +9,7 @@ import org.jetbrains.annotations.Nullable;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.List;
 
 @Setter
 @Getter
@@ -21,16 +22,15 @@ public class Task extends AbstractEntity implements Serializable {
     @Basic
     private Priority priority;
 
-    @NotNull
+    @Nullable
     @Basic
     @Column(nullable = false)
     private String name;
 
-    @Nullable
     @Basic
     private boolean complete;
 
-    @NotNull
+    @Nullable
     @Basic
     @Column(nullable = false)
     private String creator;
@@ -42,6 +42,9 @@ public class Task extends AbstractEntity implements Serializable {
     @Nullable
     @ManyToOne
     private User user;
+
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<AssigneeTask> assigneeTaskList;
 
     public Task(@NotNull final String name) {
         this.name = name;
