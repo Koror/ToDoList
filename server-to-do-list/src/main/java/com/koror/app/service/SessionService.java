@@ -22,11 +22,23 @@ public class SessionService extends AbstractService<ISessionRepository, Session>
     }
 
     @Override
-    public void deleteByUserSession(@Nullable String userId){
+    public void deleteByUserId(@Nullable String userId){
         if (userId == null) throw new WrongInputException("Wrong Input");
-        for (Session sessionTemp : repository.findAll())
+        for (Session sessionTemp : repository.findAll()) {
+            if(sessionTemp.getUser() == null) throw new WrongInputException("Wrong Input");
             if (userId.equals(sessionTemp.getUser().getId()))
                 repository.remove(sessionTemp);
+        }
+    }
+
+    public Session getById(@Nullable String id) {
+        if (id == null || id.isEmpty()) throw new WrongInputException("Wrong Input");
+        return repository.findBy(id);
+    }
+
+    public void delete(@Nullable Session entity) {
+        if (entity == null) throw new WrongInputException("Wrong Input");
+        repository.remove(entity);
     }
 
     @Override

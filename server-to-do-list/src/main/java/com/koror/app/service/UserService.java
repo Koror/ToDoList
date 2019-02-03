@@ -39,6 +39,16 @@ public class UserService extends AbstractService<IUserRepository, User> implemen
         return user;
     }
 
+    public User getById(@Nullable String id) {
+        if (id == null || id.isEmpty()) throw new WrongInputException("Wrong Input");
+        return repository.findBy(id);
+    }
+
+    public void delete(@Nullable User entity) {
+        if (entity == null) throw new WrongInputException("Wrong Input");
+        repository.remove(entity);
+    }
+
     @Override
     public User login(@Nullable String login, @Nullable String password){
         if(login == null || login.isEmpty()) throw new WrongInputException("Wrong input");
@@ -51,13 +61,6 @@ public class UserService extends AbstractService<IUserRepository, User> implemen
         }
         if(user == null) throw new UserNotExistsException();
         return user;
-    }
-
-    public void linkToTask(@Nullable User user, @Nullable Task task){
-        if(user == null || task == null) throw new WrongInputException("Wrong input");
-        task.setUser(user);
-        final AssigneeTask assigneeTask = new AssigneeTask(user, task);
-        assigneeTaskRepository.save(assigneeTask);
     }
 
 }

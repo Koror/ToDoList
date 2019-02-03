@@ -11,9 +11,6 @@ import java.util.List;
 @Repository
 public interface IAssigneeTaskRepository extends EntityRepository<AssigneeTask, String> {
 
-    @Query("FROM AssigneeTask a where a.user.id = ?1")
-    AssigneeTask getAssigneeByUserId(String userId);
-
     @Query("FROM AssigneeTask a where a.user.id = ?1 and a.task.id = ?2")
     AssigneeTask getAssigneeByParam(String userId, String taskId);
 

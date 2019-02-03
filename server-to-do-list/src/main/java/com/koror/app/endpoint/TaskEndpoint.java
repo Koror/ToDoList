@@ -7,6 +7,7 @@ import com.koror.app.api.service.IUserService;
 import com.koror.app.dto.GroupDTO;
 import com.koror.app.dto.SessionDTO;
 import com.koror.app.dto.TaskDTO;
+import com.koror.app.dto.UserDTO;
 import com.koror.app.entity.*;
 import com.koror.app.error.SessionNotValidateException;
 import com.koror.app.error.WrongDataException;
@@ -30,6 +31,9 @@ public class TaskEndpoint {
 
     @Inject
     private ISessionService sessionService;
+
+    @Inject
+    private IUserService userService;
 
     @WebMethod
     public Result addTask(
@@ -90,7 +94,7 @@ public class TaskEndpoint {
         if (session == null || !validateSession) throw new SessionNotValidateException();
         Task task = taskService.getById(taskDTO.getId());
         final User user = session.getUser();
-        taskService.delete(task, user);
+        taskService.delete(task);
         final Result result = new Result();
         result.success();
         return result;
@@ -132,7 +136,25 @@ public class TaskEndpoint {
         final boolean validateSession = sessionService.validate(session);
         if (!validateSession) throw new SessionNotValidateException();
         Task task = taskService.getById(taskDTO.getId());
+        task.setName(taskDTO.getName());
+        task.setPriority(taskDTO.getPriority());
         taskService.update(task);
+        final Result result = new Result();
+        result.success();
+        return result;
+    }
+
+    @WebMethod
+    public Result linkToTaskUser(
+            @WebParam(name = "user", partName = "user") @Nullable UserDTO userDTO,
+            @WebParam(name = "task", partName = "task") @Nullable TaskDTO taskDTO,
+            @WebParam(name = "session", partName = "session") @Nullable SessionDTO sessionDTO) {
+        Session session = sessionService.getBySignature(sessionDTO.getSignature());
+        final boolean validateSession = sessionService.validate(session);
+        if (!validateSession) throw new SessionNotValidateException();
+        User user = userService.getByLogin(userDTO.getLogin());
+        Task task = taskService.getById(taskDTO.getId());
+        taskService.linkToTask(user, task);
         final Result result = new Result();
         result.success();
         return result;

@@ -40,17 +40,24 @@ public class GroupService extends AbstractService<IGroupRepository, Group> imple
     @Override
     public void delete(@Nullable Group group, @Nullable User user) {
         if (group == null || user == null) throw new WrongInputException("Wrong Input");
-        //delete all task and assignee in project
         for (AssigneeTask assigneeTask : assigneeTaskRepository.findAll()) {
+            if(assigneeTask.getTask() == null) throw new WrongInputException("Wrong Input");
             Task taskTemp = taskRepository.findBy(assigneeTask.getTask().getId());
             if (group.equals(taskTemp.getGroup())) {
-                assigneeTaskRepository.remove(assigneeTask);
                 taskRepository.remove(taskTemp);
             }
         }
-        //delete project and assignee
-        assigneeGroupRepository.deleteAssigneeByParam(user.getId(), group.getId());
         repository.remove(group);
+    }
+
+    public Group getById(@Nullable String id) {
+        if (id == null || id.isEmpty()) throw new WrongInputException("Wrong Input");
+        return repository.findBy(id);
+    }
+
+    public void delete(@Nullable Group entity) {
+        if (entity == null) throw new WrongInputException("Wrong Input");
+        repository.remove(entity);
     }
 
     @Override

@@ -122,20 +122,4 @@ public class UserEndpoint {
         return new SessionDTO(session);
     }
 
-    @WebMethod
-    public Result linkToTaskUser(
-            @WebParam(name = "user", partName = "user") @Nullable UserDTO userDTO,
-            @WebParam(name = "task", partName = "task") @Nullable TaskDTO taskDTO,
-            @WebParam(name = "session", partName = "session") @Nullable SessionDTO sessionDTO) {
-        Session session = sessionService.getBySignature(sessionDTO.getSignature());
-        final boolean validateSession = sessionService.validate(session);
-        if (!validateSession) throw new SessionNotValidateException();
-        User user = userService.getByLogin(userDTO.getLogin());
-        Task task = taskService.getById(taskDTO.getId());
-        userService.linkToTask(user, task);
-        final Result result = new Result();
-        result.success();
-        return result;
-    }
-
 }

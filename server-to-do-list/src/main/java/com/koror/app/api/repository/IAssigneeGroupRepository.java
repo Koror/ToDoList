@@ -11,10 +11,7 @@ import java.util.List;
 @Repository
 public interface IAssigneeGroupRepository extends EntityRepository<AssigneeGroup, String> {
 
-    @Query("FROM AssigneeGroup a where a.user.id = ?1")
-    AssigneeGroup getAssigneeByUserId(String userId);
-
-    @Query("DELETE FROM AssigneeGroup a WHERE a.user.id = ?1, a.group.id = ?2")
-    void deleteAssigneeByParam(String userId, String groupId);
+    @Query("FROM AssigneeGroup a where a.user.id = ?1 and a.group.id = ?2")
+    AssigneeGroup getAssigneeByParam(String userId, String groupId);
 
 }

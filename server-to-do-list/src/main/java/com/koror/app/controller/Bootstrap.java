@@ -29,16 +29,7 @@ import java.util.Set;
 public final class Bootstrap implements IBootstrap {
 
     @Inject
-    private IGroupService groupService;
-
-    @Inject
-    private ITaskService taskService;
-
-    @Inject
     private IUserService userService;
-
-    @Inject
-    private ISessionService sessionService;
 
     @Inject
     private TaskEndpoint taskEndpoint;
@@ -99,16 +90,16 @@ public final class Bootstrap implements IBootstrap {
         return "";
     }
 
-    public void defaultUserInit() {
-            if (userService.getByLogin("admin") == null) {
-                final User userAdmin = new User("admin", "admin");
-                userAdmin.setAccess(Access.ADMIN_ACCESS);
-                userService.add(userAdmin);
-            }
-            if (userService.getByLogin("test") == null) {
-                final User userTest = new User("test", "test");
-                userService.add(userTest);
-            }
+    private void defaultUserInit() {
+        if (userService.getByLogin("admin") == null) {
+            final User userAdmin = new User("admin", "admin");
+            userAdmin.setAccess(Access.ADMIN_ACCESS);
+            userService.add(userAdmin);
+        }
+        if (userService.getByLogin("test") == null) {
+            final User userTest = new User("test", "test");
+            userService.add(userTest);
+        }
     }
 
     @Override

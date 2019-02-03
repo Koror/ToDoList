@@ -8,12 +8,10 @@ import lombok.Setter;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import javax.persistence.Basic;
-import javax.persistence.Column;
+import javax.persistence.*;
 
-import javax.persistence.Entity;
-import javax.persistence.Table;
 import java.io.Serializable;
+import java.util.List;
 
 @Setter
 @Getter
@@ -38,6 +36,9 @@ public class User extends AbstractEntity implements Serializable {
 
     @Nullable
     private Access access = Access.USER_ACCESS;
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    List<Session> sessionList;
 
     public User(@NotNull String login,@NotNull String password) {
         this.login = login;

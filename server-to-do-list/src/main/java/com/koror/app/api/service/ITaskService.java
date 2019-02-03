@@ -33,4 +33,7 @@ public interface ITaskService {
     void clearTask(@Nullable List<Task> taskList);
 
     void setGroup(@Nullable final Task task,@Nullable  Group group) throws WrongInputException;
+
+    void linkToTask(@Nullable User user, @Nullable Task task);
+
 }

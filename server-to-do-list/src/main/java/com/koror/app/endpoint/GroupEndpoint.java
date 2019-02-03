@@ -63,6 +63,7 @@ public class GroupEndpoint {
         final boolean validateSession = sessionService.validate(session);
         if (!validateSession) throw new SessionNotValidateException();
         Group group = groupService.getById(groupDTO.getId());
+        group.setName(groupDTO.getName());
         groupService.update(group);
         final Result result = new Result();
         result.success();

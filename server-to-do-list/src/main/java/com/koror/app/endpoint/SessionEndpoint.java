@@ -1,6 +1,5 @@
 package com.koror.app.endpoint;
 
-import com.koror.app.controller.Bootstrap;
 import com.koror.app.dto.SessionDTO;
 import com.koror.app.entity.Session;
 import com.koror.app.error.SessionNotValidateException;
@@ -39,7 +38,7 @@ public class SessionEndpoint {
         Session session = sessionService.getBySignature(sessionDTO.getSignature());
         final boolean validateSession = sessionService.validate(session);
         if (!validateSession) throw new SessionNotValidateException();
-        sessionService.deleteByUserSession(session.getUser().getId());
+        sessionService.deleteByUserId(session.getUser().getId());
         final Result result = new Result();
         result.success();
         return result;

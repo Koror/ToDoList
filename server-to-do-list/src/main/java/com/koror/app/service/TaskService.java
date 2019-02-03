@@ -24,6 +24,11 @@ public class TaskService extends AbstractService<ITaskRepository, Task> implemen
     @Inject
     private IAssigneeTaskRepository assigneeTaskRepository;
 
+    public Task getById(@Nullable String id) {
+        if (id == null || id.isEmpty()) throw new WrongInputException("Wrong Input");
+        return repository.findBy(id);
+    }
+
     @Override
     public void add(@Nullable Task task, @Nullable User user) {
         if (task == null || user == null) throw new WrongInputException("Wrong Input");
@@ -35,10 +40,13 @@ public class TaskService extends AbstractService<ITaskRepository, Task> implemen
     @Override
     public void delete(@Nullable Task task, @Nullable User user) {
         if (task == null || user == null) throw new WrongInputException("Wrong Input");
-        //assigneeTaskRepository.getAssigneeByParam(user.getId(), task.getId());
         repository.remove(task);
     }
 
+    public void delete(@Nullable Task entity) {
+        if (entity == null) throw new WrongInputException("Wrong Input");
+        repository.remove(entity);
+    }
 
     @Override
     public void completeTask(@Nullable final Task task) throws WrongInputException {
@@ -58,9 +66,9 @@ public class TaskService extends AbstractService<ITaskRepository, Task> implemen
 
     @Override
     public void setGroup(@Nullable final Task task, @Nullable final Group group) throws WrongInputException {
-        if (task == null) throw new WrongInputException("Wrong input");
+        if (task == null || group == null) throw new WrongInputException("Wrong input");
         task.setGroup(group);
-        repository.refresh(task);
+        repository.saveAndFlushAndRefresh(task);
     }
 
     @Override
@@ -73,6 +81,13 @@ public class TaskService extends AbstractService<ITaskRepository, Task> implemen
             System.out.println(e.getMessage());
         }
         return null;
+    }
+
+    public void linkToTask(@Nullable User user, @Nullable Task task){
+        if(user == null || task == null) throw new WrongInputException("Wrong input");
+        task.setUser(user);
+        final AssigneeTask assigneeTask = new AssigneeTask(user, task);
+        assigneeTaskRepository.save(assigneeTask);
     }
 
 }

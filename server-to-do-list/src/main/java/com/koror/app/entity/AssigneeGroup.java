@@ -4,6 +4,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -15,12 +16,12 @@ import java.io.Serializable;
 @Table(name = "tm_assigneegroup")
 public class AssigneeGroup extends AbstractEntity implements Serializable {
 
-    @NotNull
+    @Nullable
     @ManyToOne
     @JoinColumn(nullable = false)
     private User user;
 
-    @NotNull
+    @Nullable
     @ManyToOne
     @JoinColumn(nullable = false)
     private Group group;

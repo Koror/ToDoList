@@ -22,6 +22,4 @@ public interface IUserService{
 
     User login(@Nullable String login, @Nullable String password);
 
-    void linkToTask(@Nullable User user, @Nullable Task task);
-
 }

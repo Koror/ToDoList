@@ -1,6 +1,7 @@
 package com.koror.app.service;
 
 import com.koror.app.entity.AbstractEntity;
+import com.koror.app.entity.Task;
 import com.koror.app.entity.User;
 import com.koror.app.error.WrongInputException;
 import org.apache.deltaspike.data.api.EntityRepository;
@@ -27,17 +28,7 @@ public abstract class AbstractService<R extends EntityRepository, E extends Abst
 
     public void update(@Nullable final E entity) {
         if (entity == null) throw new WrongInputException("Wrong input");
-        repository.refresh(entity);
-    }
-
-    public void delete(@Nullable E entity) {
-        if (entity == null) throw new WrongInputException("Wrong Input");
-        repository.remove(entity);
-    }
-
-    public E getById(@Nullable String id) {
-        if (id == null || id.isEmpty()) throw new WrongInputException("Wrong Input");
-        return (E)repository.findBy(id);
+        repository.saveAndFlushAndRefresh(entity);
     }
 
     public List<E> getList() {

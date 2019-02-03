@@ -19,7 +19,7 @@ public interface ISessionService {
 
     boolean validate(@Nullable Session session);
 
-    void deleteByUserSession(@Nullable String userId);
+    void deleteByUserId(@Nullable String userId);
 
     Session getBySignature(@Nullable String signature);
 }

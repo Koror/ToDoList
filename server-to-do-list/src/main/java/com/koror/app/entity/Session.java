@@ -24,12 +24,10 @@ public class Session extends AbstractEntity {
     private User user;
 
     @Nullable
-    @Basic
     @Column(nullable = false)
     private String signature;
 
     @Nullable
-    @Basic
     private String ip;
 
     public Session(@NotNull String id,@NotNull User user,@NotNull String signature, @Nullable String ip) {
@@ -40,7 +38,7 @@ public class Session extends AbstractEntity {
     }
 
     public void hashSignature() {
-            this.signature = Hash.createHashString(id + user.getId());
+            this.signature = Hash.createHashString(id + user.getId() + ip);
     }
 
     @Override
@@ -48,13 +46,11 @@ public class Session extends AbstractEntity {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Session session = (Session) o;
-        return Objects.equals(user.getId(), session.user.getId()) &&
-                Objects.equals(signature, session.signature) &&
-                Objects.equals(ip, session.ip);
+        return Objects.equals(signature, session.signature);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(user.id, signature, ip);
+        return Objects.hash(signature);
     }
 }

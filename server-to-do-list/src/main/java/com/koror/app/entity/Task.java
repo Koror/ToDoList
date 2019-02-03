@@ -4,6 +4,7 @@ import com.koror.app.enumerated.Priority;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.Cascade;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -19,21 +20,18 @@ import java.util.List;
 public class Task extends AbstractEntity implements Serializable {
 
     @Nullable
-    @Basic
     private Priority priority;
 
     @Nullable
-    @Basic
     @Column(nullable = false)
     private String name;
 
-    @Basic
-    private boolean complete;
-
     @Nullable
-    @Basic
     @Column(nullable = false)
     private String creator;
+
+    @Nullable
+    private boolean complete;
 
     @Nullable
     @ManyToOne
@@ -43,7 +41,7 @@ public class Task extends AbstractEntity implements Serializable {
     @ManyToOne
     private User user;
 
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "task", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<AssigneeTask> assigneeTaskList;
 
     public Task(@NotNull final String name) {

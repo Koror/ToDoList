@@ -19,18 +19,19 @@ import java.util.List;
 public class Group extends AbstractEntity implements Serializable {
 
     @Nullable
-    @Basic
     @Column(nullable = false)
     private String creator;
 
     @Nullable
-    @Basic
     @Column(nullable = false)
     private String name;
 
     @Nullable
     @ManyToOne
     private User user;
+
+    @OneToMany(mappedBy = "group", cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
+    private List<AssigneeGroup> assigneeGroupList;
 
     public Group(@NotNull final String name) {
         this.name = name;
