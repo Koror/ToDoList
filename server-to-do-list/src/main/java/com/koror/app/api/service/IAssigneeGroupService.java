@@ -1,10 +1,8 @@
 package com.koror.app.api.service;
 
-import com.koror.app.api.repository.IAssigneeGroupRepository;
 import com.koror.app.entity.AssigneeGroup;
 import org.jetbrains.annotations.Nullable;
 
-import javax.persistence.EntityManager;
 import java.util.List;
 
 public interface IAssigneeGroupService {

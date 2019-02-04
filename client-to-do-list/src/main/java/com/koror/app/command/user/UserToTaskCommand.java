@@ -16,7 +16,7 @@ public class UserToTaskCommand extends AbstractCommand {
         final List<TaskDTO> taskList = bootstrap.getTaskEndpoint().getTaskList(bootstrap.getSession());
         TaskDTO task = bootstrap.getTaskByList(taskList);
 
-        Result result = bootstrap.getUserEndpoint().linkToTaskUser(user, task, bootstrap.getSession());
+        Result result = bootstrap.getTaskEndpoint().linkToTaskUser(user, task, bootstrap.getSession());
         System.out.println(result.getResult());
         System.out.println("Link complete");
     }

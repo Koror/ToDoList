@@ -2,7 +2,6 @@ package com.koror.app.command.user;
 
 import com.koror.app.command.AbstractCommand;
 import com.koror.app.endpoint.SessionDTO;
-import com.koror.app.endpoint.UserDTO;
 
 public class UserRegisterCommand extends AbstractCommand {
     @Override

@@ -13,7 +13,7 @@ public class UserRepositoryTest {
     }
 
     @Test
-    public void getList(){
+    public void getList() {
 //        DatabaseConnection.setConnection();
 //        HibernateFactory.buildFactory();
 //        UserRepository userRepository = new UserRepository();

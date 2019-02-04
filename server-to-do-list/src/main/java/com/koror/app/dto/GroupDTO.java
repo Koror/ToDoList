@@ -16,7 +16,7 @@ public class GroupDTO {
 
     private String creator;
 
-    public GroupDTO(Group group){
+    public GroupDTO(Group group) {
         name = group.getName();
         id = group.getId();
         creator = group.getCreator();

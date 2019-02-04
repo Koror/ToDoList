@@ -17,7 +17,7 @@ public class UserDTO {
 
     private String login;
 
-    public UserDTO(@Nullable User user){
+    public UserDTO(@Nullable User user) {
         if (user == null) return;
         name = user.getName();
         email = user.getEmail();

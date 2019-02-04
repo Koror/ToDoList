@@ -15,7 +15,7 @@ public final class TaskUpdateCommand extends AbstractCommand {
         final TaskDTO task = bootstrap.getTaskByList(taskList);
         System.out.println("Input task name and priority{LOW MEDIUM HIGH}");
         task.setName(bootstrap.nextLine());
-        task.setPriority(Priority.valueOf(bootstrap.nextLine()+"_PRIORITY"));
+        task.setPriority(Priority.valueOf(bootstrap.nextLine() + "_PRIORITY"));
         Result result = bootstrap.getTaskEndpoint().updateTask(task, bootstrap.getSession());
         System.out.println(result.getResult());
         System.out.println("Task update");

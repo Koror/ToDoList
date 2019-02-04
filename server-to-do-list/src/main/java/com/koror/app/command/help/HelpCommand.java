@@ -2,7 +2,6 @@ package com.koror.app.command.help;
 
 import com.koror.app.command.AbstractCommand;
 
-import java.io.IOException;
 import java.util.Map;
 
 public class HelpCommand extends AbstractCommand {

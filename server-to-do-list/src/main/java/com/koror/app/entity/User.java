@@ -9,7 +9,6 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import javax.persistence.*;
-
 import java.io.Serializable;
 import java.util.List;
 
@@ -40,7 +39,7 @@ public class User extends AbstractEntity implements Serializable {
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     List<Session> sessionList;
 
-    public User(@NotNull String login,@NotNull String password) {
+    public User(@NotNull String login, @NotNull String password) {
         this.login = login;
         this.password = Hash.createHashString(password);
     }

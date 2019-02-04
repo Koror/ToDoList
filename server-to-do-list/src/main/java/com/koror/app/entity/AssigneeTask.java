@@ -6,7 +6,10 @@ import lombok.Setter;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import javax.persistence.*;
+import javax.persistence.Entity;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
 import java.io.Serializable;
 
 @Setter
@@ -26,7 +29,7 @@ public class AssigneeTask extends AbstractEntity implements Serializable {
     @JoinColumn(nullable = false)
     private Task task;
 
-    public AssigneeTask(@NotNull User user,@NotNull Task task) {
+    public AssigneeTask(@NotNull User user, @NotNull Task task) {
         this.user = user;
         this.task = task;
     }

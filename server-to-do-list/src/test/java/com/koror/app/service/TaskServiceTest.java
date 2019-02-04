@@ -4,21 +4,19 @@ import com.koror.app.App;
 import com.koror.app.api.controller.IBootstrap;
 import com.koror.app.api.repository.IAssigneeTaskRepository;
 import com.koror.app.api.service.ITaskService;
-import com.koror.app.controller.Bootstrap;
 import com.koror.app.entity.Task;
 import com.koror.app.entity.User;
 import org.junit.Test;
 
 import javax.enterprise.inject.se.SeContainer;
 import javax.enterprise.inject.se.SeContainerInitializer;
-import javax.inject.Inject;
 import java.io.IOException;
 import java.util.List;
 
 public class TaskServiceTest {
 
     @Test
-    public void test() throws IOException ,ReflectiveOperationException{
+    public void test() throws IOException, ReflectiveOperationException {
         SeContainer seContainer = SeContainerInitializer.newInstance().addPackages(App.class).initialize();
         IBootstrap bootstrap = seContainer.select(IBootstrap.class).get();
         ITaskService taskService = seContainer.select(ITaskService.class).get();
@@ -27,7 +25,7 @@ public class TaskServiceTest {
         Task task = list.get(0);
         User user = new User();
         user.setId("15fd2cf8-6188-4378-9126-c26643feb691");
-        taskService.delete(task, user);
+        taskService.delete(task);
         list.get(0);
         //task.getName();
     }

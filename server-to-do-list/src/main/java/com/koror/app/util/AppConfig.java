@@ -1,6 +1,5 @@
 package com.koror.app.util;
 
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Properties;
@@ -31,7 +30,7 @@ public class AppConfig {
         fis = AppConfig.class.getClassLoader().getResourceAsStream("config.properties");
         try {
             property.load(fis);
-        }catch (IOException e){
+        } catch (IOException e) {
             e.printStackTrace();
         }
         JDBC_DRIVER = property.getProperty("db.driver");

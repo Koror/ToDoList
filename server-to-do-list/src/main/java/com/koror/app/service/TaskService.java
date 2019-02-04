@@ -37,12 +37,6 @@ public class TaskService extends AbstractService<ITaskRepository, Task> implemen
         assigneeTaskRepository.save(assigneeTask);
     }
 
-    @Override
-    public void delete(@Nullable Task task, @Nullable User user) {
-        if (task == null || user == null) throw new WrongInputException("Wrong Input");
-        repository.remove(task);
-    }
-
     public void delete(@Nullable Task entity) {
         if (entity == null) throw new WrongInputException("Wrong Input");
         repository.remove(entity);
@@ -77,14 +71,14 @@ public class TaskService extends AbstractService<ITaskRepository, Task> implemen
         if (user.getAccess() == Access.ADMIN_ACCESS) return getList();
         try {
             return repository.getListTaskByUserId(user.getId());
-        }catch (NoResultException e){
+        } catch (NoResultException e) {
             System.out.println(e.getMessage());
         }
         return null;
     }
 
-    public void linkToTask(@Nullable User user, @Nullable Task task){
-        if(user == null || task == null) throw new WrongInputException("Wrong input");
+    public void linkToTask(@Nullable User user, @Nullable Task task) {
+        if (user == null || task == null) throw new WrongInputException("Wrong input");
         task.setUser(user);
         final AssigneeTask assigneeTask = new AssigneeTask(user, task);
         assigneeTaskRepository.save(assigneeTask);

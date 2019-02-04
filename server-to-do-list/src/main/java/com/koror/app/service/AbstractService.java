@@ -1,8 +1,6 @@
 package com.koror.app.service;
 
 import com.koror.app.entity.AbstractEntity;
-import com.koror.app.entity.Task;
-import com.koror.app.entity.User;
 import com.koror.app.error.WrongInputException;
 import org.apache.deltaspike.data.api.EntityRepository;
 import org.apache.deltaspike.jpa.api.transaction.Transactional;

@@ -16,7 +16,7 @@ public final class GroupReadCommand extends AbstractCommand {
         final List<TaskDTO> taskList = bootstrap.getTaskEndpoint().getTaskList(bootstrap.getSession());
         for (TaskDTO task : taskList) {
             if (task.getGroup().getId().equals(group.getId()))
-                System.out.println("  "  + "Name:" + task.getName() + " Priority: "
+                System.out.println("  " + "Name:" + task.getName() + " Priority: "
                         + task.getPriority() + " Complete: " + task.isComplete() + "]");
         }
     }

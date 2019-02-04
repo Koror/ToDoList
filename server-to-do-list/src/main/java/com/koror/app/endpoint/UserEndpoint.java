@@ -1,14 +1,10 @@
 package com.koror.app.endpoint;
 
-import com.koror.app.controller.Bootstrap;
+import com.koror.app.dto.Result;
 import com.koror.app.dto.SessionDTO;
-import com.koror.app.dto.TaskDTO;
 import com.koror.app.dto.UserDTO;
-import com.koror.app.entity.AssigneeTask;
 import com.koror.app.entity.Session;
-import com.koror.app.entity.Task;
 import com.koror.app.entity.User;
-import com.koror.app.error.SessionNotValidateException;
 import com.koror.app.service.SessionService;
 import com.koror.app.service.TaskService;
 import com.koror.app.service.UserService;
@@ -37,17 +33,11 @@ public class UserEndpoint {
     public Result deleteUser(
             @WebParam(name = "user", partName = "user") @Nullable UserDTO userDTO,
             @WebParam(name = "session", partName = "session") @Nullable SessionDTO sessionDTO) {
-        Session session = sessionService.getBySignature(sessionDTO.getSignature());
-        final Result result = new Result();
-        final boolean validateSession = sessionService.validate(session);
-        if (!validateSession) throw new SessionNotValidateException();
+        sessionService.validate(sessionDTO.getSignature());
         User user = userService.getByLogin(userDTO.getLogin());
-        if(user == null) return result;
+        final Result result = new Result();
+        if (user == null) return result;
         userService.delete(user);
-        for (Session sessionTemp : sessionService.getList()) {
-            if (user.getId().equals(sessionTemp.getUser().getId()))
-                sessionService.delete(sessionTemp);
-        }
         result.success();
         return result;
     }
@@ -58,19 +48,7 @@ public class UserEndpoint {
             @WebParam(name = "password", partName = "password") @Nullable String password,
             @WebParam(name = "ip", partName = "ip") String ip) {
         final User user = userService.login(login, password);
-        Session session = null;
-        for (Session sessionTemp : sessionService.getList()) {
-            if ((user.getId().equals(sessionTemp.getUser().getId())) && (ip.equals(sessionTemp.getIp())))
-                session = sessionTemp;
-        }
-        if (session == null) {
-            session = new Session();
-            session.setUser(user);
-            session.setIp(ip);
-            session.hashSignature();
-            sessionService.add(session);
-        }
-        return new SessionDTO(session);
+        return new SessionDTO(sessionService.login(user, ip));
     }
 
     @WebMethod
@@ -85,13 +63,11 @@ public class UserEndpoint {
 
     @WebMethod
     public List<UserDTO> getUserList(@WebParam(name = "session", partName = "session") @Nullable SessionDTO sessionDTO) {
-        Session session = sessionService.getBySignature(sessionDTO.getSignature());
-        final boolean validateSession = sessionService.validate(session);
-        if (!validateSession) throw new SessionNotValidateException();
+        sessionService.validate(sessionDTO.getSignature());
         final Result result = new Result();
         result.success();
         List<UserDTO> dtoList = new ArrayList<>();
-        for(User userTemp: userService.getList()){
+        for (User userTemp : userService.getList()) {
             dtoList.add(new UserDTO(userTemp));
         }
         return dtoList;
@@ -101,9 +77,7 @@ public class UserEndpoint {
     public UserDTO getUserById(
             @WebParam(name = "user", partName = "user") @Nullable String userId,
             @WebParam(name = "session", partName = "session") @Nullable SessionDTO sessionDTO) {
-        Session session = sessionService.getBySignature(sessionDTO.getSignature());
-        final boolean validateSession = sessionService.validate(session);
-        if (!validateSession) throw new SessionNotValidateException();
+        sessionService.validate(sessionDTO.getSignature());
         return new UserDTO(userService.getById(userId));
     }
 

@@ -1,10 +1,9 @@
 package com.koror.app.api.service;
 
-import com.koror.app.api.repository.ISessionRepository;
 import com.koror.app.entity.Session;
+import com.koror.app.entity.User;
 import org.jetbrains.annotations.Nullable;
 
-import javax.persistence.EntityManager;
 import java.util.List;
 
 public interface ISessionService {
@@ -17,7 +16,9 @@ public interface ISessionService {
 
     List<Session> getList();
 
-    boolean validate(@Nullable Session session);
+    Session login(User user, String ip);
+
+    void validate(@Nullable String signature);
 
     void deleteByUserId(@Nullable String userId);
 

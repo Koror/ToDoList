@@ -10,7 +10,7 @@ public class GroupEndpointProducer {
 
     @Produces
     @ApplicationScoped
-    public GroupEndpoint getGroupEdnpoint(){
+    public GroupEndpoint getGroupEdnpoint() {
         return new GroupEndpointService().getGroupEndpointPort();
     }
 

@@ -1,12 +1,10 @@
 package com.koror.app.api.repository;
 
 import com.koror.app.entity.Group;
-import com.koror.app.entity.Task;
 import org.apache.deltaspike.data.api.EntityRepository;
 import org.apache.deltaspike.data.api.Query;
 import org.apache.deltaspike.data.api.Repository;
 
-import javax.persistence.EntityManager;
 import java.util.List;
 
 @Repository

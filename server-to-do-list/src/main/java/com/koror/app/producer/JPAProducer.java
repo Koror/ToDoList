@@ -2,7 +2,6 @@ package com.koror.app.producer;
 
 import org.apache.deltaspike.jpa.api.transaction.TransactionScoped;
 
-import javax.enterprise.context.SessionScoped;
 import javax.enterprise.inject.Any;
 import javax.enterprise.inject.Disposes;
 import javax.enterprise.inject.Produces;

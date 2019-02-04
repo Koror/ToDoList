@@ -2,8 +2,6 @@ package com.koror.app.producer;
 
 import com.koror.app.entity.*;
 import com.koror.app.util.AppConfig;
-import jdk.nashorn.internal.objects.annotations.Getter;
-import jdk.nashorn.internal.objects.annotations.Setter;
 import org.hibernate.boot.Metadata;
 import org.hibernate.boot.MetadataSources;
 import org.hibernate.boot.registry.StandardServiceRegistry;
@@ -12,15 +10,13 @@ import org.hibernate.cfg.Environment;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.inject.Produces;
-import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
-import javax.transaction.TransactionScoped;
 import java.util.HashMap;
 import java.util.Map;
 
 public class EntityManagerFactoryProducer {
 
-    public EntityManagerFactoryProducer(){
+    public EntityManagerFactoryProducer() {
 
     }
 
@@ -47,7 +43,7 @@ public class EntityManagerFactoryProducer {
         sources.addAnnotatedClass(AssigneeTask.class);
         sources.addAnnotatedClass(AssigneeGroup.class);
         final Metadata metadata = sources.getMetadataBuilder().build();
-        return  metadata.getSessionFactoryBuilder().build();
+        return metadata.getSessionFactoryBuilder().build();
     }
 
 }

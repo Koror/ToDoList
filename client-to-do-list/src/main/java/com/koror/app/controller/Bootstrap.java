@@ -169,7 +169,7 @@ public class Bootstrap {
         this.session = session;
     }
 
-    public void deleteSession(){
+    public void deleteSession() {
         session = null;
     }
 

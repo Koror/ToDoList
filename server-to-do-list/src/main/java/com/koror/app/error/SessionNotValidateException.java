@@ -2,7 +2,7 @@ package com.koror.app.error;
 
 public class SessionNotValidateException extends RuntimeException {
 
-    public SessionNotValidateException(){
+    public SessionNotValidateException() {
         super("Session not validated");
     }
 

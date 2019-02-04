@@ -14,9 +14,9 @@ public class SessionDTO {
 
     private String ip;
 
-    public SessionDTO(Session session){
-            signature = session.getSignature();
-            ip = session.getIp();
+    public SessionDTO(Session session) {
+        signature = session.getSignature();
+        ip = session.getIp();
     }
 
 }

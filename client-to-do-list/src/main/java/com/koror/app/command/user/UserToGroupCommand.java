@@ -4,7 +4,7 @@ import com.koror.app.command.AbstractCommand;
 
 public class UserToGroupCommand extends AbstractCommand {
     @Override
-    public void execute(){
+    public void execute() {
 
     }
 

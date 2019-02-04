@@ -9,7 +9,7 @@ public class Hash {
     public static String createHashString(String value) {
         String hashValue = null;
         value = AppConfig.SALT + value + AppConfig.SALT;
-        for(int i = 0; i< AppConfig.CYCLE; i++) {
+        for (int i = 0; i < AppConfig.CYCLE; i++) {
             try {
                 MessageDigest md = MessageDigest.getInstance("MD5");
                 md.update(value.getBytes());

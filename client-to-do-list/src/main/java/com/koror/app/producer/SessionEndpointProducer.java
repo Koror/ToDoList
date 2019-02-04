@@ -10,7 +10,7 @@ public class SessionEndpointProducer {
 
     @Produces
     @ApplicationScoped
-    public SessionEndpoint getSessionEdnpoint(){
+    public SessionEndpoint getSessionEdnpoint() {
         return new SessionEndpointService().getSessionEndpointPort();
     }
 

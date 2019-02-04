@@ -1,10 +1,10 @@
-package com.koror.app.endpoint;
+package com.koror.app.dto;
 
 public class Result {
 
     String result = "Error";
 
-    public void success(){
+    public void success() {
         result = "Ok";
     }
 

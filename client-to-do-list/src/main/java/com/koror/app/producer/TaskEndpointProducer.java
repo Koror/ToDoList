@@ -10,7 +10,7 @@ public class TaskEndpointProducer {
 
     @Produces
     @ApplicationScoped
-    public TaskEndpoint getTaskEdnpoint(){
+    public TaskEndpoint getTaskEdnpoint() {
         return new TaskEndpointService().getTaskEndpointPort();
     }
 

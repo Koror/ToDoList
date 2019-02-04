@@ -1,8 +1,8 @@
 package com.koror.app.endpoint;
 
+import com.koror.app.dto.Result;
 import com.koror.app.dto.SessionDTO;
 import com.koror.app.entity.Session;
-import com.koror.app.error.SessionNotValidateException;
 import com.koror.app.service.SessionService;
 import org.jetbrains.annotations.Nullable;
 
@@ -23,10 +23,8 @@ public class SessionEndpoint {
     public Result deleteSession(
             @WebParam(name = "session", partName = "session") @Nullable SessionDTO sessionDTO,
             @WebParam(name = "userSession", partName = "userSession") @Nullable SessionDTO userSessionDTO) {
+        sessionService.validate(sessionDTO.getSignature());
         Session session = sessionService.getBySignature(sessionDTO.getSignature());
-        Session userSession = sessionService.getBySignature(userSessionDTO.getSignature());
-        final boolean validateSession = sessionService.validate(userSession);
-        if (!validateSession) throw new SessionNotValidateException();
         sessionService.delete(session);
         final Result result = new Result();
         result.success();
@@ -35,9 +33,8 @@ public class SessionEndpoint {
 
     @WebMethod
     public Result deleteByUserSession(@WebParam(name = "session", partName = "session") @Nullable SessionDTO sessionDTO) {
-        Session session = sessionService.getBySignature(sessionDTO.getSignature());
-        final boolean validateSession = sessionService.validate(session);
-        if (!validateSession) throw new SessionNotValidateException();
+        sessionService.validate(sessionDTO.getSignature());
+        final Session session = sessionService.getBySignature(sessionDTO.getSignature());
         sessionService.deleteByUserId(session.getUser().getId());
         final Result result = new Result();
         result.success();
@@ -48,19 +45,15 @@ public class SessionEndpoint {
     public SessionDTO getByIdSession(
             @WebParam(name = "id", partName = "id") @Nullable String id,
             @WebParam(name = "session", partName = "session") @Nullable SessionDTO sessionDTO) {
-        Session session = sessionService.getBySignature(sessionDTO.getSignature());
-        final boolean validateSession = sessionService.validate(session);
-        if (!validateSession) throw new SessionNotValidateException();
+        sessionService.validate(sessionDTO.getSignature());
         return new SessionDTO(sessionService.getById(id));
     }
 
     @WebMethod
     public List<SessionDTO> getListSession(@WebParam(name = "session", partName = "session") @Nullable SessionDTO sessionDTO) {
-        Session session = sessionService.getBySignature(sessionDTO.getSignature());
-        final boolean validateSession = sessionService.validate(session);
-        if (!validateSession) throw new SessionNotValidateException();
-        List<SessionDTO> dtoList = new ArrayList<>();
-        for(Session sessionTemp: sessionService.getList()){
+        sessionService.validate(sessionDTO.getSignature());
+        final List<SessionDTO> dtoList = new ArrayList<>();
+        for (Session sessionTemp : sessionService.getList()) {
             dtoList.add(new SessionDTO(sessionTemp));
         }
         return dtoList;
@@ -68,9 +61,8 @@ public class SessionEndpoint {
 
     @WebMethod
     public Result updateSession(@WebParam(name = "session", partName = "session") @Nullable SessionDTO sessionDTO) {
-        Session session = sessionService.getBySignature(sessionDTO.getSignature());
-        final boolean validateSession = sessionService.validate(session);
-        if (!validateSession) throw new SessionNotValidateException();
+        sessionService.validate(sessionDTO.getSignature());
+        final Session session = sessionService.getBySignature(sessionDTO.getSignature());
         sessionService.update(session);
         final Result result = new Result();
         result.success();

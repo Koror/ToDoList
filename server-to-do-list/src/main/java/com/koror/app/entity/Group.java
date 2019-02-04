@@ -33,11 +33,14 @@ public class Group extends AbstractEntity implements Serializable {
     @OneToMany(mappedBy = "group", cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
     private List<AssigneeGroup> assigneeGroupList;
 
+    @OneToMany(mappedBy = "group", cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
+    private List<Task> taskList;
+
     public Group(@NotNull final String name) {
         this.name = name;
     }
 
-    public Group(GroupDTO groupDTO, User user){
+    public Group(GroupDTO groupDTO, User user) {
         id = groupDTO.getId();
         creator = groupDTO.getCreator();
         name = groupDTO.getName();

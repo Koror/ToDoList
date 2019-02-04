@@ -1,1 +1,10 @@
-<Tasks><item><id>1b3dd4d6-0d96-4944-b671-3bacf17986b2</id><groupId/><priority>MEDIUM</priority><name>Default name</name><complete>false</complete><creator/></item></Tasks>
+<Tasks>
+    <item>
+        <id>1b3dd4d6-0d96-4944-b671-3bacf17986b2</id>
+        <groupId/>
+        <priority>MEDIUM</priority>
+        <name>Default name</name>
+        <complete>false</complete>
+        <creator/>
+    </item>
+</Tasks>

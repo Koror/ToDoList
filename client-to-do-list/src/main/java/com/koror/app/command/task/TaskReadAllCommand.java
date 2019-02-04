@@ -12,7 +12,7 @@ public final class TaskReadAllCommand extends AbstractCommand {
         int index = 0;
         List<TaskDTO> taskList = bootstrap.getTaskEndpoint().getTaskList(bootstrap.getSession());
         for (TaskDTO task : taskList) {
-            final String groupName ="null";// bootstrap.getGroupEndpoint().getById(task.getGroupId()).getName();
+            final String groupName = "null";// bootstrap.getGroupEndpoint().getById(task.getGroupId()).getName();
             System.out.println(index + " [" + "Name:" + task.getName() + " Priority: "
                     + task.getPriority() + " Complete:" + task.isComplete() + " Group:" + groupName + "]");
             index++;

@@ -5,7 +5,9 @@ import com.koror.app.api.repository.IAssigneeTaskRepository;
 import com.koror.app.api.repository.IGroupRepository;
 import com.koror.app.api.repository.ITaskRepository;
 import com.koror.app.api.service.IGroupService;
-import com.koror.app.entity.*;
+import com.koror.app.entity.AssigneeGroup;
+import com.koror.app.entity.Group;
+import com.koror.app.entity.User;
 import com.koror.app.enumerated.Access;
 import com.koror.app.error.WrongInputException;
 import org.apache.deltaspike.jpa.api.transaction.Transactional;
@@ -35,19 +37,6 @@ public class GroupService extends AbstractService<IGroupRepository, Group> imple
         repository.save(entity);
         final AssigneeGroup assigneeGroup = new AssigneeGroup(user, entity);
         assigneeGroupRepository.save(assigneeGroup);
-    }
-
-    @Override
-    public void delete(@Nullable Group group, @Nullable User user) {
-        if (group == null || user == null) throw new WrongInputException("Wrong Input");
-        for (AssigneeTask assigneeTask : assigneeTaskRepository.findAll()) {
-            if(assigneeTask.getTask() == null) throw new WrongInputException("Wrong Input");
-            Task taskTemp = taskRepository.findBy(assigneeTask.getTask().getId());
-            if (group.equals(taskTemp.getGroup())) {
-                taskRepository.remove(taskTemp);
-            }
-        }
-        repository.remove(group);
     }
 
     public Group getById(@Nullable String id) {

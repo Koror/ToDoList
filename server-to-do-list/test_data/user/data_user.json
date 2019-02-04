@@ -1,1 +1,16 @@
-[{"id":"9fec3ea6-707d-462e-b85d-c3b7bd94e667","login":"Max","password":"12345","email":null,"name":null},{"id":"4d37e480-5337-475d-8829-fa35023c26bb","login":"Lina","password":"54321","email":null,"name":null}]
+[
+  {
+    "id": "9fec3ea6-707d-462e-b85d-c3b7bd94e667",
+    "login": "Max",
+    "password": "12345",
+    "email": null,
+    "name": null
+  },
+  {
+    "id": "4d37e480-5337-475d-8829-fa35023c26bb",
+    "login": "Lina",
+    "password": "54321",
+    "email": null,
+    "name": null
+  }
+]

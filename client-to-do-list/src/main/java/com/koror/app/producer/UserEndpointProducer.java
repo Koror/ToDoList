@@ -10,7 +10,7 @@ public class UserEndpointProducer {
 
     @Produces
     @ApplicationScoped
-    public UserEndpoint getUserEdnpoint(){
+    public UserEndpoint getUserEdnpoint() {
         return new UserEndpointService().getUserEndpointPort();
     }
 

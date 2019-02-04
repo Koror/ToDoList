@@ -10,8 +10,11 @@ public class UserDeleteCommand extends AbstractCommand {
     @Override
     public void execute() {
         final List<UserDTO> userList = bootstrap.getUserEndpoint().getUserList(bootstrap.getSession());
-        for (UserDTO user : userList)
-            System.out.println(user.getLogin());
+        int index = 0;
+        for (UserDTO user : userList) {
+            System.out.println(index + " " + user.getLogin());
+            index++;
+        }
         System.out.println("Input index");
         final int indexUser = bootstrap.nextInt();
         final UserDTO user = userList.get(indexUser);
