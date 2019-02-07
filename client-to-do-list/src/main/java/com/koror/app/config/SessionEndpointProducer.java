@@ -1,15 +1,12 @@
-package com.koror.app.producer;
+package com.koror.app.config;
 
 import com.koror.app.endpoint.SessionEndpoint;
 import com.koror.app.endpoint.SessionEndpointService;
-
-import javax.enterprise.context.ApplicationScoped;
-import javax.enterprise.inject.Produces;
+import org.springframework.beans.factory.annotation.Autowired;
 
 public class SessionEndpointProducer {
 
-    @Produces
-    @ApplicationScoped
+    @Autowired
     public SessionEndpoint getSessionEdnpoint() {
         return new SessionEndpointService().getSessionEndpointPort();
     }

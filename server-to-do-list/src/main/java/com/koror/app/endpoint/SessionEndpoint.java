@@ -1,23 +1,28 @@
 package com.koror.app.endpoint;
 
+import com.koror.app.api.service.ISessionService;
 import com.koror.app.dto.Result;
 import com.koror.app.dto.SessionDTO;
 import com.koror.app.entity.Session;
 import com.koror.app.service.SessionService;
 import org.jetbrains.annotations.Nullable;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.config.ConfigurableBeanFactory;
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Component;
 
-import javax.inject.Inject;
 import javax.jws.WebMethod;
 import javax.jws.WebParam;
 import javax.jws.WebService;
 import java.util.ArrayList;
 import java.util.List;
 
+@Component
 @WebService
 public class SessionEndpoint {
 
-    @Inject
-    private SessionService sessionService;
+    @Autowired
+    private ISessionService sessionService;
 
     @WebMethod
     public Result deleteSession(

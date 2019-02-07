@@ -13,6 +13,8 @@ public interface IUserService {
 
     void delete(@Nullable User user);
 
+    void update(@Nullable final User entity);
+
     User getById(@Nullable String id);
 
     List<User> getList();

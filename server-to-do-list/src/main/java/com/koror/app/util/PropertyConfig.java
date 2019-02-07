@@ -4,7 +4,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.Properties;
 
-public class AppConfig {
+public class PropertyConfig {
 
     public static String JDBC_DRIVER;
 
@@ -27,7 +27,7 @@ public class AppConfig {
     static {
         InputStream fis;
         Properties property = new Properties();
-        fis = AppConfig.class.getClassLoader().getResourceAsStream("config.properties");
+        fis = PropertyConfig.class.getClassLoader().getResourceAsStream("config.properties");
         try {
             property.load(fis);
         } catch (IOException e) {

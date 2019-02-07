@@ -1,12 +1,10 @@
 package com.koror.app.api.repository;
 
 import com.koror.app.entity.User;
-import org.apache.deltaspike.data.api.EntityRepository;
-import org.apache.deltaspike.data.api.Query;
-import org.apache.deltaspike.data.api.Repository;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 
-@Repository
-public interface IUserRepository extends EntityRepository<User, String> {
+public interface IUserRepository extends JpaRepository<User, String> {
 
     @Query(value = "FROM User a where a.login = ?1")
     User findByLogin(String login);

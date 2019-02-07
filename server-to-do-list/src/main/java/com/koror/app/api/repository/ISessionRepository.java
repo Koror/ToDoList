@@ -1,12 +1,10 @@
 package com.koror.app.api.repository;
 
 import com.koror.app.entity.Session;
-import org.apache.deltaspike.data.api.EntityRepository;
-import org.apache.deltaspike.data.api.Query;
-import org.apache.deltaspike.data.api.Repository;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 
-@Repository
-public interface ISessionRepository extends EntityRepository<Session, String> {
+public interface ISessionRepository extends JpaRepository<Session, String> {
 
     @Query(value = "FROM Session a where a.signature = ?1")
     Session findBySignature(String signature);

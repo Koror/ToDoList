@@ -6,41 +6,63 @@ import com.koror.app.entity.Session;
 import com.koror.app.entity.User;
 import com.koror.app.error.SessionNotValidateException;
 import com.koror.app.error.WrongInputException;
-import org.apache.deltaspike.jpa.api.transaction.Transactional;
 import org.jetbrains.annotations.Nullable;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-import javax.enterprise.context.ApplicationScoped;
+import java.util.List;
 
+@Service
 @Transactional
-@ApplicationScoped
-public class SessionService extends AbstractService<ISessionRepository, Session> implements ISessionService {
+public class SessionService implements ISessionService {
+
+    @Autowired
+    private ISessionRepository iSessionRepository;
+
+    @Override
+    public void add(@Nullable final Session entity) {
+        if (entity == null) throw new WrongInputException("Wrong Input");
+        iSessionRepository.save(entity);
+    }
+
+    @Override
+    public void update(@Nullable final Session entity) {
+        if (entity == null) throw new WrongInputException("Wrong input");
+        iSessionRepository.save(entity);
+    }
+
+    @Override
+    public List<Session> getList() {
+        return iSessionRepository.findAll();
+    }
 
     @Override
     public Session getBySignature(@Nullable String signature) {
         if (signature == null) throw new WrongInputException("Wrong Input");
-        return repository.findBySignature(signature);
+        return iSessionRepository.findBySignature(signature);
     }
 
     @Override
     public void deleteByUserId(@Nullable String userId) {
         if (userId == null) throw new WrongInputException("Wrong Input");
-        for (Session sessionTemp : repository.findAll()) {
+        for (Session sessionTemp : iSessionRepository.findAll()) {
             if (sessionTemp.getUser() == null) throw new WrongInputException("Wrong Input");
             if (userId.equals(sessionTemp.getUser().getId()))
-                repository.remove(sessionTemp);
+                iSessionRepository.delete(sessionTemp);
         }
     }
 
     @Override
     public Session getById(@Nullable String id) {
         if (id == null || id.isEmpty()) throw new WrongInputException("Wrong Input");
-        return repository.findBy(id);
+        return iSessionRepository.findById(id).get();
     }
 
     @Override
     public void delete(@Nullable Session entity) {
         if (entity == null) throw new WrongInputException("Wrong Input");
-        repository.remove(entity);
+        iSessionRepository.delete(entity);
     }
 
     @Override

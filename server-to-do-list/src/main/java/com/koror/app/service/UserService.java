@@ -7,39 +7,62 @@ import com.koror.app.entity.User;
 import com.koror.app.error.UserNotExistsException;
 import com.koror.app.error.WrongInputException;
 import com.koror.app.util.Hash;
-import org.apache.deltaspike.jpa.api.transaction.Transactional;
 import org.jetbrains.annotations.Nullable;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-import javax.enterprise.context.ApplicationScoped;
-import javax.inject.Inject;
+import java.util.List;
 
+@Service
 @Transactional
-@ApplicationScoped
-public class UserService extends AbstractService<IUserRepository, User> implements IUserService {
+public class UserService implements IUserService {
 
-    @Inject
+    @Autowired
     private IAssigneeTaskRepository assigneeTaskRepository;
+
+    @Autowired
+    private IUserRepository iUserRepository;
+
+    @Override
+    public void add(@Nullable final User entity) {
+        if (entity == null) throw new WrongInputException("Wrong Input");
+        iUserRepository.save(entity);
+    }
+
+    @Override
+    public void update(@Nullable final User entity) {
+        if (entity == null) throw new WrongInputException("Wrong input");
+        iUserRepository.save(entity);
+    }
+
+    @Override
+    public List<User> getList() {
+        return iUserRepository.findAll();
+    }
 
     @Override
     public User getByLogin(@Nullable String login) {
         if (login == null || login.isEmpty()) throw new WrongInputException("Wrong input");
         User user = null;
         try {
-            user = repository.findByLogin(login);
+            user = iUserRepository.findByLogin(login);
         } catch (Throwable e) {
             System.out.println(e.getMessage());
         }
         return user;
     }
 
+    @Override
     public User getById(@Nullable String id) {
         if (id == null || id.isEmpty()) throw new WrongInputException("Wrong Input");
-        return repository.findBy(id);
+        return iUserRepository.findById(id).get();
     }
 
+    @Override
     public void delete(@Nullable User entity) {
         if (entity == null) throw new WrongInputException("Wrong Input");
-        repository.remove(entity);
+        iUserRepository.delete(entity);
     }
 
     @Override
@@ -48,7 +71,7 @@ public class UserService extends AbstractService<IUserRepository, User> implemen
         if (password == null || password.isEmpty()) throw new WrongInputException("Wrong input");
         final String hashPassword = Hash.createHashString(password);
         User user = null;
-        for (User userTemp : repository.findAll()) {
+        for (User userTemp : iUserRepository.findAll()) {
             if (login.equals(userTemp.getLogin()) && hashPassword.equals(userTemp.getPassword()))
                 user = userTemp;
         }

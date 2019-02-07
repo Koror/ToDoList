@@ -14,30 +14,32 @@ import com.koror.app.error.WrongInputException;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.reflections.Reflections;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
-import javax.inject.Inject;
 import javax.xml.ws.Endpoint;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Scanner;
 import java.util.Set;
 
+@Component
 @NoArgsConstructor
 public final class Bootstrap implements IBootstrap {
 
-    @Inject
+    @Autowired
     private IUserService userService;
 
-    @Inject
+    @Autowired
     private TaskEndpoint taskEndpoint;
 
-    @Inject
+    @Autowired
     private UserEndpoint userEndpoint;
 
-    @Inject
+    @Autowired
     private GroupEndpoint groupEndpoint;
 
-    @Inject
+    @Autowired
     private SessionEndpoint sessionEndpoint;
 
     @Getter

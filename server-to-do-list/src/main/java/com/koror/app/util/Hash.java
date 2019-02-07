@@ -8,8 +8,8 @@ public class Hash {
 
     public static String createHashString(String value) {
         String hashValue = null;
-        value = AppConfig.SALT + value + AppConfig.SALT;
-        for (int i = 0; i < AppConfig.CYCLE; i++) {
+        value = PropertyConfig.SALT + value + PropertyConfig.SALT;
+        for (int i = 0; i < PropertyConfig.CYCLE; i++) {
             try {
                 MessageDigest md = MessageDigest.getInstance("MD5");
                 md.update(value.getBytes());

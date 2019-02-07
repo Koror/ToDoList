@@ -1,33 +1,18 @@
 package com.koror.app.service;
 
-import com.koror.app.App;
-import com.koror.app.api.controller.IBootstrap;
-import com.koror.app.api.repository.IAssigneeTaskRepository;
-import com.koror.app.api.service.ITaskService;
-import com.koror.app.entity.Task;
-import com.koror.app.entity.User;
 import org.junit.Test;
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
-import javax.enterprise.inject.se.SeContainer;
-import javax.enterprise.inject.se.SeContainerInitializer;
 import java.io.IOException;
-import java.util.List;
 
 public class TaskServiceTest {
 
     @Test
     public void test() throws IOException, ReflectiveOperationException {
-        SeContainer seContainer = SeContainerInitializer.newInstance().addPackages(App.class).initialize();
-        IBootstrap bootstrap = seContainer.select(IBootstrap.class).get();
-        ITaskService taskService = seContainer.select(ITaskService.class).get();
-        IAssigneeTaskRepository assigneeTaskRepository = seContainer.select(IAssigneeTaskRepository.class).get();
-        List<Task> list = taskService.getList();
-        Task task = list.get(0);
-        User user = new User();
-        user.setId("15fd2cf8-6188-4378-9126-c26643feb691");
-        taskService.delete(task);
-        list.get(0);
-        //task.getName();
+        AnnotationConfigApplicationContext annotationContext = new AnnotationConfigApplicationContext();
+        annotationContext.scan("com.koror.app");
+        annotationContext.refresh();
+        TaskService taskService = annotationContext.getBean("taskService", TaskService.class);
     }
 
 //    @Test(expected = WrongInputException.class)

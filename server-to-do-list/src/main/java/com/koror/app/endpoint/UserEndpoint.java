@@ -1,33 +1,35 @@
 package com.koror.app.endpoint;
 
+import com.koror.app.api.service.ISessionService;
+import com.koror.app.api.service.ITaskService;
+import com.koror.app.api.service.IUserService;
 import com.koror.app.dto.Result;
 import com.koror.app.dto.SessionDTO;
 import com.koror.app.dto.UserDTO;
 import com.koror.app.entity.Session;
 import com.koror.app.entity.User;
-import com.koror.app.service.SessionService;
-import com.koror.app.service.TaskService;
-import com.koror.app.service.UserService;
 import org.jetbrains.annotations.Nullable;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
-import javax.inject.Inject;
 import javax.jws.WebMethod;
 import javax.jws.WebParam;
 import javax.jws.WebService;
 import java.util.ArrayList;
 import java.util.List;
 
+@Component
 @WebService
 public class UserEndpoint {
 
-    @Inject
-    private UserService userService;
+    @Autowired
+    private IUserService userService;
 
-    @Inject
-    private SessionService sessionService;
+    @Autowired
+    private ISessionService sessionService;
 
-    @Inject
-    private TaskService taskService;
+    @Autowired
+    private ITaskService taskService;
 
     @WebMethod
     public Result deleteUser(

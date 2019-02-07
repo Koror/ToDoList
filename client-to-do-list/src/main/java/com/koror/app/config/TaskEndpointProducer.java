@@ -1,15 +1,12 @@
-package com.koror.app.producer;
+package com.koror.app.config;
 
 import com.koror.app.endpoint.TaskEndpoint;
 import com.koror.app.endpoint.TaskEndpointService;
-
-import javax.enterprise.context.ApplicationScoped;
-import javax.enterprise.inject.Produces;
+import org.springframework.beans.factory.annotation.Autowired;
 
 public class TaskEndpointProducer {
 
-    @Produces
-    @ApplicationScoped
+    @Autowired
     public TaskEndpoint getTaskEdnpoint() {
         return new TaskEndpointService().getTaskEndpointPort();
     }

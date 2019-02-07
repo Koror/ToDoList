@@ -1,15 +1,12 @@
-package com.koror.app.producer;
+package com.koror.app.config;
 
 import com.koror.app.endpoint.UserEndpoint;
 import com.koror.app.endpoint.UserEndpointService;
-
-import javax.enterprise.context.ApplicationScoped;
-import javax.enterprise.inject.Produces;
+import org.springframework.beans.factory.annotation.Autowired;
 
 public class UserEndpointProducer {
 
-    @Produces
-    @ApplicationScoped
+    @Autowired
     public UserEndpoint getUserEdnpoint() {
         return new UserEndpointService().getUserEndpointPort();
     }

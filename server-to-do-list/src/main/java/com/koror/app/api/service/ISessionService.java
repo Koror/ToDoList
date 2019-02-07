@@ -12,6 +12,8 @@ public interface ISessionService {
 
     void delete(@Nullable Session session);
 
+    void update(@Nullable final Session entity);
+
     Session getById(@Nullable String id);
 
     List<Session> getList();

@@ -1,12 +1,15 @@
 package com.koror.app;
 
 import com.koror.app.controller.Bootstrap;
-
-import javax.enterprise.inject.se.SeContainerInitializer;
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
 public class App {
     public static void main(String[] args) throws Exception {
-        SeContainerInitializer.newInstance().addPackages(App.class).initialize().select(Bootstrap.class).get().startClient();
+        AnnotationConfigApplicationContext annotationContext = new AnnotationConfigApplicationContext();
+        annotationContext.scan("com.koror.app");
+        annotationContext.refresh();
+        Bootstrap bootstrap = annotationContext.getBean("bootstrap", Bootstrap.class);
+        bootstrap.startClient();
     }
 
 }

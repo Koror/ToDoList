@@ -10,43 +10,65 @@ import com.koror.app.entity.Group;
 import com.koror.app.entity.User;
 import com.koror.app.enumerated.Access;
 import com.koror.app.error.WrongInputException;
-import org.apache.deltaspike.jpa.api.transaction.Transactional;
 import org.jetbrains.annotations.Nullable;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-import javax.enterprise.context.ApplicationScoped;
-import javax.inject.Inject;
 import javax.persistence.NoResultException;
 import java.util.List;
 
+@Service
 @Transactional
-@ApplicationScoped
-public class GroupService extends AbstractService<IGroupRepository, Group> implements IGroupService {
+public class GroupService implements IGroupService {
 
-    @Inject
+    @Autowired
     private IAssigneeGroupRepository assigneeGroupRepository;
 
-    @Inject
+    @Autowired
     private IAssigneeTaskRepository assigneeTaskRepository;
 
-    @Inject
+    @Autowired
     private ITaskRepository taskRepository;
+
+    @Autowired
+    private IGroupRepository iGroupRepository;
+
+    @Override
+    public void add(@Nullable final Group entity) {
+        if (entity == null) throw new WrongInputException("Wrong Input");
+        iGroupRepository.save(entity);
+    }
+
+    @Override
+    public void update(@Nullable final Group entity) {
+        if (entity == null) throw new WrongInputException("Wrong input");
+        iGroupRepository.save(entity);
+    }
+
+    @Override
+    public List<Group> getList() {
+        return iGroupRepository.findAll();
+    }
 
     @Override
     public void add(@Nullable Group entity, @Nullable User user) {
         if (entity == null || user == null) throw new WrongInputException("Wrong Input");
-        repository.save(entity);
+        iGroupRepository.save(entity);
         final AssigneeGroup assigneeGroup = new AssigneeGroup(user, entity);
         assigneeGroupRepository.save(assigneeGroup);
     }
 
+    @Override
     public Group getById(@Nullable String id) {
         if (id == null || id.isEmpty()) throw new WrongInputException("Wrong Input");
-        return repository.findBy(id);
+        return iGroupRepository.findById(id).get();
     }
 
+    @Override
     public void delete(@Nullable Group entity) {
         if (entity == null) throw new WrongInputException("Wrong Input");
-        repository.remove(entity);
+        iGroupRepository.delete(entity);
     }
 
     @Override
@@ -54,7 +76,7 @@ public class GroupService extends AbstractService<IGroupRepository, Group> imple
         if (user == null) throw new WrongInputException("Wrong Input");
         if (user.getAccess() == Access.ADMIN_ACCESS) return getList();
         try {
-            return repository.getListGroupByUserId(user.getId());
+            return iGroupRepository.getListGroupByUserId(user.getId());
         } catch (
                 NoResultException e) {
             System.out.println(e.getMessage());

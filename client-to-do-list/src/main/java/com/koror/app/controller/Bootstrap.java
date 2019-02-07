@@ -9,27 +9,29 @@ import com.koror.app.error.MissingCommandException;
 import com.koror.app.error.WrongInputException;
 import lombok.Getter;
 import org.reflections.Reflections;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
-import javax.inject.Inject;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.util.*;
 
+@Component
 public class Bootstrap {
 
-    @Inject
+    @Autowired
     @Getter
     private UserEndpoint userEndpoint;
 
-    @Inject
+    @Autowired
     @Getter
     private TaskEndpoint taskEndpoint;
 
-    @Inject
+    @Autowired
     @Getter
     private GroupEndpoint groupEndpoint;
 
-    @Inject
+    @Autowired
     @Getter
     private SessionEndpoint sessionEndpoint;
 

@@ -11,27 +11,31 @@ import com.koror.app.entity.Task;
 import com.koror.app.entity.User;
 import com.koror.app.error.WrongDataException;
 import org.jetbrains.annotations.Nullable;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.config.ConfigurableBeanFactory;
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Component;
 
-import javax.inject.Inject;
 import javax.jws.WebMethod;
 import javax.jws.WebParam;
 import javax.jws.WebService;
 import java.util.ArrayList;
 import java.util.List;
 
+@Component
 @WebService
 public class TaskEndpoint {
 
-    @Inject
+    @Autowired
     private ITaskService taskService;
 
-    @Inject
+    @Autowired
     private IGroupService groupService;
 
-    @Inject
+    @Autowired
     private ISessionService sessionService;
 
-    @Inject
+    @Autowired
     private IUserService userService;
 
     @WebMethod
