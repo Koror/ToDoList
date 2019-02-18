@@ -100,6 +100,17 @@ public class TaskService implements ITaskService {
     }
 
     @Override
+    public List<Task> getListTaskByGroupId(@Nullable String groupId) {
+        if (groupId == null) throw new WrongInputException("Wrong Input");
+        try {
+            return iTaskRepository.getListTaskByGroupId(groupId);
+        } catch (NoResultException e) {
+            System.out.println(e.getMessage());
+        }
+        return null;
+    }
+
+    @Override
     public void linkToTask(@Nullable User user, @Nullable Task task) {
         if (user == null || task == null) throw new WrongInputException("Wrong input");
         task.setUser(user);

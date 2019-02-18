@@ -7,13 +7,13 @@ import java.io.IOException;
 
 public class TaskServiceTest {
 
-    @Test
-    public void test() throws IOException, ReflectiveOperationException {
-        AnnotationConfigApplicationContext annotationContext = new AnnotationConfigApplicationContext();
-        annotationContext.scan("com.koror.app");
-        annotationContext.refresh();
-        TaskService taskService = annotationContext.getBean("taskService", TaskService.class);
-    }
+//    @Test
+//    public void test() throws IOException, ReflectiveOperationException {
+//        AnnotationConfigApplicationContext annotationContext = new AnnotationConfigApplicationContext();
+//        annotationContext.scan("com.koror.app");
+//        annotationContext.refresh();
+//        TaskService taskService = annotationContext.getBean("taskService", TaskService.class);
+//    }
 
 //    @Test(expected = WrongInputException.class)
 //    public void testNegativeAddTask() {

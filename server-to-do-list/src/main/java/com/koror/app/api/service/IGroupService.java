@@ -20,6 +20,6 @@ public interface IGroupService {
 
     List<Group> getList();
 
-    List<Group> getListGroupByUserId(@Nullable User user);
+    List<Group> getListGroupByUser(@Nullable User user);
 
 }

@@ -11,4 +11,7 @@ public interface ITaskRepository extends JpaRepository<Task, String> {
     @Query("FROM Task a where a.user.id = ?1")
     List<Task> getListTaskByUserId(final String userId);
 
+    @Query("FROM Task a where a.group.id = ?1")
+    List<Task> getListTaskByGroupId(final String groupId);
+
 }

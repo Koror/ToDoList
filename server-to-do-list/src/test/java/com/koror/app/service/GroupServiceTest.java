@@ -1,5 +1,12 @@
 package com.koror.app.service;
 
+import com.koror.app.api.repository.IGroupRepository;
+import com.koror.app.api.service.IGroupService;
+import com.koror.app.entity.Group;
+import org.junit.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
+
 public class GroupServiceTest {
 
 //    @Test(expected = WrongInputException.class)

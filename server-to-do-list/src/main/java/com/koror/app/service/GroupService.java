@@ -72,7 +72,7 @@ public class GroupService implements IGroupService {
     }
 
     @Override
-    public List<Group> getListGroupByUserId(@Nullable User user) {
+    public List<Group> getListGroupByUser(@Nullable User user) {
         if (user == null) throw new WrongInputException("Wrong Input");
         if (user.getAccess() == Access.ADMIN_ACCESS) return getList();
         try {

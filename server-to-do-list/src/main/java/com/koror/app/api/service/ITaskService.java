@@ -24,6 +24,8 @@ public interface ITaskService {
 
     List<Task> getListTaskByUserId(@Nullable User user);
 
+    List<Task> getListTaskByGroupId(@Nullable String groupId);
+
     void completeTask(@Nullable final Task task) throws WrongInputException;
 
     void clearTask(@Nullable List<Task> taskList);
