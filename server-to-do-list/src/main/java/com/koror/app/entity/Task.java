@@ -9,6 +9,7 @@ import org.jetbrains.annotations.Nullable;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.Date;
 import java.util.List;
 
 @Setter
@@ -39,6 +40,10 @@ public class Task extends AbstractEntity implements Serializable {
     @Nullable
     @ManyToOne
     private User user;
+
+    private Date dateBegin;
+
+    private Date dateEnd;
 
     @OneToMany(mappedBy = "task", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<AssigneeTask> assigneeTaskList;

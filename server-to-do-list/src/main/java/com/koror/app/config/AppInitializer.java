@@ -1,22 +1,19 @@
 package com.koror.app.config;
 
+import com.sun.faces.config.FacesInitializer;
+import org.springframework.web.WebApplicationInitializer;
+import org.springframework.web.context.ContextLoaderListener;
+import org.springframework.web.context.support.AnnotationConfigWebApplicationContext;
 import org.springframework.web.servlet.support.AbstractAnnotationConfigDispatcherServletInitializer;
 
-public class AppInitializer extends AbstractAnnotationConfigDispatcherServletInitializer {
+import javax.servlet.ServletContext;
+import javax.servlet.ServletException;
 
-    @Override
-    protected Class<?>[] getRootConfigClasses() {
-        return null;
+public class AppInitializer extends FacesInitializer implements WebApplicationInitializer {
+
+    public void onStartup(ServletContext sc) throws ServletException {
+        AnnotationConfigWebApplicationContext root = new AnnotationConfigWebApplicationContext();
+        root.register(ApplicationConfig.class);
+        sc.addListener(new ContextLoaderListener(root));
     }
-
-    @Override
-    protected Class<?>[] getServletConfigClasses() {
-        return new Class<?>[]{ApplicationConfig.class};
-    }
-
-    @Override
-    protected String[] getServletMappings() {
-        return new String[]{"/"};
-    }
-
 }

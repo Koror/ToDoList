@@ -9,6 +9,7 @@ import org.jetbrains.annotations.Nullable;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.Date;
 import java.util.List;
 
 @Setter
@@ -29,6 +30,10 @@ public class Group extends AbstractEntity implements Serializable {
     @Nullable
     @ManyToOne
     private User user;
+
+    private Date dateBegin;
+
+    private Date dateEnd;
 
     @OneToMany(mappedBy = "group", cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
     private List<AssigneeGroup> assigneeGroupList;

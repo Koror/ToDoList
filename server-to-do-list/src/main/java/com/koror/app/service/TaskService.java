@@ -88,11 +88,11 @@ public class TaskService implements ITaskService {
     }
 
     @Override
-    public List<Task> getListTaskByUserId(@Nullable User user) {
-        if (user == null) throw new WrongInputException("Wrong Input");
-        if (user.getAccess() == Access.ADMIN_ACCESS) return getList();
+    public List<Task> getListTaskByUserId(@Nullable String userId) {
+        if (userId == null || userId.isEmpty()) throw new WrongInputException("Wrong Input");
+        //if (user.getAccess() == Access.ADMIN_ACCESS) return getList();
         try {
-            return iTaskRepository.getListTaskByUserId(user.getId());
+            return iTaskRepository.getListTaskByUserId(userId);
         } catch (NoResultException e) {
             System.out.println(e.getMessage());
         }

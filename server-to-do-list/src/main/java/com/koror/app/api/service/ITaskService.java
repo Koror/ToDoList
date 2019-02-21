@@ -22,7 +22,7 @@ public interface ITaskService {
 
     List<Task> getList();
 
-    List<Task> getListTaskByUserId(@Nullable User user);
+    List<Task> getListTaskByUserId(@Nullable String userId);
 
     List<Task> getListTaskByGroupId(@Nullable String groupId);
 

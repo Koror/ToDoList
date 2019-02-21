@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core" xmlns:c="http://java.sun.com/jsp/jstl/core"
+      xmlns:p="http://primefaces.org/ui" >
+<f:metadata>
+    <f:viewParam name="groupId" value="#{taskBean.groupId}" />
+</f:metadata>
+<f:view>
+    <h:head>
+        <title>Task list</title>
+    </h:head>
+
+    <h:body>
+        <p:commandButton value="Back" action="#{taskBean.back()}"/>
+        <h:form>
+            <h:commandButton value="Add Task" type="submit" action="#{taskBean.addTask()}" />
+            <p:dataTable var="task" value="#{taskBean.taskService.getListTaskByGroupId(taskBean.groupId)}" rowIndexVar="rowIndex" style="width:80%">
+
+                <p:column headerText="#" style="width:4%; text-align: center">
+                    #{rowIndex+1}
+                </p:column>
+
+                <p:column headerText="Name" style="width:5%; text-align: center">
+                    <h:outputText value="#{task.name}"/>
+                </p:column>
+
+                <p:column headerText="Id" style="width:10%; text-align: center">
+                    <h:outputText value="#{task.id}" />
+                </p:column>
+
+                <p:column headerText="Creator" style="width:10%; text-align: center">
+                    <h:outputText value="#{task.creator}" />
+                </p:column>
+
+                <p:column headerText="User" style="width:10%; text-align: center">
+                    <h:outputText value="#{task.user}" />
+                </p:column>
+
+                <p:column headerText="Date begin" style="width:10%; text-align: center">
+                    <h:outputText value="#{task.dateBegin}" />
+                </p:column>
+
+                <p:column headerText="Date end" style="width:10%; text-align: center">
+                    <h:outputText value="#{task.dateEnd}" />
+                </p:column>
+
+                <p:column headerText="Delete task" style="width:10%; text-align: center">
+                    <h:commandButton  value="Delete" type="submit" action="#{taskBean.deleteTask(task.id)}"/>
+                </p:column>
+
+                <p:column headerText="Edit task" style="width:10%; text-align: center">
+                    <p:button outcome="task-edit" value="Edit">
+                        <f:param name = "id" value = "#{task.id}" />
+                    </p:button>
+                </p:column>
+
+            </p:dataTable>
+        </h:form>
+    </h:body>
+</f:view>
+
+</html>
