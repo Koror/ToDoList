@@ -1,9 +1,14 @@
 package com.koror.app.config;
 
+import com.koror.app.endpoint.GroupEndpoint;
 import com.koror.app.util.PropertyConfig;
+import org.apache.cxf.bus.spring.SpringBus;
+import org.apache.cxf.jaxws.EndpointImpl;
+import org.apache.cxf.transport.servlet.CXFServlet;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.ImportResource;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
 import org.springframework.orm.jpa.JpaTransactionManager;
@@ -16,8 +21,10 @@ import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 import javax.sql.DataSource;
+import javax.xml.ws.Endpoint;
 import java.util.Properties;
 
+@ImportResource("classpath:*applicationContext.xml")
 @Configuration
 @EnableTransactionManagement
 @EnableWebMvc
